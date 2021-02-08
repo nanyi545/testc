@@ -1,0 +1,7 @@
+********** Crash dump: **********
+Build fingerprint: 'MBX/MagicBox_M17/MagicBox_M17:5.1.1/LMY47V/20200706:user/test-keys'
+#00 0x00012984 /data/app/com.example.testc2-1/lib/arm/libnative-lib.so (Java_com_example_testc2_MainActivity_stringFromJNI+23)
+                                                                        Java_com_example_testc2_MainActivity_stringFromJNI
+                                                                        /Users/weiwang/AndroidStudioProjects/TestC2/app/src/main/cpp/native-lib.cpp:16:13
+Crash dump is completed
+

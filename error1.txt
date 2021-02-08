@@ -1,0 +1,1381 @@
+*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+Tombstone maker: 'xCrash 3.0.0'
+Crash type: 'native'
+Start time: '2021-02-08T13:40:22.599+0800'
+Crash time: '2021-02-08T13:40:22.930+0800'
+App ID: 'com.example.testc2'
+App version: '1.0'
+Rooted: 'No'
+API level: '22'
+OS version: '6.1.0-RS-20200706.2216'
+Kernel version: 'Linux version 3.14.29 #1 SMP PREEMPT Mon Jul 6 22:18:45 CST 2020 (armv7l)'
+ABI list: 'armeabi-v7a,armeabi'
+Manufacturer: 'Tmall'
+Brand: 'MBX'
+Model: 'MagicBox_M17'
+Build fingerprint: 'MBX/MagicBox_M17/MagicBox_M17:5.1.1/LMY47V/20200706:user/test-keys'
+ABI: 'arm'
+pid: 12307, tid: 12307, name: .example.testc2  >>> com.example.testc2 <<<
+signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x0
+    r0  00000000  r1  0000000a  r2  3bfcd63c  r3  00000001
+    r4  0000001f  r5  74824fd8  r6  12d7ec00  r7  fffd7da8
+    r8  00000000  r9  f4c27800  r10 00000000  r11 12d1f180
+    ip  f388596d  sp  fffd7d48  lr  e32092b9  pc  f3885984
+
+backtrace:
+    #00 pc 00012984  /data/app/com.example.testc2-1/lib/arm/libnative-lib.so (Java_com_example_testc2_MainActivity_stringFromJNI+23)
+
+build id:
+    /data/app/com.example.testc2-1/lib/arm/libnative-lib.so (BuildId: 2ef1ea7fa028038298444220767e9d5e07d8ec5a. FileSize: 156784. LastModified: 1979-12-31T00:00:00.000+0800. MD5: 37926c4d39d4ba97dc298027040d05e2)
+
+stack:
+         ........  ........
+
+memory near r2:
+    3bfcd61c -------- -------- -------- --------  ................
+    3bfcd62c -------- -------- -------- --------  ................
+    3bfcd63c -------- -------- -------- --------  ................
+    3bfcd64c -------- -------- -------- --------  ................
+    3bfcd65c -------- -------- -------- --------  ................
+    3bfcd66c -------- -------- -------- --------  ................
+    3bfcd67c -------- -------- -------- --------  ................
+    3bfcd68c -------- -------- -------- --------  ................
+    3bfcd69c -------- -------- -------- --------  ................
+    3bfcd6ac -------- -------- -------- --------  ................
+    3bfcd6bc -------- -------- -------- --------  ................
+    3bfcd6cc -------- -------- -------- --------  ................
+    3bfcd6dc -------- -------- -------- --------  ................
+    3bfcd6ec -------- -------- -------- --------  ................
+    3bfcd6fc -------- -------- -------- --------  ................
+    3bfcd70c -------- -------- -------- --------  ................
+
+memory near r5:
+    74824fb8 0016f884 00004472 00000001 f4b71eb9  ....rD..........
+    74824fc8 00000000 e3209125 00000000 0000003b  ....%. .....;...
+    74824fd8 71165250 00000000 12d1e000 12caa000  PR.q............
+    74824fe8 12ca7000 00080004 0016f89c 00004474  .p..........tD..
+    74824ff8 000000e2 f4b71eb9 00000000 e320917d  ............}. .
+    74825008 00000000 0000003b 71165250 00000000  ....;...PR.q....
+    74825018 12d1e000 12caa000 12ca7000 00000101  .........p......
+    74825028 00000000 00004476 000001af f4b71eb9  ....vD..........
+    74825038 f388596d e3209265 00000000 00000023  mY..e. .....#...
+    74825048 71165d48 00000000 12d1d000 00000002  H].q............
+    74825058 000008f6 00000150 00000000 00000023  ....P.......#...
+    74825068 71165d48 00000000 12d1d000 00000002  H].q............
+    74825078 000008f7 00000154 00000000 0000003b  ....T.......;...
+    74825088 71165250 00000000 12d1d000 12caa000  PR.q............
+    74825098 12ca7000 00090001 0007b8f8 00000e59  .p..........Y...
+    748250a8 00000000 f4b71eb9 00000000 e32076f5  .............v .
+
+memory near r6:
+    12d7ebe0 00000000 00000000 00000000 00000000  ................
+    12d7ebf0 00000000 00000000 00000000 00000000  ................
+    12d7ec00 12c50000 00000000 00000000 00000000  ................
+    12d7ec10 00000000 00000000 00000000 00000000  ................
+    12d7ec20 00000000 00000000 00000000 12d1f180  ................
+    12d7ec30 00000000 12d57300 00000000 00000000  .....s..........
+    12d7ec40 00000000 00000000 00000000 00000000  ................
+    12d7ec50 00000000 12d31440 00000000 00000000  ....@...........
+    12d7ec60 00000000 00000000 00000000 71164380  .............C.q
+    12d7ec70 00000000 12c20800 00000000 00000000  ................
+    12d7ec80 00000000 12d7bf80 12d730a0 00000000  .........0......
+    12d7ec90 00000000 00000000 00000000 00000000  ................
+    12d7eca0 00000000 00000000 00000000 00000000  ................
+    12d7ecb0 00000000 00000000 ffffffff ffffffff  ................
+    12d7ecc0 ffffffff ffffffff 00000000 00000000  ................
+    12d7ecd0 00000000 7f0700b4 ffffffff 00000000  ................
+
+memory near r7:
+    fffd7d88 -------- -------- -------- --------  ................
+    fffd7d98 -------- -------- -------- --------  ................
+    fffd7da8 -------- -------- -------- --------  ................
+    fffd7db8 -------- -------- -------- --------  ................
+    fffd7dc8 -------- -------- -------- --------  ................
+    fffd7dd8 -------- -------- -------- --------  ................
+    fffd7de8 -------- -------- -------- --------  ................
+    fffd7df8 -------- -------- -------- --------  ................
+    fffd7e08 -------- -------- -------- --------  ................
+    fffd7e18 -------- -------- -------- --------  ................
+    fffd7e28 -------- -------- -------- --------  ................
+    fffd7e38 -------- -------- -------- --------  ................
+    fffd7e48 -------- -------- -------- --------  ................
+    fffd7e58 -------- -------- -------- --------  ................
+    fffd7e68 -------- -------- -------- --------  ................
+    fffd7e78 -------- -------- -------- --------  ................
+
+memory near r9:
+    f4c277e0 00000000 00000000 00000000 00000000  ................
+    f4c277f0 00000000 00000000 00000000 00000000  ................
+    f4c27800 00550000 00000000 00000000 00000001  ..U.............
+    f4c27810 00003013 00000000 00000000 00000000  .0..............
+    f4c27820 00000000 00000000 00000000 00000000  ................
+    f4c27830 00000000 00000000 00000000 00000000  ................
+    f4c27840 00000000 00000000 00000000 00000000  ................
+    f4c27850 00000000 00000000 00000000 00000000  ................
+    f4c27860 00000000 00000000 000000d0 00000000  ................
+    f4c27870 1224f2f1 00000000 f18c0070 00000000  ..$.....p.......
+    f4c27880 ff7dc000 fffd8168 00000000 fffd7db0  ..}.h........}..
+    f4c27890 00000000 00000000 f4c78ac0 00000000  ................
+    f4c278a0 746e8bb8 00000000 ff7da000 00800000  ..nt......}.....
+    f4c278b0 00000000 00000000 ffffffff 00000000  ................
+    f4c278c0 00000000 00000000 fffd7db4 746dcfe0  .........}....mt
+    f4c278d0 ef0401a0 f4c37b50 f4c7a200 f4c75da0  ....P{.......]..
+
+memory near r11:
+    12d1f160 00000000 00000000 00000000 00000000  ................
+    12d1f170 00000000 00000000 00000000 00000000  ................
+    12d1f180 12d1e000 9613c34c 12d721e0 12d45a30  ....L....!..0Z..
+    12d1f190 00000000 12d730a0 12d72880 7f0d0005  .....0...(......
+    12d1f1a0 00000000 12c72080 12cf0400 00000000  ..... ..........
+    12d1f1b0 12c8ca00 12c620d0 12d1c310 12cef7c0  ..... ..........
+    12d1f1c0 00000000 00000000 00000000 71155dd8  .............].q
+    12d1f1d0 71155dd8 12d1b4a0 12cf1500 12d1c320  .].q........ ...
+    12d1f1e0 12c8d060 12c701c0 00000000 00000000  `...............
+    12d1f1f0 12c27100 12cf14a0 00000000 00000000  .q..............
+    12d1f200 00000000 00000000 00000000 00000000  ................
+    12d1f210 12d30100 12c609a0 00000000 746e8bb8  ..............nt
+    12d1f220 00000000 12d46500 12d72860 00000000  .....e..`(......
+    12d1f230 00000000 08a87621 00000000 00000000  ....!v..........
+    12d1f240 00000001 00000000 00000000 00000000  ................
+    12d1f250 00000000 00000001 00000000 00000000  ................
+
+memory near ip:
+    f388594c e1a01000 e59f000c e59f200c e08f0000  ......... ......
+    f388595c e08f2002 ea0043d6 ffffffe0 0001282c  . ...C......,(..
+    f388596c af02b5d0 4a2eb096 6812447a 92156812  .......JzD.h.h..
+    f388597c 91109011 210a980f 980f6001 48296803  .......!.`...h)H
+    f388598c 4a294478 2102447a 46089009 91089c09  xD)JzD.!...F....
+    f388599c f0104621 4925ef98 aa124479 46109007  !F....%IyD.....F
+    f38859ac f0109206 9806ef98 f872f000 4820900e  ..........r... H
+    f38859bc 900d4478 900c207b 980d9b0e 466a990c  xD..{ ........jF
+    f38859cc 60106051 447a4a1b 99099808 ef7af010  Q`.`.JzD......z.
+    f38859dc 9811e7ff 9005a912 f0004608 9905f859  .........F..Y...
+    f38859ec 46089004 f0109904 9003ef7e a812e7ff  ...F....~.......
+    f38859fc ef80f010 44784810 68006800 42889915  .....HxD.h.h...B
+    f3885a0c e7ffd10c b0169803 900bbdd0 a812910a  ................
+    f3885a1c ef70f010 980be7ff fcd6f00f ef72f010  ..p...........r.
+    f3885a2c 0001419c ffffea68 ffffea69 ffffe3b8  .A..h...i.......
+    f3885a3c ffffe8d2 ffffe219 0001410e 466fb580  .........A....oF
+
+memory near sp:
+    fffd7d28 -------- -------- -------- --------  ................
+    fffd7d38 -------- -------- -------- --------  ................
+    fffd7d48 -------- -------- -------- --------  ................
+    fffd7d58 -------- -------- -------- --------  ................
+    fffd7d68 -------- -------- -------- --------  ................
+    fffd7d78 -------- -------- -------- --------  ................
+    fffd7d88 -------- -------- -------- --------  ................
+    fffd7d98 -------- -------- -------- --------  ................
+    fffd7da8 -------- -------- -------- --------  ................
+    fffd7db8 -------- -------- -------- --------  ................
+    fffd7dc8 -------- -------- -------- --------  ................
+    fffd7dd8 -------- -------- -------- --------  ................
+    fffd7de8 -------- -------- -------- --------  ................
+    fffd7df8 -------- -------- -------- --------  ................
+    fffd7e08 -------- -------- -------- --------  ................
+    fffd7e18 -------- -------- -------- --------  ................
+
+memory near lr:
+    e3209298 c090f8c9 f8d04648 47e0c194 f20d9004  ....HF.....G....
+    e32092a8 f8d9010c f8dd0098 f8dcc000 47e0c028  ............(..G
+    e32092b8 464a9904 c1a4f8d2 f8d947e0 f1bcc07c  ..JF.....G..|...
+    e32092c8 d1030f00 0d24f20d 8de0e8bd f8d94660  ......$.....`F..
+    e32092d8 47e0c234 0000be00 00000000 00000000  4..G............
+    e32092e8 00000000 00000000 00000000 00000000  ................
+    e32092f8 00000000 00000000 00000000 00000000  ................
+    e3209308 00000000 00000000 00000000 00000000  ................
+    e3209318 00000000 00000000 00000000 00000000  ................
+    e3209328 00000000 00000000 00000000 00000000  ................
+    e3209338 00000000 00000000 00000000 00000000  ................
+    e3209348 00000000 00000000 00000000 00000000  ................
+    e3209358 00000000 00000000 00000000 00000000  ................
+    e3209368 00000000 00000000 00000000 00000000  ................
+    e3209378 00000000 00000000 00000000 00000000  ................
+    e3209388 00000000 00000000 00000000 00000000  ................
+
+memory near pc:
+    f3885964 ffffffe0 0001282c af02b5d0 4a2eb096  ....,(.........J
+    f3885974 6812447a 92156812 91109011 210a980f  zD.h.h.........!
+    f3885984 980f6001 48296803 4a294478 2102447a  .`...h)HxD)JzD.!
+    f3885994 46089009 91089c09 f0104621 4925ef98  ...F....!F....%I
+    f38859a4 aa124479 46109007 f0109206 9806ef98  yD.....F........
+    f38859b4 f872f000 4820900e 900d4478 900c207b  ..r... HxD..{ ..
+    f38859c4 980d9b0e 466a990c 60106051 447a4a1b  ......jFQ`.`.JzD
+    f38859d4 99099808 ef7af010 9811e7ff 9005a912  ......z.........
+    f38859e4 f0004608 9905f859 46089004 f0109904  .F..Y......F....
+    f38859f4 9003ef7e a812e7ff ef80f010 44784810  ~............HxD
+    f3885a04 68006800 42889915 e7ffd10c b0169803  .h.h...B........
+    f3885a14 900bbdd0 a812910a ef70f010 980be7ff  ..........p.....
+    f3885a24 fcd6f00f ef72f010 0001419c ffffea68  ......r..A..h...
+    f3885a34 ffffea69 ffffe3b8 ffffe8d2 ffffe219  i...............
+    f3885a44 0001410e 466fb580 4a12b08a 6812447a  .A....oF...JzD.h
+    f3885a54 93096813 91059006 a9089806 9004ab07  .h..............
+
+memory map:
+    12c00000-12e01000 rw-       0   201000 /dev/ashmem/dalvik-main space (deleted)
+    12e01000-32c00000 ---  201000 1fdff000 >
+    32c00000-32c01000 rw-       0     1000 >
+    32c01000-52c00000 ---    1000 1ffff000 >
+    7099a000-71352000 rw-       0   9b8000 /data/dalvik-cache/arm/system@framework@boot.art
+    71352000-7301e000 r--       0  1ccc000 /data/dalvik-cache/arm/system@framework@boot.oat
+    7301e000-746d8000 r-x 1ccc000  16ba000 >
+    746d8000-746d9000 rw- 3386000     1000 >
+    746d9000-74821000 rw-       0   148000 /dev/ashmem/dalvik-zygote space (deleted)
+    74821000-74822000 rw-       0     1000 /dev/ashmem/dalvik-non moving space (deleted)
+    74822000-74889000 rw-    1000    67000 >
+    74889000-776da000 ---   68000  2e51000 >
+    776da000-786d9000 rw- 2eb9000   fff000 >
+    ab01c000-ab01f000 r-x       0     3000 /system/bin/app_process32
+    ab01f000-ab020000 r--    2000     1000 >
+    ab020000-ab021000 rw-       0     1000 
+    e2c46000-e2f76000 r--       0   330000 /data/dalvik-cache/arm/data@app@com.example.testc2-1@base.apk@classes.dex
+    e2f76000-e320a000 r-x  330000   294000 >
+    e320a000-e320b000 rw-  5c4000     1000 >
+    e320b000-e3a0b000 rw-       0   800000 /dev/ashmem/dalvik-allocspace main rosalloc space mark-bitmap 3 (deleted)
+    e3a0b000-e420b000 rw-       0   800000 /dev/ashmem/dalvik-allocspace main rosalloc space live-bitmap 3 (deleted)
+    e420b000-ea60b000 ---       0  6400000 
+    ea60b000-ea716000 r-x       0   10b000 /system/lib/egl/libGLES_mali.so
+    ea716000-ea71a000 r--  10a000     4000 >
+    ea71a000-ea71d000 rw-  10e000     3000 >
+    ea71d000-ea71e000 rw-       0     1000 
+    ea71e000-ea797000 r--       0    79000 /system/usr/share/zoneinfo/tzdata
+    ea797000-ea7ad000 r-x       0    16000 /system/lib/libjavacrypto.so
+    ea7ad000-ea7ae000 r--   15000     1000 >
+    ea7ae000-ea7af000 rw-   16000     1000 >
+    ea7af000-ea7b6000 r-x       0     7000 /system/lib/librs_jni.so
+    ea7b6000-ea7b7000 r--    6000     1000 >
+    ea7b7000-ea7b8000 rw-    7000     1000 >
+    ea7b8000-ea7bc000 r-x       0     4000 /system/lib/libaudioeffect_jni.so
+    ea7bc000-ea7bd000 r--    3000     1000 >
+    ea7bd000-ea7be000 rw-    4000     1000 >
+    ea7be000-ea7c0000 r-x       0     2000 /system/lib/libsoundpool.so
+    ea7c0000-ea7c1000 r--    1000     1000 >
+    ea7c1000-ea7c2000 rw-    2000     1000 >
+    ea7c2000-ea7d2000 r-x       0    10000 /system/lib/libamffmpegadapter.so
+    ea7d2000-ea7d3000 ---       0     1000 
+    ea7d3000-ea7d4000 r--   10000     1000 /system/lib/libamffmpegadapter.so
+    ea7d4000-ea7d5000 rw-   11000     1000 >
+    ea7d5000-ea7ed000 r-x       0    18000 /system/lib/libvorbisidec.so
+    ea7ed000-ea7ee000 ---       0     1000 
+    ea7ee000-ea7ef000 r--   18000     1000 /system/lib/libvorbisidec.so
+    ea7ef000-ea7f0000 rw-   19000     1000 >
+    ea7f0000-ea7f2000 r-x       0     2000 /system/lib/libstagefright_yuv.so
+    ea7f2000-ea7f3000 r--    1000     1000 >
+    ea7f3000-ea7f4000 rw-    2000     1000 >
+    ea7f4000-ea813000 r-x       0    1f000 /system/lib/libstagefright_omx.so
+    ea813000-ea814000 ---       0     1000 
+    ea814000-ea816000 r--   1f000     2000 /system/lib/libstagefright_omx.so
+    ea816000-ea817000 rw-   21000     1000 >
+    ea817000-ea81c000 r-x       0     5000 /system/lib/libstagefright_avc_common.so
+    ea81c000-ea81d000 r--    4000     1000 >
+    ea81d000-ea81e000 rw-    5000     1000 >
+    ea81e000-ea856000 r-x       0    38000 /system/lib/libopus.so
+    ea856000-ea857000 r--   37000     1000 >
+    ea857000-ea858000 rw-   38000     1000 >
+    ea858000-ea86e000 r-x       0    16000 /system/lib/libdrmframework.so
+    ea86e000-ea86f000 ---       0     1000 
+    ea86f000-ea872000 r--   16000     3000 /system/lib/libdrmframework.so
+    ea872000-ea873000 rw-   19000     1000 >
+    ea873000-eaf43000 r-x       0   6d0000 /system/lib/libamffmpeg.so
+    eaf43000-eaf5f000 r--  6cf000    1c000 >
+    eaf5f000-eaf74000 rw-  6eb000    15000 >
+    eaf74000-eb507000 rw-       0   593000 
+    eb507000-eb513000 r-x       0     c000 /system/lib/libstagefright_amrnb_common.so
+    eb513000-eb514000 r--    b000     1000 >
+    eb514000-eb515000 rw-    c000     1000 >
+    eb515000-eb673000 r-x       0   15e000 /system/lib/libstagefright.so
+    eb673000-eb67d000 r--  15d000     a000 >
+    eb67d000-eb680000 rw-  167000     3000 >
+    eb680000-eb693000 r-x       0    13000 /system/lib/libmtp.so
+    eb693000-eb695000 r--   12000     2000 >
+    eb695000-eb696000 rw-   14000     1000 >
+    eb696000-eb69f000 r-x       0     9000 /system/lib/libjhead.so
+    eb69f000-eb6a0000 r--    8000     1000 >
+    eb6a0000-eb6a1000 rw-    9000     1000 >
+    eb6a1000-eb6a2000 rw-       0     1000 
+    eb6a2000-eb6c1000 r-x       0    1f000 /system/lib/libexif.so
+    eb6c1000-eb6cd000 r--   1e000     c000 >
+    eb6cd000-eb6ce000 rw-   2a000     1000 >
+    eb6ce000-eb707000 r-x       0    39000 /system/lib/libmedia_jni.so
+    eb707000-eb708000 ---       0     1000 
+    eb708000-eb70a000 r--   39000     2000 /system/lib/libmedia_jni.so
+    eb70a000-eb70b000 rw-   3b000     1000 >
+    eb70b000-eb715000 r--       0     a000 /system/fonts/CarroisGothicSC-Regular.ttf
+    eb715000-eb732000 r--       0    1d000 /system/fonts/DancingScript-Bold.ttf
+    eb732000-eb74f000 r--       0    1d000 /system/fonts/DancingScript-Regular.ttf
+    eb74f000-eb75e000 r--       0     f000 /system/fonts/ComingSoon.ttf
+    eb75e000-eb76f000 r--       0    11000 /system/fonts/CutiveMono.ttf
+    eb76f000-eb78a000 r--       0    1b000 /system/fonts/DroidSansMono.ttf
+    eb78a000-eb7ca000 r--       0    40000 /system/fonts/NotoSerif-BoldItalic.ttf
+    eb7ca000-eb807000 r--       0    3d000 /system/fonts/NotoSerif-Italic.ttf
+    eb807000-eb844000 r--       0    3d000 /system/fonts/NotoSerif-Bold.ttf
+    eb844000-eb881000 r--       0    3d000 /system/fonts/NotoSerif-Regular.ttf
+    eb881000-eb8c1000 r--       0    40000 /system/fonts/RobotoCondensed-BoldItalic.ttf
+    eb8c1000-eb8fc000 r--       0    3b000 /system/fonts/RobotoCondensed-Bold.ttf
+    eb8fc000-eb93c000 r--       0    40000 /system/fonts/RobotoCondensed-Italic.ttf
+    eb93c000-eb977000 r--       0    3b000 /system/fonts/RobotoCondensed-Regular.ttf
+    eb977000-eb9b8000 r--       0    41000 /system/fonts/RobotoCondensed-LightItalic.ttf
+    eb9b8000-eb9f3000 r--       0    3b000 /system/fonts/RobotoCondensed-Light.ttf
+    eb9f3000-ebc64000 r--       0   271000 /system/fonts/MTLmr3m.ttf
+    ebc64000-ec0b6000 r--       0   452000 /system/fonts/DroidSansFallback.ttf
+    ec0b6000-ec61c000 r--       0   566000 /system/fonts/FZLTXH.ttf
+    ec61c000-ec771000 r--       0   155000 /system/fonts/NotoColorEmoji.ttf
+    ec771000-ec792000 r--       0    21000 /system/fonts/NotoSansSymbols-Regular-Subsetted.ttf
+    ec792000-ec8cd000 r--       0   13b000 /system/fonts/NanumGothic.ttf
+    ec8cd000-ec8e5000 r--       0    18000 /system/fonts/NotoSansMyanmarUI-Bold.ttf
+    ec8e5000-ec8fc000 r--       0    17000 /system/fonts/NotoSansMyanmarUI-Regular.ttf
+    ec8fc000-ec916000 r--       0    1a000 /system/fonts/NotoSansMyanmar-Bold.ttf
+    ec916000-ec931000 r--       0    1b000 /system/fonts/NotoSansMyanmar-Regular.ttf
+    ec931000-ec939000 r--       0     8000 /system/fonts/NotoSansLaoUI-Bold.ttf
+    ec939000-ec941000 r--       0     8000 /system/fonts/NotoSansLaoUI-Regular.ttf
+    ec941000-ec949000 r--       0     8000 /system/fonts/NotoSansLao-Bold.ttf
+    ec949000-ec951000 r--       0     8000 /system/fonts/NotoSansLao-Regular.ttf
+    ec951000-ec95a000 r--       0     9000 /system/fonts/NotoSansKhmerUI-Bold.ttf
+    ec95a000-ec964000 r--       0     a000 /system/fonts/NotoSansKhmerUI-Regular.ttf
+    ec964000-ec96d000 r--       0     9000 /system/fonts/NotoSansKhmer-Bold.ttf
+    ec96d000-ec976000 r--       0     9000 /system/fonts/NotoSansKhmer-Regular.ttf
+    ec976000-ec98a000 r--       0    14000 /system/fonts/NotoSansKannadaUI-Bold.ttf
+    ec98a000-ec99e000 r--       0    14000 /system/fonts/NotoSansKannadaUI-Regular.ttf
+    ec99e000-ec9b2000 r--       0    14000 /system/fonts/NotoSansKannada-Bold.ttf
+    ec9b2000-ec9c6000 r--       0    14000 /system/fonts/NotoSansKannada-Regular.ttf
+    ec9c6000-ec9e1000 r--       0    1b000 /system/fonts/NotoSansTeluguUI-Bold.ttf
+    ec9e1000-ec9fd000 r--       0    1c000 /system/fonts/NotoSansTeluguUI-Regular.ttf
+    ec9fd000-eca18000 r--       0    1b000 /system/fonts/NotoSansTelugu-Bold.ttf
+    eca18000-eca33000 r--       0    1b000 /system/fonts/NotoSansTelugu-Regular.ttf
+    eca33000-eca4d000 r--       0    1a000 /system/fonts/NotoSansBengaliUI-Bold.ttf
+    eca4d000-eca68000 r--       0    1b000 /system/fonts/NotoSansBengaliUI-Regular.ttf
+    eca68000-eca80000 r--       0    18000 /system/fonts/NotoSansBengali-Bold.ttf
+    eca80000-eca99000 r--       0    19000 /system/fonts/NotoSansBengali-Regular.ttf
+    eca99000-ecaa8000 r--       0     f000 /system/fonts/NotoSansMalayalamUI-Bold.ttf
+    ecaa8000-ecab7000 r--       0     f000 /system/fonts/NotoSansMalayalamUI-Regular.ttf
+    ecab7000-ecac5000 r--       0     e000 /system/fonts/NotoSansMalayalam-Bold.ttf
+    ecac5000-ecad3000 r--       0     e000 /system/fonts/NotoSansMalayalam-Regular.ttf
+    ecad3000-ecadc000 r--       0     9000 /system/fonts/NotoSansTamilUI-Bold.ttf
+    ecadc000-ecae5000 r--       0     9000 /system/fonts/NotoSansTamilUI-Regular.ttf
+    ecae5000-ecaee000 r--       0     9000 /system/fonts/NotoSansTamil-Bold.ttf
+    ecaee000-ecaf7000 r--       0     9000 /system/fonts/NotoSansTamil-Regular.ttf
+    ecaf7000-ecb13000 r--       0    1c000 /system/fonts/NotoSansDevanagariUI-Bold.ttf
+    ecb13000-ecb31000 r--       0    1e000 /system/fonts/NotoSansDevanagariUI-Regular.ttf
+    ecb31000-ecb4f000 r--       0    1e000 /system/fonts/NotoSansDevanagari-Bold.ttf
+    ecb4f000-ecb6e000 r--       0    1f000 /system/fonts/NotoSansDevanagari-Regular.ttf
+    ecb6e000-ecb73000 r--       0     5000 /system/fonts/NotoSansGeorgian-Bold.ttf
+    ecb73000-ecb78000 r--       0     5000 /system/fonts/NotoSansGeorgian-Regular.ttf
+    ecb78000-ecb7c000 r--       0     4000 /system/fonts/NotoSansArmenian-Bold.ttf
+    ecb7c000-ecb81000 r--       0     5000 /system/fonts/NotoSansThaiUI-Bold.ttf
+    ecb81000-ecb87000 r--       0     6000 /system/fonts/NotoSansThaiUI-Regular.ttf
+    ecb87000-ecb8c000 r--       0     5000 /system/fonts/NotoSansThai-Bold.ttf
+    ecb8c000-ecb92000 r--       0     6000 /system/fonts/NotoSansThai-Regular.ttf
+    ecb92000-ecb97000 r--       0     5000 /system/fonts/NotoSansHebrew-Bold.ttf
+    ecb97000-ecbba000 r--       0    23000 /system/fonts/NotoSansEthiopic-Bold.ttf
+    ecbba000-ecbdd000 r--       0    23000 /system/fonts/NotoSansEthiopic-Regular.ttf
+    ecbdd000-ecbf9000 r--       0    1c000 /system/fonts/NotoNaskhUI-Bold.ttf
+    ecbf9000-ecc16000 r--       0    1d000 /system/fonts/NotoNaskhUI-Regular.ttf
+    ecc16000-ecc32000 r--       0    1c000 /system/fonts/NotoNaskh-Bold.ttf
+    ecc32000-ecc4f000 r--       0    1d000 /system/fonts/NotoNaskh-Regular.ttf
+    ecc4f000-ecc90000 r--       0    41000 /system/fonts/Roboto-BoldItalic.ttf
+    ecc90000-ecccc000 r--       0    3c000 /system/fonts/Roboto-Bold.ttf
+    ecccc000-ecd0d000 r--       0    41000 /system/fonts/Roboto-BlackItalic.ttf
+    ecd0d000-ecd49000 r--       0    3c000 /system/fonts/Roboto-Black.ttf
+    ecd49000-ecd8a000 r--       0    41000 /system/fonts/Roboto-MediumItalic.ttf
+    ecd8a000-ecdc5000 r--       0    3b000 /system/fonts/Roboto-Medium.ttf
+    ecdc5000-ece06000 r--       0    41000 /system/fonts/Roboto-Italic.ttf
+    ece06000-ece41000 r--       0    3b000 /system/fonts/Roboto-Regular.ttf
+    ece41000-ed9d3000 r--  70c000   b92000 /system/framework/framework-res.apk
+    ed9d3000-eebaf000 r--       0  11dc000 /system/usr/icu/icudt53l.dat
+    eebaf000-eebf0000 r-- 1369000    41000 /system/framework/framework-res.apk
+    eebf0000-eebf1000 r-x       0     1000 /system/lib/libstagefright_enc_common.so
+    eebf1000-eebf2000 r--       0     1000 >
+    eebf2000-eebf3000 rw-    1000     1000 >
+    eebf3000-eebf8000 r--       0     5000 /system/fonts/NotoSansHebrew-Regular.ttf
+    eebf8000-eec39000 r--       0    41000 /system/fonts/Roboto-LightItalic.ttf
+    eec39000-eec75000 r--       0    3c000 /system/fonts/Roboto-Light.ttf
+    eec75000-eecb7000 r--       0    42000 /system/fonts/Roboto-ThinItalic.ttf
+    eecb7000-eecf4000 r--       0    3d000 /system/fonts/Roboto-Thin.ttf
+    eedda000-eeddb000 r-x       0     1000 /system/lib/libwebviewchromium_loader.so
+    eeddb000-eeddc000 r--       0     1000 >
+    eeddc000-eeddd000 rw-    1000     1000 >
+    eeddd000-eedde000 r-x       0     1000 /system/lib/libjnigraphics.so
+    eedde000-eeddf000 r--       0     1000 >
+    eeddf000-eede0000 rw-    1000     1000 >
+    eede0000-eede6000 r-x       0     6000 /system/lib/libcompiler_rt.so
+    eede6000-eede7000 r--    5000     1000 >
+    eede7000-eede8000 rw-    6000     1000 >
+    eede8000-eedf5000 r-x       0     d000 /system/lib/libandroid.so
+    eedf5000-eedf7000 r--    c000     2000 >
+    eedf7000-eedf8000 rw-    e000     1000 >
+    eeefc000-eeefd000 ---       0     1000 
+    eeefd000-eeefe000 ---       0     1000 
+    eeefe000-ef000000 rw-       0   102000 [stack:12329]
+    ef000000-ef400000 rw-       0   400000 [anon:libc_malloc]
+    ef400000-ef404000 r--       0     4000 /system/fonts/NotoSansArmenian-Regular.ttf
+    ef404000-ef40a000 r--   6b000     6000 /system/framework/yunos-framework-res.apk
+    ef40a000-ef40d000 r--   7c000     3000 >
+    ef40d000-ef40f000 r-x       0     2000 /system/lib/libfbcnf.so
+    ef40f000-ef410000 r--    1000     1000 >
+    ef410000-ef411000 rw-    2000     1000 >
+    ef411000-ef413000 r--       0     2000 [anon:linker_alloc]
+    ef415000-ef416000 r-x       0     1000 /system/lib/hw/memtrack.amlogic.so
+    ef416000-ef417000 r--       0     1000 >
+    ef417000-ef418000 rw-    1000     1000 >
+    ef418000-ef419000 ---       0     1000 
+    ef419000-ef41a000 ---       0     1000 
+    ef41a000-ef516000 rw-       0    fc000 [stack:12340]
+    ef516000-ef517000 ---       0     1000 
+    ef517000-ef518000 ---       0     1000 
+    ef518000-ef614000 rw-       0    fc000 [stack:12328]
+    ef614000-ef615000 ---       0     1000 
+    ef615000-ef616000 ---       0     1000 
+    ef616000-ef712000 rw-       0    fc000 [stack:12327]
+    ef712000-ef732000 rw-       0    20000 /dev/ashmem/dalvik-rosalloc page map (deleted)
+    ef732000-f090e000 r--       0  11dc000 /system/usr/icu/icudt53l.dat
+    f090e000-f0942000 r-x       0    34000 /system/lib/libjavacore.so
+    f0942000-f0943000 ---       0     1000 
+    f0943000-f0944000 r--   34000     1000 /system/lib/libjavacore.so
+    f0944000-f0946000 rw-   35000     2000 >
+    f0946000-f0a0e000 rw-       0    c8000 /dev/ashmem/dalvik-indirect ref table (deleted)
+    f0a0e000-f0ad6000 rw-       0    c8000 >
+    f0ad6000-f12d7000 rw-       0   801000 /dev/ashmem/dalvik-live stack (deleted)
+    f12d7000-f1ad8000 rw-       0   801000 /dev/ashmem/dalvik-allocation stack (deleted)
+    f1ad8000-f1b18000 rw-       0    40000 /dev/ashmem/dalvik-mark stack (deleted)
+    f1b18000-f27ce000 rw-       0   cb6000 /dev/ashmem/dalvik-card table (deleted)
+    f27ce000-f27ee000 rw-       0    20000 /dev/ashmem/dalvik-large marked objects (deleted)
+    f27ee000-f280e000 rw-       0    20000 /dev/ashmem/dalvik-large live objects (deleted)
+    f280e000-f300e000 rw-       0   800000 /dev/ashmem/dalvik-allocspace main rosalloc space 1 mark-bitmap 2 (deleted)
+    f300e000-f380e000 rw-       0   800000 /dev/ashmem/dalvik-allocspace main rosalloc space 1 live-bitmap 2 (deleted)
+    f386f000-f3871000 rw-       0     2000 /dev/ashmem/dalvik-indirect ref table (deleted)
+    f3871000-f3873000 rw-       0     2000 
+    f3873000-f3898000 r-x       0    25000 /data/app/com.example.testc2-1/lib/arm/libnative-lib.so
+    f3898000-f389a000 r--   24000     2000 >
+    f389a000-f389b000 rw-   25000     1000 >
+    f389b000-f389c000 rw-       0     1000 
+    f389c000-f389e000 rw-       0     2000 /dev/ashmem/dalvik-indirect ref table (deleted)
+    f389e000-f38a0000 rw-       0     2000 
+    f38a0000-f38a2000 rw-       0     2000 /dev/ashmem/dalvik-indirect ref table (deleted)
+    f38a2000-f38a4000 rw-       0     2000 
+    f38a4000-f38a6000 rw-       0     2000 /dev/ashmem/dalvik-indirect ref table (deleted)
+    f38a6000-f38a8000 rw-       0     2000 
+    f38a8000-f38b3000 r-x       0     b000 /data/app/com.example.testc2-1/lib/arm/libxcrash.so
+    f38b3000-f38b4000 ---       0     1000 
+    f38b4000-f38b5000 r--    b000     1000 /data/app/com.example.testc2-1/lib/arm/libxcrash.so
+    f38b5000-f38b6000 rw-    c000     1000 >
+    f38b6000-f38b7000 r--       0     1000 /data/dalvik-cache/arm/data@app@com.example.testc2-1@base.apk@classes.dex
+    f38b7000-f38f7000 r--    a000    40000 /data/app/com.example.testc2-1/base.apk
+    f38f7000-f3904000 r--  217000     d000 >
+    f3904000-f3906000 rw-       0     2000 /dev/ashmem/dalvik-indirect ref table (deleted)
+    f3906000-f3908000 rw-       0     2000 
+    f3908000-f3909000 ---       0     1000 
+    f3909000-f390a000 ---       0     1000 
+    f390a000-f3a06000 rw-       0    fc000 [stack:12324]
+    f3a06000-f3a08000 rw-       0     2000 /dev/ashmem/dalvik-indirect ref table (deleted)
+    f3a08000-f3a0a000 rw-       0     2000 >
+    f3a0a000-f3a0c000 rw-       0     2000 
+    f3a0c000-f3a0d000 ---       0     1000 
+    f3a0d000-f3a0e000 ---       0     1000 
+    f3a0e000-f3b0a000 rw-       0    fc000 [stack:12323]
+    f3b0a000-f3c08000 r--       0    fe000 /dev/binder
+    f3c08000-f3c09000 ---       0     1000 
+    f3c09000-f3c0a000 ---       0     1000 
+    f3c0a000-f3d0c000 rw-       0   102000 [stack:12322]
+    f3d0c000-f3d0d000 ---       0     1000 
+    f3d0d000-f3d0e000 ---       0     1000 
+    f3d0e000-f3e10000 rw-       0   102000 [stack:12321]
+    f3e10000-f3e11000 ---       0     1000 
+    f3e11000-f3e12000 ---       0     1000 
+    f3e12000-f3f14000 rw-       0   102000 [stack:12320]
+    f3f14000-f3f15000 ---       0     1000 
+    f3f15000-f3f16000 ---       0     1000 
+    f3f16000-f4018000 rw-       0   102000 [stack:12319]
+    f4018000-f4019000 ---       0     1000 
+    f4019000-f401a000 ---       0     1000 
+    f401a000-f411c000 rw-       0   102000 [stack:12318]
+    f411c000-f411d000 ---       0     1000 
+    f411d000-f411e000 ---       0     1000 
+    f411e000-f421a000 rw-       0    fc000 [stack:12315]
+    f421a000-f421b000 ---       0     1000 
+    f421b000-f421c000 ---       0     1000 
+    f421c000-f4318000 rw-       0    fc000 [stack:12314]
+    f4318000-f4319000 rw-       0     1000 /dev/ashmem/dalvik-Heap thread pool worker thread 2 (deleted)
+    f4319000-f431a000 ---    1000     1000 >
+    f431a000-f4418000 rw-    2000    fe000 >
+    f4418000-f4419000 rw-       0     1000 /dev/ashmem/dalvik-Heap thread pool worker thread 1 (deleted)
+    f4419000-f441a000 ---    1000     1000 >
+    f441a000-f4518000 rw-    2000    fe000 >
+    f4518000-f4519000 rw-       0     1000 /dev/ashmem/dalvik-Heap thread pool worker thread 0 (deleted)
+    f4519000-f451a000 ---    1000     1000 >
+    f451a000-f4618000 rw-    2000    fe000 >
+    f4618000-f4713000 rw-       0    fb000 /dev/ashmem/dalvik-allocspace non moving space mark-bitmap 4 (deleted)
+    f4713000-f480e000 rw-       0    fb000 /dev/ashmem/dalvik-allocspace non moving space live-bitmap 4 (deleted)
+    f480e000-f490e000 rw-       0   100000 /dev/ashmem/dalvik-allocspace zygote / non moving space mark-bitmap 0 (deleted)
+    f490e000-f4bf5000 r-x       0   2e7000 /system/lib/libart.so
+    f4bf5000-f4bfd000 r--  2e6000     8000 >
+    f4bfd000-f4bfe000 rw-  2ee000     1000 >
+    f4bfe000-f4c00000 rw-       0     2000 
+    f4c00000-f5400000 rw-       0   800000 [stack:12307]
+    f5401000-f5403000 rw-       0     2000 /dev/ashmem/dalvik-indirect ref table (deleted)
+    f5403000-f5405000 rw-       0     2000 
+    f5405000-f5407000 rw-       0     2000 /dev/ashmem/dalvik-indirect ref table (deleted)
+    f5407000-f5409000 rw-       0     2000 >
+    f5409000-f540a000 rw-       0     1000 /dev/ashmem/dalvik-mark sweep sweep array free buffer (deleted)
+    f540a000-f540b000 rw-       0     1000 >
+    f540b000-f540c000 rw-       0     1000 >
+    f540c000-f540d000 rw-       0     1000 >
+    f540d000-f540e000 rw-       0     1000 >
+    f540e000-f542e000 rw-       0    20000 /dev/ashmem/dalvik-rosalloc page map (deleted)
+    f542e000-f5430000 rw-       0     2000 /dev/ashmem/dalvik-indirect ref table (deleted)
+    f5430000-f5436000 rw-       0     6000 
+    f5436000-f5438000 rw-       0     2000 /dev/ashmem/dalvik-indirect ref table (deleted)
+    f5438000-f543a000 rw-       0     2000 
+    f543a000-f543c000 rw-       0     2000 /dev/ashmem/dalvik-indirect ref table (deleted)
+    f543c000-f543e000 rw-       0     2000 
+    f543e000-f5440000 rw-       0     2000 /dev/ashmem/dalvik-indirect ref table (deleted)
+    f5440000-f5442000 rw-       0     2000 
+    f5442000-f5444000 rw-       0     2000 /dev/ashmem/dalvik-indirect ref table (deleted)
+    f5444000-f5446000 rw-       0     2000 >
+    f5446000-f5448000 rw-       0     2000 >
+    f5448000-f544e000 rw-       0     6000 
+    f544e000-f554e000 rw-       0   100000 /dev/ashmem/dalvik-allocspace zygote / non moving space live-bitmap 0 (deleted)
+    f554e000-f554f000 r--       0     1000 /data/dalvik-cache/arm/system@framework@boot.oat
+    f554f000-f5550000 rw-       0     1000 /dev/ashmem/dalvik-mark sweep sweep array free buffer (deleted)
+    f5550000-f5577000 r--  9b8000    27000 /data/dalvik-cache/arm/system@framework@boot.art
+    f5577000-f5578000 r-x       0     1000 /system/lib/libsigchain.so
+    f5578000-f5579000 r--       0     1000 >
+    f5579000-f557a000 rw-    1000     1000 >
+    f557a000-f5581000 r-x       0     7000 /system/lib/libbacktrace_libc++.so
+    f5581000-f5582000 r--    6000     1000 >
+    f5582000-f5583000 rw-    7000     1000 >
+    f5583000-f5584000 r--       0     1000 [anon:linker_alloc]
+    f5584000-f5585000 r--       0     1000 
+    f5585000-f55a5000 r--       0    20000 /dev/__properties__
+    f55a5000-f55a6000 r--       0     1000 [anon:linker_alloc]
+    f55a6000-f55a8000 r-x       0     2000 /system/lib/libpowermanager.so
+    f55a8000-f55a9000 ---       0     1000 
+    f55a9000-f55aa000 r--    2000     1000 /system/lib/libpowermanager.so
+    f55aa000-f55ab000 rw-    3000     1000 >
+    f55ab000-f55b6000 r-x       0     b000 /system/lib/libcommon_time_client.so
+    f55b6000-f55b9000 r--    a000     3000 >
+    f55b9000-f55ba000 rw-    d000     1000 >
+    f55ba000-f55f5000 r-x       0    3b000 /system/lib/libbcinfo.so
+    f55f5000-f55f6000 r--   3a000     1000 >
+    f55f6000-f55f7000 rw-   3b000     1000 >
+    f55f7000-f5618000 r-x       0    21000 /system/lib/libbcc.so
+    f5618000-f5619000 ---       0     1000 
+    f5619000-f561a000 r--   21000     1000 /system/lib/libbcc.so
+    f561a000-f561b000 rw-   22000     1000 >
+    f561b000-f563b000 rw-       0    20000 
+    f563b000-f5f2a000 r-x       0   8ef000 /system/lib/libLLVM.so
+    f5f2a000-f5f2b000 ---       0     1000 
+    f5f2b000-f5f72000 r--  8ef000    47000 /system/lib/libLLVM.so
+    f5f72000-f5f73000 rw-  936000     1000 >
+    f5f73000-f5f7a000 rw-       0     7000 
+    f5f7a000-f5f7c000 r-x       0     2000 /system/lib/libunwind-ptrace.so
+    f5f7c000-f5f7d000 r--    1000     1000 >
+    f5f7d000-f5f7e000 rw-    2000     1000 >
+    f5f7e000-f5f8a000 r-x       0     c000 /system/lib/libunwind.so
+    f5f8a000-f5f8b000 r--    b000     1000 >
+    f5f8b000-f5f8c000 rw-    c000     1000 >
+    f5f8c000-f5fd2000 rw-       0    46000 
+    f5fd2000-f5fd6000 r-x       0     4000 /system/lib/libgccdemangle.so
+    f5fd6000-f5fd7000 ---       0     1000 
+    f5fd7000-f5fd8000 r--    4000     1000 /system/lib/libgccdemangle.so
+    f5fd8000-f5fd9000 rw-    5000     1000 >
+    f5fd9000-f5fe9000 r-x       0    10000 /system/lib/libpcre.so
+    f5fe9000-f5fea000 r--    f000     1000 >
+    f5fea000-f5feb000 rw-   10000     1000 >
+    f5feb000-f6079000 r-x       0    8e000 /system/lib/libc++.so
+    f6079000-f607e000 r--   8d000     5000 >
+    f607e000-f607f000 rw-   92000     1000 >
+    f607f000-f6080000 rw-       0     1000 
+    f6080000-f6081000 r--       0     1000 
+    f6081000-f60b7000 r-x       0    36000 /system/lib/libpng.so
+    f60b7000-f60b8000 r--   35000     1000 >
+    f60b8000-f60b9000 rw-   36000     1000 >
+    f60b9000-f6110000 r-x       0    57000 /system/lib/libft2.so
+    f6110000-f6112000 r--   56000     2000 >
+    f6112000-f6113000 rw-   58000     1000 >
+    f6113000-f6114000 r--       0     1000 [anon:linker_alloc]
+    f6114000-f6128000 r-x       0    14000 /system/lib/libstagefright_foundation.so
+    f6128000-f6129000 ---       0     1000 
+    f6129000-f612a000 r--   14000     1000 /system/lib/libstagefright_foundation.so
+    f612a000-f612b000 rw-   15000     1000 >
+    f612b000-f6132000 r-x       0     7000 /system/lib/libnbaio.so
+    f6132000-f6133000 ---       0     1000 
+    f6133000-f6134000 r--    7000     1000 /system/lib/libnbaio.so
+    f6134000-f6135000 rw-    8000     1000 >
+    f6135000-f6139000 r-x       0     4000 /system/lib/libgabi++.so
+    f6139000-f613a000 r--    3000     1000 >
+    f613a000-f613b000 rw-    4000     1000 >
+    f613b000-f6156000 r-x       0    1b000 /system/lib/libRScpp.so
+    f6156000-f6157000 r--   1a000     1000 >
+    f6157000-f6158000 rw-   1b000     1000 >
+    f6158000-f618e000 r-x       0    36000 /system/lib/libRS.so
+    f618e000-f618f000 ---       0     1000 
+    f618f000-f6191000 r--   36000     2000 /system/lib/libRS.so
+    f6191000-f6192000 rw-   38000     1000 >
+    f6192000-f6195000 r-x       0     3000 /system/lib/libwpa_client.so
+    f6195000-f6196000 r--    2000     1000 >
+    f6196000-f6197000 rw-    3000     1000 >
+    f6197000-f619b000 r-x       0     4000 /system/lib/libusb.so
+    f619b000-f619c000 ---       0     1000 
+    f619c000-f619d000 r--    4000     1000 /system/lib/libusb.so
+    f619d000-f619e000 rw-    5000     1000 >
+    f619e000-f619f000 rw-       0     1000 
+    f619f000-f61a1000 r-x       0     2000 /system/lib/lib_driver_load.so
+    f61a1000-f61a2000 r--    1000     1000 >
+    f61a2000-f61a3000 rw-    2000     1000 >
+    f61a3000-f61a4000 r-x       0     1000 /system/lib/libsync.so
+    f61a4000-f61a5000 r--       0     1000 >
+    f61a5000-f61a6000 rw-    1000     1000 >
+    f61a6000-f61aa000 r-x       0     4000 /system/lib/libspeexresampler.so
+    f61aa000-f61ab000 r--    3000     1000 >
+    f61ab000-f61ac000 rw-    4000     1000 >
+    f61ac000-f621a000 r-x       0    6e000 /system/lib/libGLES_trace.so
+    f621a000-f621b000 ---       0     1000 
+    f621b000-f621d000 r--   6e000     2000 /system/lib/libGLES_trace.so
+    f621d000-f621e000 rw-   70000     1000 >
+    f621e000-f6224000 r-x       0     6000 /system/lib/libbacktrace.so
+    f6224000-f6225000 ---       0     1000 
+    f6225000-f6226000 r--    6000     1000 /system/lib/libbacktrace.so
+    f6226000-f6227000 rw-    7000     1000 >
+    f6227000-f6228000 r--       0     1000 [anon:linker_alloc]
+    f6228000-f623d000 r-x       0    15000 /system/lib/libz.so
+    f623d000-f623e000 r--   14000     1000 >
+    f623e000-f623f000 rw-   15000     1000 >
+    f623f000-f6241000 r-x       0     2000 /system/lib/libusbhost.so
+    f6241000-f6242000 r--    1000     1000 >
+    f6242000-f6243000 rw-    2000     1000 >
+    f6243000-f624d000 r-x       0     a000 /system/lib/libui.so
+    f624d000-f624e000 r--    9000     1000 >
+    f624e000-f624f000 rw-    a000     1000 >
+    f624f000-f6286000 r-x       0    37000 /system/lib/libstlport.so
+    f6286000-f6289000 r--   36000     3000 >
+    f6289000-f628a000 rw-   39000     1000 >
+    f628a000-f62c5000 r-x       0    3b000 /system/lib/libssl.so
+    f62c5000-f62c8000 r--   3a000     3000 >
+    f62c8000-f62cb000 rw-   3d000     3000 >
+    f62cb000-f6328000 r-x       0    5d000 /system/lib/libsqlite.so
+    f6328000-f6329000 ---       0     1000 
+    f6329000-f632a000 r--   5d000     1000 /system/lib/libsqlite.so
+    f632a000-f632b000 rw-   5e000     1000 >
+    f632b000-f632c000 rw-       0     1000 
+    f632c000-f6336000 r-x       0     a000 /system/lib/libsoundtrigger.so
+    f6336000-f6337000 ---       0     1000 
+    f6337000-f633a000 r--    a000     3000 /system/lib/libsoundtrigger.so
+    f633a000-f633b000 rw-    d000     1000 >
+    f633b000-f638a000 r-x       0    4f000 /system/lib/libsonivox.so
+    f638a000-f638b000 r--   4e000     1000 >
+    f638b000-f638c000 rw-   4f000     1000 >
+    f638c000-f6391000 rw-       0     5000 
+    f6391000-f65ad000 r-x       0   21c000 /system/lib/libskia.so
+    f65ad000-f65ae000 ---       0     1000 
+    f65ae000-f65c5000 r--  21c000    17000 /system/lib/libskia.so
+    f65c5000-f65c7000 rw-  233000     2000 >
+    f65c7000-f65cc000 rw-       0     5000 
+    f65cc000-f66c4000 r-x       0    f8000 /system/lib/libselinux.so
+    f66c4000-f66c5000 ---       0     1000 
+    f66c5000-f66d4000 r--   f8000     f000 /system/lib/libselinux.so
+    f66d4000-f66da000 rw-  107000     6000 >
+    f66da000-f66dd000 rw-       0     3000 
+    f66dd000-f66df000 r-x       0     2000 /system/lib/libprocessgroup.so
+    f66df000-f66e0000 r--    1000     1000 >
+    f66e0000-f66e1000 rw-    2000     1000 >
+    f66e1000-f6b2c000 r-x       0   44b000 /system/lib/libpdfium.so
+    f6b2c000-f6b38000 r--  44a000     c000 >
+    f6b38000-f6b3c000 rw-  456000     4000 >
+    f6b3c000-f6b41000 rw-       0     5000 
+    f6b41000-f6b42000 r--       0     1000 [anon:linker_alloc]
+    f6b42000-f6b47000 r-x       0     5000 /system/lib/libnetutils.so
+    f6b47000-f6b48000 r--    4000     1000 >
+    f6b48000-f6b49000 rw-    5000     1000 >
+    f6b49000-f6b4a000 r-x       0     1000 /system/lib/libnetd_client.so
+    f6b4a000-f6b4b000 ---       0     1000 
+    f6b4b000-f6b4c000 r--    1000     1000 /system/lib/libnetd_client.so
+    f6b4c000-f6b4d000 rw-    2000     1000 >
+    f6b4d000-f6b52000 r-x       0     5000 /system/lib/libnativehelper.so
+    f6b52000-f6b53000 r--    4000     1000 >
+    f6b53000-f6b54000 rw-    5000     1000 >
+    f6b54000-f6b55000 rw-       0     1000 [anon:linker_alloc]
+    f6b55000-f6b57000 r-x       0     2000 /system/lib/libnativebridge.so
+    f6b57000-f6b58000 r--    1000     1000 >
+    f6b58000-f6b59000 rw-    2000     1000 >
+    f6b59000-f6b62000 r-x       0     9000 /system/lib/libminikin.so
+    f6b62000-f6b63000 ---       0     1000 
+    f6b63000-f6b64000 r--    9000     1000 /system/lib/libminikin.so
+    f6b64000-f6b65000 rw-    a000     1000 >
+    f6b65000-f6b66000 r-x       0     1000 /system/lib/libmemtrack.so
+    f6b66000-f6b67000 r--       0     1000 >
+    f6b67000-f6b68000 rw-    1000     1000 >
+    f6b68000-f6beb000 r-x       0    83000 /system/lib/libmedia.so
+    f6beb000-f6bec000 ---       0     1000 
+    f6bec000-f6c05000 r--   83000    19000 /system/lib/libmedia.so
+    f6c05000-f6c06000 rw-   9c000     1000 >
+    f6c06000-f6c36000 r-x       0    30000 /system/lib/libjpeg.so
+    f6c36000-f6c37000 r--   2f000     1000 >
+    f6c37000-f6c38000 rw-   30000     1000 >
+    f6c38000-f6c70000 r-x       0    38000 /system/lib/libinputflinger.so
+    f6c70000-f6c71000 ---       0     1000 
+    f6c71000-f6c74000 r--   38000     3000 /system/lib/libinputflinger.so
+    f6c74000-f6c75000 rw-   3b000     1000 >
+    f6c75000-f6c8c000 r-x       0    17000 /system/lib/libinput.so
+    f6c8c000-f6c8d000 ---       0     1000 
+    f6c8d000-f6c90000 r--   17000     3000 /system/lib/libinput.so
+    f6c90000-f6c91000 rw-   1a000     1000 >
+    f6c91000-f6c9c000 r-x       0     b000 /system/lib/libimg_utils.so
+    f6c9c000-f6c9e000 r--    a000     2000 >
+    f6c9e000-f6c9f000 rw-    c000     1000 >
+    f6c9f000-f6d9b000 r-x       0    fc000 /system/lib/libicuuc.so
+    f6d9b000-f6da6000 r--   fb000     b000 >
+    f6da6000-f6da7000 rw-  106000     1000 >
+    f6da7000-f6dab000 rw-       0     4000 
+    f6dab000-f6dac000 r--       0     1000 [anon:linker_alloc]
+    f6dac000-f6efa000 r-x       0   14e000 /system/lib/libicui18n.so
+    f6efa000-f6efb000 ---       0     1000 
+    f6efb000-f6f05000 r--  14e000     a000 /system/lib/libicui18n.so
+    f6f05000-f6f06000 rw-  158000     1000 >
+    f6f06000-f6f4e000 r-x       0    48000 /system/lib/libhwui.so
+    f6f4e000-f6f4f000 ---       0     1000 
+    f6f4f000-f6f52000 r--   48000     3000 /system/lib/libhwui.so
+    f6f52000-f6f53000 rw-   4b000     1000 >
+    f6f53000-f6f98000 r-x       0    45000 /system/lib/libharfbuzz_ng.so
+    f6f98000-f6f99000 ---       0     1000 
+    f6f99000-f6f9a000 r--   45000     1000 /system/lib/libharfbuzz_ng.so
+    f6f9a000-f6f9b000 rw-   46000     1000 >
+    f6f9b000-f6fa4000 r-x       0     9000 /system/lib/libhardware_legacy.so
+    f6fa4000-f6fa5000 r--    8000     1000 >
+    f6fa5000-f6fa6000 rw-    9000     1000 >
+    f6fa6000-f6fa7000 rw-       0     1000 
+    f6fa7000-f6fa8000 r-x       0     1000 /system/lib/libhardware.so
+    f6fa8000-f6fa9000 r--       0     1000 >
+    f6fa9000-f6faa000 rw-    1000     1000 >
+    f6faa000-f6fec000 r-x       0    42000 /system/lib/libgui.so
+    f6fec000-f6ff8000 r--   41000     c000 >
+    f6ff8000-f6ff9000 rw-   4d000     1000 >
+    f6ff9000-f700d000 r-x       0    14000 /system/lib/libexpat.so
+    f700d000-f700f000 r--   13000     2000 >
+    f700f000-f7010000 rw-   15000     1000 >
+    f7010000-f70fd000 r-x       0    ed000 /system/lib/libcrypto.so
+    f70fd000-f710c000 r--   ec000     f000 >
+    f710c000-f7112000 rw-   fb000     6000 >
+    f7112000-f7114000 rw-       0     2000 
+    f7114000-f711a000 r-x       0     6000 /system/lib/libcamera_metadata.so
+    f711a000-f711b000 r--    5000     1000 >
+    f711b000-f711c000 rw-    6000     1000 >
+    f711c000-f714b000 r-x       0    2f000 /system/lib/libcamera_client.so
+    f714b000-f7155000 r--   2e000     a000 >
+    f7155000-f7156000 rw-   38000     1000 >
+    f7156000-f715a000 r-x       0     4000 /system/lib/libaudioutils.so
+    f715a000-f715b000 r--    3000     1000 >
+    f715b000-f715c000 rw-    4000     1000 >
+    f715c000-f717f000 r-x       0    23000 /system/lib/libandroidfw.so
+    f717f000-f7180000 ---       0     1000 
+    f7180000-f7181000 r--   23000     1000 /system/lib/libandroidfw.so
+    f7181000-f7182000 rw-   24000     1000 >
+    f7182000-f7183000 r--       0     1000 [anon:linker_alloc]
+    f7183000-f718c000 r-x       0     9000 /system/lib/libGLESv2.so
+    f718c000-f718d000 r--    8000     1000 >
+    f718d000-f718e000 rw-    9000     1000 >
+    f718e000-f7193000 r-x       0     5000 /system/lib/libGLESv1_CM.so
+    f7193000-f7194000 r--    4000     1000 >
+    f7194000-f7195000 rw-    5000     1000 >
+    f7195000-f7197000 r-x       0     2000 /system/lib/libETC1.so
+    f7197000-f7198000 r--    1000     1000 >
+    f7198000-f7199000 rw-    2000     1000 >
+    f7199000-f719a000 r--       0     1000 [anon:linker_alloc]
+    f719a000-f71f7000 r-x       0    5d000 /system/lib/libEGL.so
+    f71f7000-f71f9000 r--   5c000     2000 >
+    f71f9000-f7202000 rw-   5e000     9000 >
+    f7202000-f7205000 rw-       0     3000 
+    f7205000-f721a000 r-x       0    15000 /system/lib/libutils.so
+    f721a000-f721b000 ---       0     1000 
+    f721b000-f721c000 r--   15000     1000 /system/lib/libutils.so
+    f721c000-f721d000 rw-   16000     1000 >
+    f721d000-f721f000 r-x       0     2000 /system/lib/libstdc++.so
+    f721f000-f7220000 r--    1000     1000 >
+    f7220000-f7221000 rw-    2000     1000 >
+    f7221000-f7238000 r-x       0    17000 /system/lib/libm.so
+    f7238000-f7239000 r--   16000     1000 >
+    f7239000-f723a000 rw-   17000     1000 >
+    f723a000-f723f000 r-x       0     5000 /system/lib/liblog.so
+    f723f000-f7240000 r--    4000     1000 >
+    f7240000-f7241000 rw-    5000     1000 >
+    f7241000-f724c000 r-x       0     b000 /system/lib/libcutils.so
+    f724c000-f724d000 r--    a000     1000 >
+    f724d000-f724e000 rw-    b000     1000 >
+    f724e000-f72b5000 r-x       0    67000 /system/lib/libc.so
+    f72b5000-f72b6000 ---       0     1000 
+    f72b6000-f72b9000 r--   67000     3000 /system/lib/libc.so
+    f72b9000-f72bc000 rw-   6a000     3000 >
+    f72bc000-f72c6000 rw-       0     a000 
+    f72c6000-f72ed000 r-x       0    27000 /system/lib/libbinder.so
+    f72ed000-f72ee000 ---       0     1000 
+    f72ee000-f72f5000 r--   27000     7000 /system/lib/libbinder.so
+    f72f5000-f72f6000 rw-   2e000     1000 >
+    f72f6000-f73c7000 r-x       0    d1000 /system/lib/libandroid_runtime.so
+    f73c7000-f73c8000 ---       0     1000 
+    f73c8000-f73ce000 r--   d1000     6000 /system/lib/libandroid_runtime.so
+    f73ce000-f73d6000 rw-   d7000     8000 >
+    f73d6000-f73d7000 r--       0     1000 [anon:linker_alloc]
+    f73d7000-f73d8000 rw-       0     1000 >
+    f73d8000-f73d9000 r--       0     1000 >
+    f73d9000-f73da000 r--       0     1000 
+    f73da000-f73dc000 rw-       0     2000 
+    f73dc000-f73ea000 r-x       0     e000 /system/bin/linker
+    f73ea000-f73eb000 r--    d000     1000 >
+    f73eb000-f73ec000 rw-    e000     1000 >
+    f73ec000-f73ed000 rw-       0     1000 
+    ff7d9000-ff7d9000 rw-       0        0 
+    ff7d9000-ff7da000 ---       0     1000 
+    ff7da000-fffd9000 rw-       0   7ff000 
+    ffff0000-ffff1000 r-x       0     1000 [vectors]
+    TOTAL SIZE: 0x172a78K (1518200K)
+
+logcat:
+--------- tail end of log main (/system/bin/logcat -b main -d -v threadtime -t 240 *:D)
+02-08 13:40:22.489 12307 12307 E SELinux : prepare_load_policy_in_data = 0
+02-08 13:40:22.489 12307 12307 E SELinux : SELinux: Loaded eapp_context from /seapp_contexts.
+02-08 13:40:22.490 12307 12307 I art     : Late-enabling -Xcheck:jni
+02-08 13:40:22.490 12307 12307 E art     : setrlimit(RLIMIT_CORE) failed for pid 12307: Operation not permitted
+02-08 13:40:22.576 12307 12307 D hehe    : location:/sdcard/Download/textc_x  exist:true   direct:true
+02-08 13:40:22.734 12307 12307 W art     : Before Android 4.1, method android.graphics.PorterDuffColorFilter androidx.vectordrawable.graphics.drawable.VectorDrawableCompat.updateTintFilter(android.graphics.PorterDuffColorFilter, android.content.res.ColorStateList, android.graphics.PorterDuff$Mode) would have incorrectly overridden the package-private method in android.graphics.drawable.Drawable
+02-08 13:40:22.797 12307 12307 I art     : Rejecting re-init on previously-failed class java.lang.Class<androidx.core.view.ViewCompat$2>
+02-08 13:40:22.797 12307 12307 I art     : Rejecting re-init on previously-failed class java.lang.Class<androidx.core.view.ViewCompat$2>
+--------- tail end of log system (/system/bin/logcat -b system -d -v threadtime -t 60 *:W)
+--------- tail end of log events (/system/bin/logcat -b events -d -v threadtime -t 60 *:I)
+
+open files:
+    fd 0: /dev/null
+    fd 1: /dev/null
+    fd 2: /dev/null
+    fd 3: socket:[8684]
+    fd 4: /sys/kernel/debug/tracing/trace_marker
+    fd 5: /dev/binder
+    fd 6: /system/framework/framework-res.apk
+    fd 7: /system/framework/yunos-framework-res.apk
+    fd 8: /system/framework/core-libart.jar
+    fd 9: socket:[7715]
+    fd 10: /dev/__properties__
+    fd 11: pipe:[1045487]
+    fd 12: /dev/alarm
+    fd 13: socket:[1048063]
+    fd 14: /storage/emulated/legacy/Download/textc_x/tombstone_00001612762822599901_1.0__com.example.testc2.native.xcrash
+    fd 16: /dev/cpuctl/tasks
+    fd 17: /dev/cpuctl/bg_non_interactive/tasks
+    fd 18: pipe:[1048064]
+    fd 19: pipe:[1048064]
+    fd 20: pipe:[1045487]
+    fd 21: anon_inode:[eventpoll]
+    fd 22: socket:[1048073]
+    fd 23: /data/app/com.example.testc2-1/base.apk
+    fd 24: /dev/null
+    fd 25: /dev/null
+    fd 26: /dev/null
+    fd 27: /dev/null
+    fd 28: anon_inode:[eventfd]
+    fd 29: anon_inode:[eventfd]
+    (number of FDs: 29)
+
+network info:
+ TCP over IPv4 (From: /proc/PID/net/tcp)
+  sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode
+  0: 00000000:D904 00000000:0000 0A 00000000:00000000 00:00000000 00000000 10028        0 26367 1 0000000000000000 100 0 0 10 0
+  1: 00000000:1BC6 00000000:0000 0A 00000000:00000000 00:00000000 00000000 10028        0 26366 1 0000000000000000 100 0 0 10 0
+  2: 00000000:22CC 00000000:0000 0A 00000000:00000000 00:00000000 00000000 10028        0 14164 1 0000000000000000 100 0 0 10 0
+  3: 00000000:1BAE 00000000:0000 0A 00000000:00000000 00:00000000 00000000 10028        0 26365 1 0000000000000000 100 0 0 10 0
+  4: 00000000:15B3 00000000:0000 0A 00000000:00000000 00:00000000 00000000  2000        0 7538 1 0000000000000000 100 0 0 10 0
+  5: 00000000:0F94 00000000:0000 0A 00000000:00000000 00:00000000 00000000     0        0 19980 1 0000000000000000 100 0 0 10 0
+  6: 0100007F:0035 00000000:0000 0A 00000000:00000000 00:00000000 00000000  9999        0 22692 1 0000000000000000 100 0 0 10 0
+  7: 012BA8C0:0035 00000000:0000 0A 00000000:00000000 00:00000000 00000000  9999        0 22690 1 0000000000000000 100 0 0 10 0
+  8: 00000000:2617 00000000:0000 0A 00000000:00000000 00:00000000 00000000     0        0 20009 1 0000000000000000 100 0 0 10 0
+  9: 00000000:13DE 00000000:0000 0A 00000000:00000000 00:00000000 00000000 10028        0 26805 1 0000000000000000 100 0 0 10 0
+  10: 00000000:329E 00000000:0000 0A 00000000:00000000 00:00000000 00000000 10028        0 16535 1 0000000000000000 100 0 0 10 0
+  11: 0100007F:0F9F 00000000:0000 0A 00000000:00000000 00:00000000 00000000     0        0 19986 1 0000000000000000 100 0 0 10 0
+  12: 0B2A0B1E:C4D9 A5D00B6A:01BB 01 00000000:00000000 00:00000000 00000000     0        0 27596 1 0000000000000000 23 4 30 10 -1
+  13: 0B2A0B1E:A8C9 FEC977CB:01BB 01 00000000:00000000 00:00000000 00000000 10028        0 29790 1 0000000000000000 24 4 31 10 -1
+  14: 0B2A0B1E:D78B 77230B6A:01BB 01 00000000:00000000 00:00000000 00000000 10028        0 26117 1 0000000000000000 23 4 30 10 -1
+  15: 0B2A0B1E:15B3 12AD0B1E:D356 01 00000000:00000000 00:00000000 00000000  2000        0 7539 3 0000000000000000 24 4 1 7 4
+  16: 0B2A0B1E:CE71 44D10B6A:0050 01 00000000:00000000 00:00000000 00000000 10028        0 1003096 1 0000000000000000 23 4 31 10 -1
+  17: 0100007F:0F9F 0100007F:94AA 01 00000000:00000000 00:00000000 00000000     0        0 21670 1 0000000000000000 20 4 1 10 -1
+  18: 0100007F:0F9F 0100007F:94AB 01 00000000:00000000 00:00000000 00000000     0        0 21673 1 0000000000000000 20 4 1 10 -1
+  19: 0B2A0B1E:E1FC F5F377CB:01BB 01 00000000:00000000 00:00000000 00000000 10028        0 26646 1 0000000000000000 24 4 30 10 -1
+  20: 0100007F:94AB 0100007F:0F9F 01 00000000:00000000 00:00000000 00000000 10028        0 18193 1 0000000000000000 20 4 30 10 -1
+  21: 0100007F:94AA 0100007F:0F9F 01 00000000:00000000 00:00000000 00000000 10012        0 18190 1 0000000000000000 20 4 30 10 -1
+  22: 0B2A0B1E:85A0 8728523B:01BB 01 00000000:00000000 00:00000000 00000000 10028        0 1037532 1 0000000000000000 21 4 30 10 -1
+-
+ TCP over IPv6 (From: /proc/PID/net/tcp6)
+  sl  local_address                         remote_address                        st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode
+  0: 0000000000000000FFFF0000012BA8C0:1C84 00000000000000000000000000000000:0000 0A 00000000:00000000 00:00000000 00000000 10028        0 26833 1 0000000000000000 100 0 0 10 -1
+  1: 0000000000000000FFFF00000B2A0B1E:1C84 00000000000000000000000000000000:0000 0A 00000000:00000000 00:00000000 00000000 10028        0 26832 1 0000000000000000 100 0 0 10 -1
+  2: 00000000000000000000000000000000:34C6 00000000000000000000000000000000:0000 0A 00000000:00000000 00:00000000 00000000 10028        0 14088 1 0000000000000000 100 0 0 10 -1
+  3: 00000000000000000000000000000000:34C7 00000000000000000000000000000000:0000 0A 00000000:00000000 00:00000000 00000000 10028        0 14089 1 0000000000000000 100 0 0 10 -1
+  4: 00000000000000000000000000000000:34D1 00000000000000000000000000000000:0000 0A 00000000:00000000 00:00000000 00000000 10010        0 18252 1 0000000000000000 100 0 0 10 -1
+  5: 0000000000000000FFFF00000100007F:1FFF 00000000000000000000000000000000:0000 0A 00000000:00000000 00:00000000 00000000 10028        0 16072 1 0000000000000000 100 0 0 10 -1
+  6: 0000000000000000FFFF00000B2A0B1E:DCD8 0000000000000000FFFF0000FF21523B:01BB 01 00000000:00000000 00:00000000 00000000  1000        0 1034301 1 0000000000000000 21 4 32 10 -1
+  7: 0000000000000000FFFF00000B2A0B1E:93BC 0000000000000000FFFF00009E2B0B6A:01BB 08 00000000:00000020 00:00000000 00000000  1000        0 1003861 1 0000000000000000 24 4 28 10 -1
+  8: 0000000000000000FFFF00000B2A0B1E:D11B 0000000000000000FFFF00009E2B0B6A:01BB 08 00000000:00000020 00:00000000 00000000  1000        0 1026380 1 0000000000000000 22 4 28 10 -1
+  9: 0000000000000000FFFF00000B2A0B1E:C9B8 0000000000000000FFFF000022530F6A:0050 08 00000000:00000001 00:00000000 00000000 10012        0 1025808 1 0000000000000000 20 4 28 10 -1
+  10: 0000000000000000FFFF00000B2A0B1E:8B32 0000000000000000FFFF00007FD577CB:01BB 08 00000000:00000020 00:00000000 00000000 10149        0 759533 1 0000000000000000 23 4 30 10 -1
+  11: 0000000000000000FFFF00000B2A0B1E:E354 0000000000000000FFFF0000F1B15B75:0050 01 00000000:00000000 00:00000000 00000000 10028        0 1047985 1 0000000000000000 21 4 32 10 -1
+  12: 0000000000000000FFFF00000B2A0B1E:8259 0000000000000000FFFF0000F6D30B6A:075B 01 00000000:00000000 00:00000000 00000000  1000        0 23948 1 0000000000000000 25 4 29 10 -1
+  13: 0000000000000000FFFF00000B2A0B1E:C42B 0000000000000000FFFF0000EEB15B75:01BB 01 00000000:00000000 00:00000000 00000000 10028        0 25668 1 0000000000000000 23 4 31 10 -1
+  14: 0000000000000000FFFF00000B2A0B1E:83A1 0000000000000000FFFF0000A11D0D6F:01BB 08 00000000:00000020 00:00000000 00000000 10020        0 1004545 1 0000000000000000 23 4 28 10 -1
+-
+ UDP over IPv4 (From: /proc/PID/net/udp)
+  sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode ref pointer drops
+  8: 00000000:E408 00000000:0000 07 00000000:00000000 00:00000000 00000000 10028        0 25316 2 0000000000000000 0
+  53: 0100007F:0035 00000000:0000 07 00000000:00000000 00:00000000 00000000  9999        0 22693 2 0000000000000000 0
+  53: 012BA8C0:0035 00000000:0000 07 00000000:00000000 00:00000000 00000000  9999        0 22691 2 0000000000000000 0
+  67: 00000000:0043 00000000:0000 07 00000000:00000000 00:00000000 00000000     0        0 22679 2 0000000000000000 0
+  233: 00000000:14E9 00000000:0000 07 00000000:00000000 00:00000000 00000000 10028        0 628211 2 0000000000000000 0
+  233: 00000000:14E9 00000000:0000 07 00000000:00000000 00:00000000 00000000 10028        0 628210 2 0000000000000000 0
+  233: 00000000:14E9 00000000:0000 07 00000000:00000000 00:00000000 00000000     0        0 27588 2 0000000000000000 0
+  305: 0100007F:7531 00000000:0000 07 00000000:00000000 00:00000000 00000000  1000        0 10101 2 0000000000000000 0
+  477: 0100007F:15DD 00000000:0000 07 00000000:00000000 00:00000000 00000000     0        0 28323 2 0000000000000000 0
+  479: 0100007F:15DF 00000000:0000 07 00000000:00000000 00:00000000 00000000     0        0 29463 2 0000000000000000 0
+  603: 00000000:1A5B 00000000:0000 07 00000000:00000000 00:00000000 00000000 10028        0 16534 2 0000000000000000 1490
+  892: 00000000:DF7C 00000000:0000 07 00000000:00000000 00:00000000 00000000     0        0 29464 2 0000000000000000 0
+  905: 0100007F:0F89 00000000:0000 07 00000000:00000000 00:00000000 00000000     0        0 18130 2 0000000000000000 0
+  916: 00000000:0F94 00000000:0000 07 00000000:00000000 00:00000000 00000000     0        0 19982 2 0000000000000000 0
+-
+ UDP over IPv6 (From: /proc/PID/net/udp6)
+  sl  local_address                         remote_address                        st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode ref pointer drops
+  27: 0000000000000000FFFF00000B2A0B1E:E41B 00000000000000000000000000000000:0000 07 00000000:00000000 00:00000000 00000000 10028        0 26835 2 0000000000000000 0
+  314: 00000000000000000000000000000000:AD3A 00000000000000000000000000000000:0000 07 00000000:00000000 00:00000000 00000000 10011        0 1033499 2 0000000000000000 0
+  543: 0000000000000000FFFF0000012BA8C0:A21F 00000000000000000000000000000000:0000 07 00000000:00000000 00:00000000 00000000 10028        0 26838 2 0000000000000000 0
+  876: 00000000000000000000000000000000:076C 00000000000000000000000000000000:0000 07 00000000:00000000 00:00000000 00000000 10028        0 26834 2 0000000000000000 0
+-
+ ICMP in IPv4 (From: /proc/PID/net/icmp)
+  sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode ref pointer drops
+-
+ ICMP in IPv6 (From: /proc/PID/net/icmp6)
+  sl  local_address                         remote_address                        st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode ref pointer drops
+-
+ UNIX domain (From: /proc/PID/net/unix)
+  Num       RefCount Protocol Flags    Type St Inode Path
+  0000000000000000: 00000002 00000000 00010000 0001 01 25324 /data/user/0/com.youku.taitan.tv/cache/mDNSResponder
+  0000000000000000: 00000017 00000000 00000000 0002 01  9239 /dev/socket/logdw
+  0000000000000000: 00000002 00000000 00010000 0005 01  9242 /dev/socket/logdr
+  0000000000000000: 00000002 00000000 00010000 0001 01 19739 /dev/socket/rasd
+  0000000000000000: 00000002 00000000 00010000 0001 01  9244 /dev/socket/logd
+  0000000000000000: 00000002 00000000 00010000 0001 01  9253 /dev/socket/vold
+  0000000000000000: 00000002 00000000 00000000 0002 01 21401 /data/misc/wifi/hostapd/wlan0
+  0000000000000000: 00000002 00000000 00010000 0001 01  9275 /dev/socket/installd
+  0000000000000000: 00000002 00000000 00010000 0001 01  9283 /dev/socket/fwmarkd
+  0000000000000000: 00000002 00000000 00010000 0001 01  9286 /dev/socket/mdns
+  0000000000000000: 00000002 00000000 00010000 0001 01  9288 /dev/socket/dnsproxyd
+  0000000000000000: 00000002 00000000 00010000 0001 01  9290 /dev/socket/netd
+  0000000000000000: 00000002 00000000 00010000 0001 01 761144 @gs_9707_com.yunos.tvtaobao_6020be3_Sv5Jjjgd6tytuwUWBtMB9H7NuEK7LL5/e2jpkCbykyU=
+  0000000000000000: 00000002 00000000 00000000 0002 01  9301 /dev/socket/pppoe_wrapper
+  0000000000000000: 00000002 00000000 00010000 0001 01 10840 /dev/socket/property_service
+  0000000000000000: 00000002 00000000 00010000 0001 01 12614 @com.yunos.aliicx
+  0000000000000000: 00000002 00000000 00010000 0001 01 20021 @/datainfo
+  0000000000000000: 00000002 00000000 00010000 0001 01 13327 @/data/misc/bluedroid/.a2dp_ctrl
+  0000000000000000: 00000002 00000000 00010000 0005 01 10859 /dev/socket/lmkd
+  0000000000000000: 00000002 00000000 00010000 0001 01 760393 @gs_1241_com.yunos.tvtaobao_6020be3_YcN7jmAgndytthogENMB9H7D9FG4B612e2jrgir743A=
+  0000000000000000: 00000002 00000000 00010000 0001 01  9313 @android:debuggerd
+  0000000000000000: 00000002 00000000 00010000 0001 01  8628 /dev/socket/zygote
+  0000000000000000: 00000002 00000000 00010000 0001 01  8642 /dev/socket/adbd
+  0000000000000000: 00000002 00000000 00010000 0001 01  8649 @jdwp-control
+  0000000000000000: 00000002 00000000 00010000 0001 01 11296 /data/system/ndebugsocket
+  0000000000000000: 00000002 00000000 00000000 0002 01 17858
+  0000000000000000: 00000003 00000000 00000000 0001 03  7745
+  0000000000000000: 00000003 00000000 00000000 0001 03 10843
+  0000000000000000: 00000003 00000000 00000000 0005 03 11884
+  0000000000000000: 00000003 00000000 00000000 0005 03  8112
+  0000000000000000: 00000003 00000000 00000000 0001 03 13482
+  0000000000000000: 00000003 00000000 00000000 0001 03 754310
+  0000000000000000: 00000003 00000000 00000000 0005 03 11882
+  0000000000000000: 00000003 00000000 00000000 0005 03 12290
+  0000000000000000: 00000002 00000000 00000000 0002 01 10878
+  0000000000000000: 00000002 00000000 00000000 0001 03 11403 /dev/socket/zygote
+  0000000000000000: 00000003 00000000 00000000 0001 03 25371 /data/user/0/com.youku.taitan.tv/cache/mDNSResponder
+  0000000000000000: 00000002 00000000 00000000 0002 01 22686
+  0000000000000000: 00000002 00000000 00000000 0002 01 10886
+  0000000000000000: 00000003 00000000 00000000 0001 03 20184 @jdwp-control
+  0000000000000000: 00000003 00000000 00000000 0005 03 1045473
+  0000000000000000: 00000003 00000000 00000000 0001 03 402191
+  0000000000000000: 00000002 00000000 00000000 0002 01 11075
+  0000000000000000: 00000003 00000000 00000000 0001 03 43492 /dev/socket/zygote
+  0000000000000000: 00000003 00000000 00000000 0005 03 1045472
+  0000000000000000: 00000003 00000000 00000000 0001 03 17871
+  0000000000000000: 00000003 00000000 00000000 0001 03  9561 /dev/socket/mdns
+  0000000000000000: 00000003 00000000 00000000 0005 03 20191
+  0000000000000000: 00000003 00000000 00000000 0001 03 402190
+  0000000000000000: 00000002 00000000 00000000 0002 01 19295
+  0000000000000000: 00000003 00000000 00000000 0005 03 11273
+  0000000000000000: 00000003 00000000 00000000 0001 03  7709
+  0000000000000000: 00000002 00000000 00000000 0002 01 19746
+  0000000000000000: 00000003 00000000 00000000 0001 03  7710
+  0000000000000000: 00000003 00000000 00000000 0005 03 17428
+  0000000000000000: 00000003 00000000 00000000 0005 03 10227
+  0000000000000000: 00000003 00000000 00000000 0005 03 20192
+  0000000000000000: 00000003 00000000 00000000 0005 03  7575
+  0000000000000000: 00000003 00000000 00000000 0001 03  9546
+  0000000000000000: 00000003 00000000 00000000 0001 03 20983
+  0000000000000000: 00000003 00000000 00000000 0001 03 1048063
+  0000000000000000: 00000003 00000000 00000000 0001 03  9548
+  0000000000000000: 00000003 00000000 00000000 0001 03  8648
+  0000000000000000: 00000003 00000000 00000000 0005 03 21102
+  0000000000000000: 00000003 00000000 00000000 0005 03 1039532
+  0000000000000000: 00000002 00000000 00000000 0002 01 20504
+  0000000000000000: 00000003 00000000 00000000 0005 03  9589
+  0000000000000000: 00000003 00000000 00000000 0001 03  8650
+  0000000000000000: 00000003 00000000 00000000 0001 03 1048072
+  0000000000000000: 00000002 00000000 00000000 0002 01  9320
+  0000000000000000: 00000003 00000000 00000000 0005 03 12576
+  0000000000000000: 00000003 00000000 00000000 0001 03 17261 /dev/socket/adbd
+  0000000000000000: 00000003 00000000 00000000 0001 03  9995
+  0000000000000000: 00000002 00000000 00000000 0002 01  8653
+  0000000000000000: 00000003 00000000 00000000 0001 03  9981
+  0000000000000000: 00000003 00000000 00000000 0005 03  9145
+  0000000000000000: 00000003 00000000 00000000 0001 03 400295
+  0000000000000000: 00000003 00000000 00000000 0005 03 1039531
+  0000000000000000: 00000003 00000000 00000000 0005 03  9905
+  0000000000000000: 00000003 00000000 00000000 0001 03 1048065 @jdwp-control
+  0000000000000000: 00000002 00000000 00000000 0002 01  8813
+  0000000000000000: 00000003 00000000 00000000 0005 03 21101
+  0000000000000000: 00000003 00000000 00000000 0005 03 761131
+  0000000000000000: 00000003 00000000 00000000 0005 03 1008947
+  0000000000000000: 00000003 00000000 00000000 0005 03 21436
+  0000000000000000: 00000003 00000000 00000000 0005 03  9726
+  0000000000000000: 00000003 00000000 00000000 0005 03 21438
+  0000000000000000: 00000003 00000000 00000000 0005 03 761126
+  0000000000000000: 00000003 00000000 00000000 0005 03  9146
+  0000000000000000: 00000003 00000000 00000000 0005 03  9513 /dev/socket/lmkd
+  0000000000000000: 00000003 00000000 00000000 0001 03 34937
+  0000000000000000: 00000002 00000000 00000000 0002 01 22568
+  0000000000000000: 00000003 00000000 00000000 0001 03 10842
+  0000000000000000: 00000003 00000000 00000000 0001 03  8635 /dev/socket/installd
+  0000000000000000: 00000003 00000000 00000000 0001 03 13481
+  0000000000000000: 00000003 00000000 00000000 0001 03 43491
+  0000000000000000: 00000003 00000000 00000000 0005 03 12291
+  0000000000000000: 00000003 00000000 00000000 0005 03 11883
+  0000000000000000: 00000003 00000000 00000000 0001 03 34515 /dev/socket/zygote
+  0000000000000000: 00000003 00000000 00000000 0001 03 23304
+  0000000000000000: 00000002 00000000 00000000 0002 01 10879
+  0000000000000000: 00000003 00000000 00000000 0005 03 11881
+  0000000000000000: 00000003 00000000 00000000 0001 03 754312 @jdwp-control
+  0000000000000000: 00000003 00000000 00000000 0001 03 11285
+  0000000000000000: 00000003 00000000 00000000 0001 03 17872
+  0000000000000000: 00000003 00000000 00000000 0005 03  8111
+  0000000000000000: 00000002 00000000 00000000 0002 01 21635
+  0000000000000000: 00000003 00000000 00000000 0001 03 20182
+  0000000000000000: 00000003 00000000 00000000 0001 03 26809
+  0000000000000000: 00000003 00000000 00000000 0005 03 11274
+  0000000000000000: 00000002 00000000 00000000 0002 01  7715
+  0000000000000000: 00000003 00000000 00000000 0001 03 25370 /data/user/0/com.youku.taitan.tv/cache/mDNSResponder
+  0000000000000000: 00000003 00000000 00000000 0005 03 10226
+  0000000000000000: 00000003 00000000 00000000 0005 03 17427
+  0000000000000000: 00000003 00000000 00000000 0005 03  7576
+  0000000000000000: 00000002 00000000 00000000 0002 01  8634
+  0000000000000000: 00000003 00000000 00000000 0001 03 760334
+  0000000000000000: 00000003 00000000 00000000 0001 03 11278 /dev/socket/vold
+  0000000000000000: 00000003 00000000 00000000 0005 03 21439
+  0000000000000000: 00000002 00000000 00000000 0002 01  9302
+  0000000000000000: 00000003 00000000 00000000 0001 03  8647
+  0000000000000000: 00000003 00000000 00000000 0001 03  8882 /dev/socket/netd
+  0000000000000000: 00000003 00000000 00000000 0001 03 17259
+  0000000000000000: 00000002 00000000 00000000 0002 01  9292
+  0000000000000000: 00000003 00000000 00000000 0001 03 20984 /dev/socket/rasd
+  0000000000000000: 00000003 00000000 00000000 0005 03  9590
+  0000000000000000: 00000003 00000000 00000000 0001 03 1048073
+  0000000000000000: 00000003 00000000 00000000 0005 03 12577 /dev/socket/logdr
+  0000000000000000: 00000003 00000000 00000000 0005 03 761130
+  0000000000000000: 00000003 00000000 00000000 0001 03  8651
+  0000000000000000: 00000003 00000000 00000000 0001 03  9996
+  0000000000000000: 00000002 00000000 00000000 0002 01  8684
+  0000000000000000: 00000002 00000000 00000000 0002 01  9314
+  0000000000000000: 00000003 00000000 00000000 0005 03 21435
+  0000000000000000: 00000002 00000000 00000000 0002 01  9262
+  0000000000000000: 00000003 00000000 00000000 0001 03  9982
+  0000000000000000: 00000003 00000000 00000000 0005 03 761125
+  0000000000000000: 00000002 00000000 00000000 0001 01  8996
+  0000000000000000: 00000003 00000000 00000000 0005 03  9904
+  0000000000000000: 00000003 00000000 00000000 0005 03 1010249 /dev/socket/logdr
+  0000000000000000: 00000003 00000000 00000000 0001 03 400296
+  0000000000000000: 00000003 00000000 00000000 0001 03  8913 /dev/socket/zygote
+  0000000000000000: 00000003 00000000 00000000 0001 03  8912
+  0000000000000000: 00000003 00000000 00000000 0005 03  9512
+  0000000000000000: 00000003 00000000 00000000 0001 03 760335
+  0000000000000000: 00000003 00000000 00000000 0005 03  9725
+-
+
+memory info:
+ System Summary (From: /proc/meminfo)
+  MemTotal:        1820716 kB
+  MemFree:           94684 kB
+  MemAvailable:    1107028 kB
+  Buffers:           62232 kB
+  Cached:          1010284 kB
+  SwapCached:            0 kB
+  Active:           583772 kB
+  Inactive:         882856 kB
+  Active(anon):     282872 kB
+  Inactive(anon):   113752 kB
+  Active(file):     300900 kB
+  Inactive(file):   769104 kB
+  Unevictable:        2220 kB
+  Mlocked:               0 kB
+  SwapTotal:        511996 kB
+  SwapFree:         511996 kB
+  Dirty:               152 kB
+  Writeback:            16 kB
+  AnonPages:        396352 kB
+  Mapped:           222348 kB
+  Shmem:               292 kB
+  Slab:              73360 kB
+  SReclaimable:      32900 kB
+  SUnreclaim:        40460 kB
+  KernelStack:       18656 kB
+  PageTables:        15572 kB
+  NFS_Unstable:          0 kB
+  Bounce:                0 kB
+  WritebackTmp:          0 kB
+  CommitLimit:     1422352 kB
+  Committed_AS:   39063764 kB
+  VmallocTotal:    2097088 kB
+  VmallocUsed:       97104 kB
+  VmallocChunk:    1863428 kB
+  TotalCMA:         159744 kB
+  DriverCMA:          3200 kB
+  FreeCMA:               0 kB
+  HugePages_Total:       0
+  HugePages_Free:        0
+  HugePages_Rsvd:        0
+  HugePages_Surp:        0
+  Hugepagesize:       2048 kB
+-
+ Process Status (From: /proc/PID/status)
+  Name:	.example.testc2
+  State:	t (tracing stop)
+  Tgid:	12307
+  Pid:	12307
+  PPid:	3443
+  TracerPid:	12339
+  Uid:	10029	10029	10029	10029
+  Gid:	10029	10029	10029	10029
+  Ngid:	0
+  FDSize:	64
+  Groups:	1015 1023 1028 3003 9997 50029
+  VmPeak:	 1519740 kB
+  VmSize:	 1518204 kB
+  VmLck:	       0 kB
+  VmPin:	       0 kB
+  VmHWM:	   33348 kB
+  VmRSS:	   33344 kB
+  VmData:	  134720 kB
+  VmStk:	    8196 kB
+  VmExe:	      12 kB
+  VmLib:	   68732 kB
+  VmPTE:	     372 kB
+  VmSwap:	       0 kB
+  Threads:	17
+  SigQ:	0/6475
+  SigPnd:	0000000000000000
+  ShdPnd:	0000000000000000
+  SigBlk:	0000000000001600
+  SigIgn:	0000000000000000
+  SigCgt:	00000002000094fc
+  CapInh:	0000000000000000
+  CapPrm:	0000000000000000
+  CapEff:	0000000000000000
+  CapBnd:	0000000000000000
+  Seccomp:	0
+  Cpus_allowed:	f
+  Cpus_allowed_list:	0-3
+  voluntary_ctxt_switches:	100
+  nonvoluntary_ctxt_switches:	124
+-
+ Process Limits (From: /proc/PID/limits)
+  Limit                     Soft Limit           Hard Limit           Units
+  Max cpu time              unlimited            unlimited            seconds
+  Max file size             unlimited            unlimited            bytes
+  Max data size             unlimited            unlimited            bytes
+  Max stack size            8388608              unlimited            bytes
+  Max core file size        0                    0                    bytes
+  Max resident set          unlimited            unlimited            bytes
+  Max processes             6475                 6475                 processes
+  Max open files            1024                 4096                 files
+  Max locked memory         65536                65536                bytes
+  Max address space         unlimited            unlimited            bytes
+  Max file locks            unlimited            unlimited            locks
+  Max pending signals       6475                 6475                 signals
+  Max msgqueue size         819200               819200               bytes
+  Max nice priority         40                   40
+  Max realtime priority     0                    0
+  Max realtime timeout      unlimited            unlimited            us
+-
+ Process Details (From: /proc/PID/smaps)
+                   Pss      Pss   Shared  Private   Shared  Private  SwapPss
+                 Total    Clean    Dirty    Dirty    Clean    Clean    Dirty
+                ------   ------   ------   ------   ------   ------   ------
+  Native Heap      374        0       64      372        0        0        0
+  Dalvik Heap     1578        0     1240     1532        0        0        0
+ Dalvik Other      200        0       24      188        0        0        0
+        Stack     1183        0     1680     1120        0        0        0
+    Other dev        4        0       40        0        0        4        0
+     .so mmap      390       84     2176       72     3364       84        0
+    .apk mmap      152       20        0        0     1124       20        0
+    .dex mmap     2598     2592        0        0       16     2592        0
+    .oat mmap      581        4        0        0     7940        4        0
+    .art mmap      739        0     1440      408     7960        0        0
+   Other mmap        5        0        8        4       64        0        0
+      Unknown       92        0      124       92        0        0        0
+        TOTAL     7896     2700     6796     3788    20468     2704        0
+-
+ Process Dalvik Details (From: /proc/PID/smaps)
+        .Heap     1036        0        8     1036        0        0        0
+      .Zygote      126        0     1232       80        0        0        0
+   .NonMoving      416        0        0      416        0        0        0
+          .GC      152        0       24      140        0        0        0
+ .IndirectRef       48        0        0       48        0        0        0
+     .App dex     2598     2592        0        0       16     2592        0
+    .Boot art      739        0     1440      408     7960        0        0
+-
+ Process Summary (From: /proc/PID/smaps)
+                       Pss(KB)
+                        ------
+           Java Heap:     1940
+         Native Heap:      372
+                Code:     2772
+               Stack:     1120
+       Private Other:      288
+              System:     1404
+               TOTAL:     7896       TOTAL SWAP PSS:        0
+-
+
+--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+pid: 12307, tid: 12314, name: Signal Catcher  >>> com.example.testc2 <<<
+    r0  fffffffc  r1  00000000  r2  00000000  r3  00000008
+    r4  f4317c80  r5  f4317cf0  r6  f4317cf0  r7  000000b1
+    r8  f4c78dc0  r9  f4317d68  r10 f7265a31  r11 f4bfca5c
+    ip  f4c33800  sp  f4317c80  lr  f72671f1  pc  f7289898
+
+backtrace:
+    #00 pc 0003b898  /system/lib/libc.so (__rt_sigtimedwait+12)
+    #01 pc 000191ed  /system/lib/libc.so (sigwait+24)
+    #02 pc 0021b793  /system/lib/libart.so (_ZN3art13SignalCatcher13WaitForSignalEPNS_6ThreadERNS_9SignalSetE+66)
+    #03 pc 0021d295  /system/lib/libart.so (_ZN3art13SignalCatcher3RunEPv+196)
+    #04 pc 00017a4f  /system/lib/libc.so (_ZL15__pthread_startPv+30)
+    #05 pc 00015997  /system/lib/libc.so (__start_thread+6)
+
+stack:
+         f4317c40  f4c78dd0  [stack:12307]
+         f4317c44  f72bd1f4
+         f4317c48  00000000
+         f4317c4c  00000000
+         f4317c50  00000000
+         f4317c54  0000000e
+         f4317c58  f4e894f0  [stack:12307]
+         f4317c5c  3bfcd63c  /dev/ashmem/dalvik-main space (deleted)
+         f4317c60  00000000
+         f4317c64  00550000
+         f4317c68  00430000
+         f4317c6c  00000001
+         f4317c70  f4317cb8  [stack:12314]
+         f4317c74  00000043
+         f4317c78  f4317cc4  [stack:12314]
+         f4317c7c  f4bfdb40  /system/lib/libart.so
+    #00  f4317c80  00000204
+         ........  ........
+    #01  f4317c80  00000204
+         f4317c84  00000000
+         f4317c88  00550000
+         f4317c8c  00000055
+         f4317c90  00000000
+         f4317c94  f4b29797  /system/lib/libart.so (_ZN3art13SignalCatcher13WaitForSignalEPNS_6ThreadERNS_9SignalSetE+70)
+    #02  f4317c98  f4bc1200  /system/lib/libart.so
+         f4317c9c  f4bc086c  /system/lib/libart.so
+         f4317ca0  f4bff004
+         f4317ca4  f4bc1200  /system/lib/libart.so
+         f4317ca8  f4bc0754  /system/lib/libart.so
+         f4317cac  f4bc0768  /system/lib/libart.so
+         f4317cb0  f4bfca5c  /system/lib/libart.so
+         f4317cb4  00000000
+         f4317cb8  00000000
+         f4317cbc  00550000
+         f4317cc0  00000000
+         f4317cc4  00550000
+         f4317cc8  f4c33800  [stack:12307]
+         f4317ccc  f4c78e80  [stack:12307]
+         f4317cd0  f4c9d200  [stack:12307]
+         f4317cd4  f4c33800  [stack:12307]
+         ........  ........
+    #03  f4317d40  00000001
+         f4317d44  f4ca7088  [stack:12307]
+         f4317d48  f4ca7088  [stack:12307]
+         f4317d4c  f4bff000
+         f4317d50  f4bfefec
+         f4317d54  f4c89300  [stack:12307]
+         f4317d58  f4be0510  /system/lib/libart.so
+         f4317d5c  f4be074c  /system/lib/libart.so
+         f4317d60  f4be0510  /system/lib/libart.so
+         f4317d64  f4be0530  /system/lib/libart.so
+         f4317d68  00000204
+         f4317d6c  f7265a13  /system/lib/libc.so (_Z29__init_alternate_signal_stackP18pthread_internal_t+30)
+         f4317d70  ffffffff
+         f4317d74  f4ca7080  [stack:12307]
+         f4317d78  f4ca70c0  [stack:12307]
+         f4317d7c  f4ca7080  [stack:12307]
+         ........  ........
+    #04  f4317d98  f7265a31  /system/lib/libc.so (_ZL15__pthread_startPv)
+         f4317d9c  f4ca7088  [stack:12307]
+         f4317da0  f7265a31  /system/lib/libc.so (_ZL15__pthread_startPv)
+         f4317da4  f7263999  /system/lib/libc.so (__start_thread+8)
+    #05  f4317da8  f4317db0  [stack:12314]
+         f4317dac  00000000
+         f4317db0  f4317db0  [stack:12314]
+         f4317db4  f4ca7080  [stack:12307]
+         f4317db8  00000000
+         f4317dbc  00000000
+         f4317dc0  00000000
+         f4317dc4  3bfcd63c  /dev/ashmem/dalvik-main space (deleted)
+         f4317dc8  00000000
+         f4317dcc  00000000
+         f4317dd0  00000000
+         f4317dd4  00000000
+         f4317dd8  00000000
+         f4317ddc  00000000
+         f4317de0  f4e6d298  [stack:12307]
+         f4317de4  f4e5da78  [stack:12307]
+
+total threads (exclude the crashed thread): 16
+threads matched whitelist: 1
+threads ignored by max count limit: 0
+dumped threads: 1
++++ +++ +++ +++ +++ +++ +++ +++ +++ +++ +++ +++ +++ +++ +++ +++
+
+
+java stacktrace:
+  at com.example.testc2.MainActivity.stringFromJNI(Native method)
+  at com.example.testc2.MainActivity.onCreate(MainActivity.java:22)
+  at android.app.Activity.performCreate(Activity.java:6005)
+  at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1109)
+  at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2360)
+  at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2469)
+  at android.app.ActivityThread.access$800(ActivityThread.java:151)
+  at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1306)
+  at android.os.Handler.dispatchMessage(Handler.java:102)
+  at android.os.Looper.loop(Looper.java:135)
+  at android.app.ActivityThread.main(ActivityThread.java:5374)
+  at java.lang.reflect.Method.invoke!(Native method)
+  at java.lang.reflect.Method.invoke(Method.java:372)
+  at com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:955)
+  at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:750)
+
+
+
+memory info:
+ Process Summary (From: android.os.Debug.MemoryInfo)
+                       Pss(KB)
+                        ------
+           Java Heap:   ~ 1548
+         Native Heap:      372
+       Private Other:   ~ 1900
+              System:     1406
+               TOTAL:     7970
+
+
+
+
+foreground:
+no
+

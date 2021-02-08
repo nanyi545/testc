@@ -30,3 +30,28 @@ public class MainActivity extends AppCompatActivity {
 
 
 }
+
+
+
+
+
+/**
+ *
+ *
+ *
+ use ndk-stack
+ https://developer.android.com/ndk/guides/ndk-stack
+
+
+ $NDK/ndk-stack -sym $PROJECT_PATH/obj/local/armeabi-v7a -dump foo.txt
+ $NDK/ndk-stack -sym $PROJECT_PATH/obj/local/armeabi-v7a -dump foo.txt >bar.txt
+
+
+ /Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/ndk-stack -sym /Users/weiwang/AndroidStudioProjects/TestC2/app/build/intermediates/cmake/debug/obj/armeabi-v7a -dump error1.txt
+ /Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/ndk-stack -sym /Users/weiwang/AndroidStudioProjects/TestC2/app/build/intermediates/cmake/debug/obj/armeabi-v7a -dump error1.txt >error1_parse.txt
+
+
+ *
+ *
+ *
+ **/
