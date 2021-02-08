@@ -1,0 +1,7 @@
+********** Crash dump: **********
+Build fingerprint: 'MBX/MagicBox_M17/MagicBox_M17:5.1.1/LMY47V/20200706:user/test-keys'
+#00 0x00014696 /data/app/com.example.testc2-1/lib/arm/libnative-lib.so (_Z10drawFrame1P11GifFileType17AndroidBitmapInfoPv+221)
+                                                                        drawFrame1(GifFileType*, AndroidBitmapInfo, void*)
+                                                                        /Users/weiwang/AndroidStudioProjects/TestC2/app/src/main/cpp/native-lib.cpp:128:43
+Crash dump is completed
+
