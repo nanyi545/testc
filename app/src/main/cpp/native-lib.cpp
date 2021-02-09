@@ -49,10 +49,142 @@ struct GifBean{
 
 
 /**
- *   load gif
- *
- *
+ *   load gif   ----->  a copy of DGifSlurp method ....
  */
+
+int
+DGifSlurpCopy(GifFileType *GifFile)
+{
+    size_t ImageSize;
+    GifRecordType RecordType;
+    SavedImage *sp;
+    GifByteType *ExtData;
+    int ExtFunction;
+
+    GifFile->ExtensionBlocks = NULL;
+    GifFile->ExtensionBlockCount = 0;
+
+    do {
+
+        __android_log_print(ANDROID_LOG_VERBOSE, "gif", "do ---- ");
+
+        if (DGifGetRecordType(GifFile, &RecordType) == GIF_ERROR)
+            return (GIF_ERROR);
+
+        switch (RecordType) {
+            case IMAGE_DESC_RECORD_TYPE:
+                __android_log_print(ANDROID_LOG_VERBOSE, "gif", "do ---- IMAGE_DESC_RECORD_TYPE");
+
+
+                // GifFile->ImageCount++
+                if (DGifGetImageDesc(GifFile) == GIF_ERROR)
+                    return (GIF_ERROR);
+                __android_log_print(ANDROID_LOG_VERBOSE, "gif", "do ---- IMAGE_DESC_RECORD_TYPE  ImageCount:%d", GifFile->ImageCount);
+
+                sp = &GifFile->SavedImages[GifFile->ImageCount - 1];
+                /* Allocate memory for the image */
+                if (sp->ImageDesc.Width < 0 && (sp->ImageDesc.Height < 0)
+                    && (sp->ImageDesc.Width > (INT_MAX / sp->ImageDesc.Height))
+                        ) {
+                    return GIF_ERROR;
+                }
+                ImageSize = sp->ImageDesc.Width * sp->ImageDesc.Height;
+
+                __android_log_print(ANDROID_LOG_VERBOSE, "gif", "do ---- IMAGE_DESC_RECORD_TYPE  ImageSize:%d", ImageSize);
+
+
+                if (ImageSize > (SIZE_MAX / sizeof(GifPixelType))) {
+                    return GIF_ERROR;
+                }
+                sp->RasterBits = (unsigned char *)reallocarray(NULL, ImageSize,
+                                                               sizeof(GifPixelType));
+
+                if (sp->RasterBits == NULL) {
+                    return GIF_ERROR;
+                }
+
+                if (sp->ImageDesc.Interlace) {
+                    __android_log_print(ANDROID_LOG_VERBOSE, "gif", "do ---- IMAGE_DESC_RECORD_TYPE    Interlace");
+
+                    int i, j;
+                    /*
+                     * The way an interlaced image should be read -
+                     * offsets and jumps...
+                     */
+                    int InterlacedOffset[] = { 0, 4, 2, 1 };
+                    int InterlacedJumps[] = { 8, 8, 4, 2 };
+                    /* Need to perform 4 passes on the image */
+                    for (i = 0; i < 4; i++)
+                        for (j = InterlacedOffset[i];
+                             j < sp->ImageDesc.Height;
+                             j += InterlacedJumps[i]) {
+                            if (DGifGetLine(GifFile,
+                                            sp->RasterBits+j*sp->ImageDesc.Width,
+                                            sp->ImageDesc.Width) == GIF_ERROR)
+                                return GIF_ERROR;
+                        }
+                }
+                else {
+                    __android_log_print(ANDROID_LOG_VERBOSE, "gif", "do ---- IMAGE_DESC_RECORD_TYPE  not Interlace");
+
+                    if (DGifGetLine(GifFile,sp->RasterBits,ImageSize)==GIF_ERROR)
+                        return (GIF_ERROR);
+                }
+
+                if (GifFile->ExtensionBlocks) {
+                    sp->ExtensionBlocks = GifFile->ExtensionBlocks;
+                    sp->ExtensionBlockCount = GifFile->ExtensionBlockCount;
+
+                    GifFile->ExtensionBlocks = NULL;
+                    GifFile->ExtensionBlockCount = 0;
+                }
+                break;
+
+            case EXTENSION_RECORD_TYPE:
+                __android_log_print(ANDROID_LOG_VERBOSE, "gif", "do ---- EXTENSION_RECORD_TYPE");
+
+                if (DGifGetExtension(GifFile,&ExtFunction,&ExtData) == GIF_ERROR)
+                    return (GIF_ERROR);
+                /* Create an extension block with our data */
+                if (ExtData != NULL) {
+                    if (GifAddExtensionBlock(&GifFile->ExtensionBlockCount,
+                                             &GifFile->ExtensionBlocks,
+                                             ExtFunction, ExtData[0], &ExtData[1])
+                        == GIF_ERROR)
+                        return (GIF_ERROR);
+                }
+                while (ExtData != NULL) {
+                    if (DGifGetExtensionNext(GifFile, &ExtData) == GIF_ERROR)
+                        return (GIF_ERROR);
+                    /* Continue the extension block */
+                    if (ExtData != NULL)
+                        if (GifAddExtensionBlock(&GifFile->ExtensionBlockCount,
+                                                 &GifFile->ExtensionBlocks,
+                                                 CONTINUE_EXT_FUNC_CODE,
+                                                 ExtData[0], &ExtData[1]) == GIF_ERROR)
+                            return (GIF_ERROR);
+                }
+                break;
+
+            case TERMINATE_RECORD_TYPE:
+                __android_log_print(ANDROID_LOG_VERBOSE, "gif", "do ---- TERMINATE_RECORD_TYPE");
+
+                break;
+
+            default:    /* Should be trapped by DGifGetRecordType */
+                break;
+        }
+    } while (RecordType != TERMINATE_RECORD_TYPE);
+
+    /* Sanity check for corrupted file */
+    if (GifFile->ImageCount == 0) {
+        GifFile->Error = D_GIF_ERR_NO_IMAG_DSCR;
+        return(GIF_ERROR);
+    }
+
+    return (GIF_OK);
+}
+
 
 extern "C"
 JNIEXPORT jlong JNICALL
@@ -62,8 +194,15 @@ Java_com_example_testc2_gif_GifHandler_loadGif(JNIEnv *env, jclass clazz, jstrin
     int Erro;//打开失败还是成功
     GifFileType * gifFileType= DGifOpenFileName(path, &Erro);
 
+    __android_log_print(ANDROID_LOG_VERBOSE, "gif", "init  ImageCount:%d", gifFileType->ImageCount);
+
+
 //初始化缓冲区  数组 SaveImages
-    DGifSlurp(gifFileType);
+    DGifSlurpCopy(gifFileType);
+//    DGifSlurp(gifFileType);
+
+
+
     GifBean *gifBean = static_cast<GifBean *>(malloc(sizeof(GifBean)));
     memset(gifBean, 0, sizeof(GifBean));
     gifFileType->UserData = gifBean;
@@ -103,7 +242,20 @@ void drawFrame1(GifFileType* gifFileType, AndroidBitmapInfo info, void *pixels) 
     SavedImage savedImage = gifFileType->SavedImages[gifBean->current_frame];
 //    图像分成两部分  像素   一部分是 描述
     GifImageDesc frameInfo=savedImage.ImageDesc;
-    ColorMapObject *colorMapObject = frameInfo.ColorMap;
+
+
+    //  -------------
+    // color map ??
+//    ColorMapObject *colorMapObject = frameInfo.ColorMap;
+
+    ColorMapObject *colorMapObject;
+    colorMapObject = (gifFileType->Image.ColorMap
+                ? gifFileType->Image.ColorMap
+                : gifFileType->SColorMap);
+
+    //  -------------
+
+
 //    像素
 //    savedImage.RasterBits[i];
 //记录每一行的首地址
@@ -125,7 +277,9 @@ void drawFrame1(GifFileType* gifFileType, AndroidBitmapInfo info, void *pixels) 
             pointPixel = (y - frameInfo.Top) * frameInfo.Width + (x - frameInfo.Left);
 //            是 1不是2  压缩
             gifByteType=savedImage.RasterBits[pointPixel];
+
             gifColorType= colorMapObject->Colors[gifByteType];
+
 //line 进行复制   0  255  屏幕有颜色 line
             line[x] = argb(255, gifColorType.Red, gifColorType.Green, gifColorType.Blue);
         }
