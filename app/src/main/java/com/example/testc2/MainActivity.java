@@ -3,7 +3,9 @@ package com.example.testc2;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -31,9 +33,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //  you need this !!!!!!!!! for ndk read/write ....
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 666);
+        }
+
         // Example of a call to a native method
         TextView tv = findViewById(R.id.sample_text);
-//        tv.setText(stringFromJNI());
+        tv.setText(stringFromJNI());
+
+
         image = findViewById(R.id.iv1);
 
     }
@@ -65,7 +74,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void ndkLoadGif() {
 
-        gifHandler = GifHandler.load("/sdcard/Download/textc_x/aaa.gif");
+
+        //  mac
+//        gifHandler = GifHandler.load("/sdcard/Download/textc_x/aaa.gif");
+
+        //  win10 ----> Pixel2
+        //  /sdcard/DCIM/demo3.gif
+        //  /sdcard/DCIM/demo4.gif
+        //  /sdcard/360/download/aaa.gif
+        //  /sdcard/DCIM/aaa.gif
+        //  /sdcard/DCIM/aaa1.gif
+
+        gifHandler = GifHandler.load("/sdcard/DCIM/demo3.gif");
+
+
         int width = gifHandler.getWidth();
         int height = gifHandler.getHeight();
         Log.d("gif","gif width:"+width+"  height:"+height);
@@ -113,6 +135,10 @@ public class MainActivity extends AppCompatActivity {
  /Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/ndk-stack -sym /Users/weiwang/AndroidStudioProjects/TestC2/app/build/intermediates/cmake/debug/obj/armeabi-v7a -dump error1.txt
  /Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/ndk-stack -sym /Users/weiwang/AndroidStudioProjects/TestC2/app/build/intermediates/cmake/debug/obj/armeabi-v7a -dump error1.txt >error1_parse.txt
  /Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/ndk-stack -sym /Users/weiwang/AndroidStudioProjects/TestC2/app/build/intermediates/cmake/debug/obj/armeabi-v7a -dump error2.txt >error2_parse.txt
+
+win10 : at   D:\sdk\ndk\22.0.7026061
+ ndk-stack -sym D:\as_projects\testc_git\app\.cxx\cmake\debug\x86 -dump D:\sdk\ndk\22.0.7026061\temp\err1.txt >bar.txt
+ ndk-stack -sym D:\as_projects\testc_git\app\.cxx\cmake\debug\arm64-v8a -dump D:\sdk\ndk\22.0.7026061\temp\err2.txt >bar2.txt
 
 
  *

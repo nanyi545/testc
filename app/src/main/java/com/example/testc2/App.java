@@ -12,7 +12,10 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        File f = new File("/sdcard/Download/textc_x");
+//        File f = new File("/sdcard/Download/textc_x");
+
+        //   /storage/self/primary/Android/data/com.example.testc2/cache
+        File f = new File(getExternalCacheDir().getAbsolutePath());
         if(!f.exists()){
             f.mkdirs();
         }
