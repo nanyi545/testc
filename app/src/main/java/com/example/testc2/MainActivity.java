@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,17 +16,25 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.testc2.codec1.Player1Activity;
 import com.example.testc2.gif.GifHandler;
 
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    private void toOtherPage(){
+        // media-codec demo
+        Intent i =new Intent(MainActivity.this, Player1Activity.class);
+        startActivity(i);
+    }
+
+
     // Used to load the 'native-lib' library on application startup.
     static {
         System.loadLibrary("native-lib");
     }
-
 
     GifHandler gifHandler;
     @Override
@@ -44,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         image = findViewById(R.id.iv1);
-
+        toOtherPage();
     }
 
     @Override
