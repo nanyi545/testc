@@ -5,6 +5,7 @@
 extern "C"{
 #include "giflib/gif_lib.h"
 }
+#include "abi.h"
 
 #define  argb(a,r,g,b) ( ((a) & 0xff) << 24 ) | ( ((b) & 0xff) << 16 ) | ( ((g) & 0xff) << 8 ) | ((r) & 0xff)
 
@@ -21,8 +22,8 @@ extern "C" JNIEXPORT jstring JNICALL
 Java_com_example_testc2_MainActivity_stringFromJNI(
         JNIEnv *env,
         jobject /* this */) {
-//    Person *p1 = static_cast<Person *>(malloc(sizeof(Person)));
-    Person *p1;
+    Person *p1 = static_cast<Person *>(malloc(sizeof(Person)));
+//    Person *p1;
     p1->age=10;
     __android_log_print(ANDROID_LOG_VERBOSE, "hehe", "age:%d",p1->age);
 
@@ -35,6 +36,7 @@ Java_com_example_testc2_MainActivity_stringFromJNI(
     const char *cstr2 = "99999";
     int a = 123;
     __android_log_print(ANDROID_LOG_VERBOSE, "hehe", "s1:%s  s2:%s  int:%d",cstr,cstr2,a);
+    __android_log_print(ANDROID_LOG_VERBOSE, "hehe", "abi:%s ",ABI);
 
     return env->NewStringUTF(hello.c_str());
 }
@@ -193,7 +195,7 @@ Java_com_example_testc2_gif_GifHandler_loadGif(JNIEnv *env, jclass clazz, jstrin
 //    path   java   --
     int Erro;//打开失败还是成功
     GifFileType * gifFileType= DGifOpenFileName(path, &Erro);
-
+    __android_log_print(ANDROID_LOG_VERBOSE, "gif", "init  Erro:%d", Erro);
     __android_log_print(ANDROID_LOG_VERBOSE, "gif", "init  ImageCount:%d", gifFileType->ImageCount);
 
 
@@ -289,6 +291,28 @@ void drawFrame1(GifFileType* gifFileType, AndroidBitmapInfo info, void *pixels) 
 
 }
 
+ColorMapObject *ColorMap;
+int32_t *user_image_data;
+int transparentColorIndex = 0;
+int disposalMode = DISPOSAL_UNSPECIFIED;
+
+#define  MAKE_COLOR_ABGR(r, g, b) ((0xff) << 24 ) | ((b) << 16 ) | ((g) << 8 ) | ((r) & 0xff)
+
+uint32_t gifColorToColorARGB(const GifColorType &color) {
+    return (uint32_t) (MAKE_COLOR_ABGR(color.Red, color.Green, color.Blue));
+}
+
+void setColorARGB(uint32_t *sPixels, int imageIndex,
+                             ColorMapObject *colorMap, GifByteType colorIndex) {
+    if (imageIndex > 0 && disposalMode == DISPOSE_DO_NOT && colorIndex == transparentColorIndex) {
+        return;
+    }
+    if (colorIndex != transparentColorIndex || transparentColorIndex == NO_TRANSPARENT_COLOR) {
+        *sPixels = gifColorToColorARGB(colorMap->Colors[colorIndex]);
+    } else {
+        *sPixels = 0;
+    }
+}
 
 
 extern "C"
@@ -312,8 +336,41 @@ Java_com_example_testc2_gif_GifHandler_updateFrame(JNIEnv *env, jclass clazz, jl
     void *pixels;
 //bitmap--->像素二维数组    ----- 锁住当前bitmap
     AndroidBitmap_lockPixels(env, bitmap, &pixels);
-//    绘制
+//    绘制  -------- this way ... has issue  ??  ----------
     drawFrame1(gifFileType, info, pixels);
+
+
+
+    //  --------------test call --------------
+    // // from ndk gif project ....
+//    GifBean *gifBean1 = static_cast<GifBean *>(gifFileType->UserData);
+//    SavedImage savedImage = gifFileType->SavedImages[gifBean1->current_frame];
+//    GifImageDesc frameInfo=savedImage.ImageDesc;
+//    uint32_t *sPixels = (uint32_t *) pixels;
+//    user_image_data = (int32_t *) savedImage.RasterBits;
+//    transparentColorIndex = user_image_data[1];
+//    disposalMode = user_image_data[2];
+//
+////    ColorMap = (frameInfo.ColorMap
+////                ? frameInfo.ColorMap
+////                : gifFileType->SColorMap);
+//    ColorMap = (gifFileType->Image.ColorMap
+//                ? gifFileType->Image.ColorMap
+//                : gifFileType->SColorMap);
+//    //
+//    int pointPixelIdx = sizeof(int32_t) * 3;
+//    int dH = frameInfo.Width * frameInfo.Top;
+//    for (int h = frameInfo.Top; h < frameInfo.Top + frameInfo.Height; h++) {
+//        for (int w = frameInfo.Left; w < frameInfo.Left + frameInfo.Width; w++) {
+//            setColorARGB(&sPixels[dH + w],
+//                         gifBean1->current_frame,
+//                         ColorMap,
+//                         savedImage.RasterBits[pointPixelIdx++]);
+//        }
+//        dH += frameInfo.Width;
+//    }
+    //  --------------end of test call --------------
+
     AndroidBitmap_unlockPixels(env, bitmap);
     GifBean *gifBean = static_cast<GifBean *>(gifFileType->UserData);
     gifBean->current_frame++;

@@ -24,7 +24,11 @@ import java.io.File;
 public class MainActivity extends AppCompatActivity {
 
 
+    private boolean gotoOtherPage = false;
     private void toOtherPage(){
+        if(!gotoOtherPage){
+            return;
+        }
         // media-codec demo
         Intent i =new Intent(MainActivity.this, Player1Activity.class);
         startActivity(i);
