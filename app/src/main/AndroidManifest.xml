@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".codec1.Player1Activity"></activity>
+        <activity android:name=".nestedScroll.NestedScrollActivity"></activity>
+        <activity android:name=".codec1.Player1Activity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -18,20 +18,26 @@ import android.widget.TextView;
 
 import com.example.testc2.codec1.Player1Activity;
 import com.example.testc2.gif.GifHandler;
+import com.example.testc2.nestedScroll.NestedScrollActivity;
 
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
 
 
-    private boolean gotoOtherPage = false;
+    private boolean gotoOtherPage = true;
     private void toOtherPage(){
         if(!gotoOtherPage){
             return;
         }
         // media-codec demo
-        Intent i =new Intent(MainActivity.this, Player1Activity.class);
+//        Intent i =new Intent(MainActivity.this, Player1Activity.class);
+//        startActivity(i);
+
+        // nested scroll
+        Intent i =new Intent(MainActivity.this, NestedScrollActivity.class);
         startActivity(i);
+
     }
 
 
@@ -58,12 +64,20 @@ public class MainActivity extends AppCompatActivity {
 
         image = findViewById(R.id.iv1);
         toOtherPage();
+        testSd();
+    }
+
+
+    private void testSd(){
+        File f = Environment.getExternalStorageDirectory();
+        File img = new File(f,"screenshot.jpg");
+        Log.d("hehe","f:"+f.getAbsolutePath()+"   img:"+img.exists());
     }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        ndkLoadGif();
+//        ndkLoadGif();
     }
 
     /**
@@ -89,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //  mac
-//        gifHandler = GifHandler.load("/sdcard/Download/textc_x/aaa.gif");
+        gifHandler = GifHandler.load("/sdcard/Download/textc_x/aaa.gif");
 
         //  win10 ----> Pixel2
         //  /sdcard/DCIM/demo3.gif
@@ -97,8 +111,7 @@ public class MainActivity extends AppCompatActivity {
         //  /sdcard/360/download/aaa.gif
         //  /sdcard/DCIM/aaa.gif
         //  /sdcard/DCIM/aaa1.gif
-
-        gifHandler = GifHandler.load("/sdcard/DCIM/demo3.gif");
+//        gifHandler = GifHandler.load("/sdcard/DCIM/demo3.gif");
 
 
         int width = gifHandler.getWidth();
