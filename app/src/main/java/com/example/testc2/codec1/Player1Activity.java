@@ -7,10 +7,13 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.example.testc2.R;
+
+import java.io.File;
 
 public class Player1Activity extends AppCompatActivity {
     public boolean checkPermission() {
@@ -44,8 +47,8 @@ public class Player1Activity extends AppCompatActivity {
             @Override
             public void surfaceCreated(@NonNull SurfaceHolder holder) {
                 h264Player = new H264Player(Player1Activity.this,
-//                        new File(Environment.getExternalStorageDirectory(), "out3.h264").getAbsolutePath()
-                        "/sdcard/DCIM/out.h264"
+                        new File(Environment.getExternalStorageDirectory(), "record1.h264").getAbsolutePath()
+//                        "/sdcard/DCIM/out.h264"
                         ,
                         surfaceHolder.getSurface());
                 h264Player.play();

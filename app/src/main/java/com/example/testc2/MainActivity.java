@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.testc2.codec1.Player1Activity;
+import com.example.testc2.encoder1.EncoderActivity1;
 import com.example.testc2.gif.GifHandler;
 import com.example.testc2.nestedScroll.NestedScrollActivity;
 
@@ -30,13 +31,20 @@ public class MainActivity extends AppCompatActivity {
         if(!gotoOtherPage){
             return;
         }
-        // media-codec demo
-//        Intent i =new Intent(MainActivity.this, Player1Activity.class);
+        // media-codec demo   decoder
+        Intent i =new Intent(MainActivity.this, Player1Activity.class);
+        startActivity(i);
+
+
+        // media-codec demo   encoder
+//        Intent i =new Intent(MainActivity.this, EncoderActivity1.class);
 //        startActivity(i);
 
+
         // nested scroll
-        Intent i =new Intent(MainActivity.this, NestedScrollActivity.class);
-        startActivity(i);
+//        Intent i =new Intent(MainActivity.this, NestedScrollActivity.class);
+//        startActivity(i);
+
 
     }
 
@@ -77,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-//        ndkLoadGif();
+        ndkLoadGif();
     }
 
     /**
@@ -103,15 +111,15 @@ public class MainActivity extends AppCompatActivity {
 
 
         //  mac
-        gifHandler = GifHandler.load("/sdcard/Download/textc_x/aaa.gif");
+//        gifHandler = GifHandler.load("/sdcard/Download/textc_x/aaa.gif");
 
         //  win10 ----> Pixel2
         //  /sdcard/DCIM/demo3.gif
-        //  /sdcard/DCIM/demo4.gif
+//          /sdcard/DCIM/demo4.gif
         //  /sdcard/360/download/aaa.gif
         //  /sdcard/DCIM/aaa.gif
         //  /sdcard/DCIM/aaa1.gif
-//        gifHandler = GifHandler.load("/sdcard/DCIM/demo3.gif");
+        gifHandler = GifHandler.load("/sdcard/DCIM/demo3.gif");
 
 
         int width = gifHandler.getWidth();
