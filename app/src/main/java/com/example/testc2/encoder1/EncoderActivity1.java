@@ -22,6 +22,7 @@ import android.view.Surface;
 
 import com.example.testc2.R;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -65,8 +66,12 @@ public class EncoderActivity1 extends AppCompatActivity {
     private void initMediaCodec() {
         try {
             mediaCodec = MediaCodec.createEncoderByType("video/avc");
+//            MediaFormat format= MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC,
+//                    540, 960);
             MediaFormat format= MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC,
-                    540, 960);
+                    368, 384);
+
+
             format.setInteger(MediaFormat.KEY_COLOR_FORMAT,
                     MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
 
@@ -102,7 +107,7 @@ public class EncoderActivity1 extends AppCompatActivity {
                             byte[] outData = new byte[bufferInfo.size];
                             buffer.get(outData);
 
-                            writeContent(outData);  //以字符串的方式写入
+//                            writeContent(outData);  //以字符串的方式写入
 //写成 文件  我们就能够播放起来
                             writeBytes(outData);
                             mediaCodec.releaseOutputBuffer(index, false);
@@ -123,7 +128,16 @@ public class EncoderActivity1 extends AppCompatActivity {
         FileOutputStream writer = null;
         try {
             // 打开一个写文件器，构造函数中的第二个参数true表示以追加形式写文件
-            writer = new FileOutputStream(Environment.getExternalStorageDirectory()+"/record1.h264", true);
+            File sd = Environment.getExternalStorageDirectory();
+            File folder = new File(sd,"aaa");
+            if(!folder.exists()){
+                folder.mkdirs();
+            }
+            File f = new File(folder,"record1.h264");
+            if(f.exists()){
+                f.delete();
+            }
+            writer = new FileOutputStream(f.getAbsolutePath(), true);
             writer.write(array);
             writer.write('\n');
 

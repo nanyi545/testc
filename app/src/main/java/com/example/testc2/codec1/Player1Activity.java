@@ -41,14 +41,21 @@ public class Player1Activity extends AppCompatActivity {
 
 
     private void initSurface() {
+
+        File sd = Environment.getExternalStorageDirectory();
+        File folder = new File(sd,"aaa");
+        if(!folder.exists()){
+            folder.mkdirs();
+        }
+        final File f = new File(folder,"record1.h264");
+
         SurfaceView surface = (SurfaceView) findViewById(R.id.preview);
         final SurfaceHolder surfaceHolder = surface.getHolder();
         surfaceHolder.addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(@NonNull SurfaceHolder holder) {
                 h264Player = new H264Player(Player1Activity.this,
-                        new File(Environment.getExternalStorageDirectory(), "record1.h264").getAbsolutePath()
-//                        "/sdcard/DCIM/out.h264"
+                        f.getAbsolutePath()
                         ,
                         surfaceHolder.getSurface());
                 h264Player.play();

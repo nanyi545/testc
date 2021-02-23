@@ -41,6 +41,7 @@ public class H264Player implements Runnable {
             }
 
             MediaFormat mediaformat = MediaFormat.createVideoFormat("video/avc", 368, 384);
+//            MediaFormat mediaformat = MediaFormat.createVideoFormat("video/avc", 540, 960);
             mediaformat.setInteger(MediaFormat.KEY_FRAME_RATE, 15);
             mediaCodec.configure(mediaformat, surface, null, 0);
         } catch ( Exception e) {
