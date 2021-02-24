@@ -156,6 +156,8 @@ public class H264Player implements Runnable {
         }
         return -1;
     }
+
+
     public   byte[] getBytes(String path) throws IOException {
         InputStream is =   new DataInputStream(new FileInputStream(new File(path)));
         int len;

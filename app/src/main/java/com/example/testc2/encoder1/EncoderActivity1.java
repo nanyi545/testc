@@ -134,9 +134,6 @@ public class EncoderActivity1 extends AppCompatActivity {
                 folder.mkdirs();
             }
             File f = new File(folder,"record1.h264");
-            if(f.exists()){
-                f.delete();
-            }
             writer = new FileOutputStream(f.getAbsolutePath(), true);
             writer.write(array);
             writer.write('\n');
