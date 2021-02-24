@@ -88,7 +88,8 @@ public class PlayActivity2 extends AppCompatActivity {
                 if (!folder.exists()) {
                     folder.mkdirs();
                 }
-                final File f = new File(folder, "out.h264");
+//                final File f = new File(folder, "out.h264");
+                final File f = new File(folder,"record1.h264");
                 byte[] bytes = null;
                 try {
 //            偷懒   文件  加载内存

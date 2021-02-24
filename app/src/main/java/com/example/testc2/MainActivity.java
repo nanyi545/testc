@@ -34,14 +34,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // media-codec demo   decode and get YUV
-        Intent i =new Intent(MainActivity.this, PlayActivity2.class);
-        startActivity(i);
+//        Intent i =new Intent(MainActivity.this, PlayActivity2.class);
+//        startActivity(i);
 
 
 
         // media-codec demo   decoder
-//        Intent i =new Intent(MainActivity.this, Player1Activity.class);
-//        startActivity(i);
+        Intent i =new Intent(MainActivity.this, Player1Activity.class);
+        startActivity(i);
 
 
         // media-codec demo   encoder

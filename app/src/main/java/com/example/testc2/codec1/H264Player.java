@@ -1,10 +1,13 @@
 package com.example.testc2.codec1;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.media.MediaCodec;
 import android.media.MediaFormat;
+import android.os.Build;
 import android.util.Log;
 import android.view.Surface;
+import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -43,12 +46,30 @@ public class H264Player implements Runnable {
             MediaFormat mediaformat = MediaFormat.createVideoFormat("video/avc", 368, 384);
 //            MediaFormat mediaformat = MediaFormat.createVideoFormat("video/avc", 540, 960);
             mediaformat.setInteger(MediaFormat.KEY_FRAME_RATE, 15);
-            mediaCodec.configure(mediaformat, surface, null, 0);
+            if(printOnSurface()){
+                mediaCodec.configure(mediaformat, surface, null, 0);
+            } else {
+                mediaCodec.configure(mediaformat, null, null, 0);
+            }
+
         } catch ( Exception e) {
             e.printStackTrace();
         }
     }
-//MediaExtractor  视频      画面H264
+
+
+    /**
+     *  是否输出到surface
+     * @return
+     */
+    boolean printOnSurface(){
+        return false;
+    }
+
+
+
+
+    //MediaExtractor  视频      画面H264
     public void play() {
         mediaCodec.start();
 
@@ -130,13 +151,52 @@ public class H264Player implements Runnable {
 //            得到数据
            int outIndex= mediaCodec.dequeueOutputBuffer(info, 10000);
 //音视频   裁剪一段 true  1    false   2
+
+            Log.d("yuvData","outIndex:"+outIndex);
             if (outIndex >= 0) {
+
+                ByteBuffer outputBuffer;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    outputBuffer = mediaCodec.getOutputBuffer(outIndex);
+                } else {
+                    outputBuffer = mediaCodec.getOutputBuffers()[outIndex];
+                }
+                outputBuffer.position(0);
+                outputBuffer.limit(info.offset + info.size);
+                int yuvSize = outputBuffer.remaining();
+                byte[] yuvData = new byte[yuvSize];
+                outputBuffer.get(yuvData);
+                Log.d("yuvData","yuvSize:"+yuvSize);
+
+                if(!printOnSurface()){
+                    FormatUtil.getOutFormat(mediaCodec);
+                    MediaFormat mediaFormat = mediaCodec.getOutputFormat();
+                    int w = mediaFormat.getInteger(MediaFormat.KEY_WIDTH);
+                    int h = mediaFormat.getInteger(MediaFormat.KEY_HEIGHT);
+                    TTT++;
+                    Log.d("yuvData","1  TTT:"+TTT );
+                    if( (TTT%6) ==0 ){
+                        final Bitmap b = FormatUtil.yv12ToBitmap(yuvData,w,h);
+                        Log.d("yuvData","TTT:"+TTT+"   b:"+(b==null));
+                        if(hehe!=null){
+                            hehe.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    hehe.setImageBitmap(b);
+                                }
+                            });
+                        }
+                    }
+                }
+
                 try {
                     Thread.sleep(33);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                mediaCodec.releaseOutputBuffer(outIndex, true);
+
+                mediaCodec.releaseOutputBuffer(outIndex, printOnSurface());
+
             }else {
 //视频同步  不能  做到  1ms    60ms 差异   3600ms
             }
@@ -144,6 +204,10 @@ public class H264Player implements Runnable {
         }
 
     }
+
+    public static ImageView hehe;
+    static int TTT=0;
+
 
     private int findByFrame( byte[] bytes, int start, int totalSize) {
 

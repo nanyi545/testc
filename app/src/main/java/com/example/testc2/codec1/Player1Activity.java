@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.ImageView;
 
 import com.example.testc2.R;
 
@@ -31,10 +32,15 @@ public class Player1Activity extends AppCompatActivity {
     H264Player h264Player;
 //    H264Player1 h264Player;
 
+    ImageView hehe;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player1);
+        hehe = findViewById(R.id.hehe);
+        H264Player.hehe = hehe;
+
         checkPermission();
         initSurface();
     }
@@ -47,8 +53,8 @@ public class Player1Activity extends AppCompatActivity {
         if(!folder.exists()){
             folder.mkdirs();
         }
-//        final File f = new File(folder,"record1.h264");
-        final File f = new File(folder,"out.h264");
+        final File f = new File(folder,"record1.h264");
+//        final File f = new File(folder,"out.h264");
         SurfaceView surface = (SurfaceView) findViewById(R.id.preview);
         final SurfaceHolder surfaceHolder = surface.getHolder();
         surfaceHolder.addCallback(new SurfaceHolder.Callback() {
