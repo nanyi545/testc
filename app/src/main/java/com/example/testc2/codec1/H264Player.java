@@ -43,8 +43,8 @@ public class H264Player implements Runnable {
 //                不支持硬编
             }
 
-            MediaFormat mediaformat = MediaFormat.createVideoFormat("video/avc", 368, 384);
-//            MediaFormat mediaformat = MediaFormat.createVideoFormat("video/avc", 540, 960);
+//            MediaFormat mediaformat = MediaFormat.createVideoFormat("video/avc", 368, 384);
+            MediaFormat mediaformat = MediaFormat.createVideoFormat("video/avc", 540, 960);
             mediaformat.setInteger(MediaFormat.KEY_FRAME_RATE, 15);
             if(printOnSurface()){
                 mediaCodec.configure(mediaformat, surface, null, 0);

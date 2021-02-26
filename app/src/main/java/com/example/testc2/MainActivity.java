@@ -20,7 +20,7 @@ import com.example.testc2.codec1.Player1Activity;
 import com.example.testc2.encoder1.EncoderActivity1;
 import com.example.testc2.gif.GifHandler;
 import com.example.testc2.nestedScroll.NestedScrollActivity;
-import com.example.testc2.playerModifyCodec.PlayActivity2;
+
 
 import java.io.File;
 
@@ -33,20 +33,15 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // media-codec demo   decode and get YUV
-//        Intent i =new Intent(MainActivity.this, PlayActivity2.class);
+
+        // media-codec demo   decoder / get YUV
+//        Intent i =new Intent(MainActivity.this, Player1Activity.class);
 //        startActivity(i);
-
-
-
-        // media-codec demo   decoder
-        Intent i =new Intent(MainActivity.this, Player1Activity.class);
-        startActivity(i);
 
 
         // media-codec demo   encoder
-//        Intent i =new Intent(MainActivity.this, EncoderActivity1.class);
-//        startActivity(i);
+        Intent i =new Intent(MainActivity.this, EncoderActivity1.class);
+        startActivity(i);
 
 
         // nested scroll

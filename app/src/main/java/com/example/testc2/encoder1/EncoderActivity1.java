@@ -29,6 +29,15 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 
+/**
+ * h264 格式
+ * https://zhuanlan.zhihu.com/p/71928833
+ *
+ *
+ *
+ *
+ */
+
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class EncoderActivity1 extends AppCompatActivity {
     private MediaProjectionManager mediaProjectionManager;
@@ -65,11 +74,11 @@ public class EncoderActivity1 extends AppCompatActivity {
     }
     private void initMediaCodec() {
         try {
-            mediaCodec = MediaCodec.createEncoderByType("video/avc");
-//            MediaFormat format= MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC,
-//                    540, 960);
+            mediaCodec = MediaCodec.createEncoderByType(MediaFormat.MIMETYPE_VIDEO_AVC);
             MediaFormat format= MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC,
-                    368, 384);
+                    540, 960);
+//            MediaFormat format= MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC,
+//                    368, 384);
 
 
             format.setInteger(MediaFormat.KEY_COLOR_FORMAT,
@@ -92,22 +101,22 @@ public class EncoderActivity1 extends AppCompatActivity {
                             540, 960, 1,
                             DisplayManager.VIRTUAL_DISPLAY_FLAG_PUBLIC,
                             surface, null, null);
+
+
                     MediaCodec.BufferInfo bufferInfo = new MediaCodec.BufferInfo();
                     while (true) {
 //                        源源不断的插叙编码好的数据
-                        int index =    mediaCodec.dequeueOutputBuffer(bufferInfo, 100000);
+                        int index = mediaCodec.dequeueOutputBuffer(bufferInfo, 100000);
 
-                        Log.i("David", "run: " + index);
                         if (index >= 0) {
-//                            dsp芯片   不能够操作
+
                             ByteBuffer buffer = mediaCodec.getOutputBuffer(index);
-//                                byteBuffer
-//                            byteBuffer   压缩数据1    原始数据 2
+//                                byteBuffer  压缩数据
 
                             byte[] outData = new byte[bufferInfo.size];
                             buffer.get(outData);
 
-//                            writeContent(outData);  //以字符串的方式写入
+                            writeContent(outData);  //以字符串的方式写入
 //写成 文件  我们就能够播放起来
                             writeBytes(outData);
                             mediaCodec.releaseOutputBuffer(index, false);
@@ -133,7 +142,7 @@ public class EncoderActivity1 extends AppCompatActivity {
             if(!folder.exists()){
                 folder.mkdirs();
             }
-            File f = new File(folder,"record1.h264");
+            File f = new File(folder,"record2.h264");
             writer = new FileOutputStream(f.getAbsolutePath(), true);
             writer.write(array);
             writer.write('\n');
@@ -164,7 +173,7 @@ public class EncoderActivity1 extends AppCompatActivity {
     }
 
 
-    public   String writeContent(byte[] array) {
+    public String writeContent(byte[] array) {
         char[] HEX_CHAR_TABLE = {
                 '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
         };
@@ -177,7 +186,7 @@ public class EncoderActivity1 extends AppCompatActivity {
         FileWriter writer = null;
         try {
             // 打开一个写文件器，构造函数中的第二个参数true表示以追加形式写文件
-            writer = new FileWriter(Environment.getExternalStorageDirectory()+"/codec.txt", true);
+            writer = new FileWriter(Environment.getExternalStorageDirectory()+"/aaa/codec.txt", true);
             writer.write(sb.toString());
             writer.write("\n");
         } catch (IOException e) {

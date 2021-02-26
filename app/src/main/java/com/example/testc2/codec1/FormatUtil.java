@@ -8,6 +8,13 @@ import android.util.Log;
 
 public class FormatUtil {
 
+
+    public static final String VIDEO_AVC = MediaFormat.MIMETYPE_VIDEO_AVC; // H.264 Advanced Video Coding
+    public static final String AUDIO_AAC = MediaFormat.MIMETYPE_AUDIO_AAC; // H.264 Advanced Audio Coding
+
+    public static final String VIDEO_HEVC = MediaFormat.MIMETYPE_VIDEO_HEVC;  // H.265/HEVC video
+
+
     public static void getOutFormat(MediaCodec mCodec) {
         MediaFormat mediaFormat = mCodec.getOutputFormat();
         Log.d("yuvData","output      KEY_COLOR_FORMAT:"+mediaFormat.getInteger(MediaFormat.KEY_COLOR_FORMAT)+" " +

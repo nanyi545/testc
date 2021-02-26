@@ -16,6 +16,14 @@ import com.example.testc2.R;
 
 import java.io.File;
 
+/**
+ *
+ * MediaCodec 高效解码得到标准 YUV420P 格式帧
+ * https://blog.csdn.net/u010029439/article/details/91525262
+ *
+ *
+ *
+ */
 public class Player1Activity extends AppCompatActivity {
     public boolean checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(
@@ -53,7 +61,7 @@ public class Player1Activity extends AppCompatActivity {
         if(!folder.exists()){
             folder.mkdirs();
         }
-        final File f = new File(folder,"record1.h264");
+        final File f = new File(folder,"record2.h264");
 //        final File f = new File(folder,"out.h264");
         SurfaceView surface = (SurfaceView) findViewById(R.id.preview);
         final SurfaceHolder surfaceHolder = surface.getHolder();
