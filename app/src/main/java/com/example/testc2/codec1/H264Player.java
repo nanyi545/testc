@@ -63,7 +63,7 @@ public class H264Player implements Runnable {
      * @return
      */
     boolean printOnSurface(){
-        return false;
+        return true;
     }
 
 

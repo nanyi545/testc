@@ -72,6 +72,13 @@ public class EncoderActivity1 extends AppCompatActivity {
 
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        mediaCodec.stop();
+        super.onDestroy();
+    }
+
     private void initMediaCodec() {
         try {
             mediaCodec = MediaCodec.createEncoderByType(MediaFormat.MIMETYPE_VIDEO_AVC);

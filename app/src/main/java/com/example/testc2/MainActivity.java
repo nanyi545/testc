@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.testc2.codec1.Player1Activity;
+import com.example.testc2.codec2.SpsActivity;
 import com.example.testc2.encoder1.EncoderActivity1;
 import com.example.testc2.gif.GifHandler;
 import com.example.testc2.nestedScroll.NestedScrollActivity;
@@ -27,21 +28,12 @@ import java.io.File;
 public class MainActivity extends AppCompatActivity {
 
 
-    private boolean gotoOtherPage = true;
-    private void toOtherPage(){
-        if(!gotoOtherPage){
+    private boolean gotoOtherPage = false;
+
+    private void toOtherPage() {
+        if (!gotoOtherPage) {
             return;
         }
-
-
-        // media-codec demo   decoder / get YUV
-//        Intent i =new Intent(MainActivity.this, Player1Activity.class);
-//        startActivity(i);
-
-
-        // media-codec demo   encoder
-        Intent i =new Intent(MainActivity.this, EncoderActivity1.class);
-        startActivity(i);
 
 
         // nested scroll
@@ -58,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     GifHandler gifHandler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,10 +72,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void testSd(){
+    private void testSd() {
         File f = Environment.getExternalStorageDirectory();
-        File img = new File(f,"screenshot.jpg");
-        Log.d("hehe","f:"+f.getAbsolutePath()+"   img:"+img.exists());
+        File img = new File(f, "screenshot.jpg");
+        Log.d("hehe", "f:" + f.getAbsolutePath() + "   img:" + img.exists());
     }
 
     @Override
@@ -104,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
     Handler myHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            int delay=gifHandler.updateFrame(bitmap);
-            myHandler.sendEmptyMessageDelayed(1,delay);
+            int delay = gifHandler.updateFrame(bitmap);
+            myHandler.sendEmptyMessageDelayed(1, delay);
             image.setImageBitmap(bitmap);
         }
     };
@@ -127,33 +120,68 @@ public class MainActivity extends AppCompatActivity {
 
         int width = gifHandler.getWidth();
         int height = gifHandler.getHeight();
-        Log.d("gif","gif width:"+width+"  height:"+height);
+        Log.d("gif", "gif width:" + width + "  height:" + height);
 
 
-        bitmap = Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);
+        bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 //C  通知C渲染完成
-        int delay= gifHandler.updateFrame(bitmap);
+        int delay = gifHandler.updateFrame(bitmap);
         image.setImageBitmap(bitmap);
         myHandler.sendEmptyMessageDelayed(1, delay);
 
     }
 
 
+    public void handleClick(View view) {
+        int id = view.getId();
+        switch (id) {
+            case R.id.record_btn:
+                // media-codec demo   encoder
+                Intent i = new Intent(MainActivity.this, EncoderActivity1.class);
+                startActivity(i);
+                break;
+            case R.id.play_btn:
+                // media-codec demo   decoder / get YUV
+                Intent ii = new Intent(MainActivity.this, Player1Activity.class);
+                startActivity(ii);
+                break;
+            case R.id.sps_btn:
+                //  parse sps
+                Intent iii = new Intent(MainActivity.this, SpsActivity.class);
+                startActivity(iii);
+                break;
+        }
+    }
 }
 
 
-
-
-
-
-
 /**
- *  gif lib:
- *  https://android.googlesource.com/platform/external/giflib/
- *  git clone https://android.googlesource.com/platform/external/giflib
- *  git remote add origin https://android.googlesource.com/platform/external/giflib
- *
- */
+ * gif lib:
+ * https://android.googlesource.com/platform/external/giflib/
+ * git clone https://android.googlesource.com/platform/external/giflib
+ * git remote add origin https://android.googlesource.com/platform/external/giflib
+ * <p>
+ * <p>
+ * <p>
+ * <p>
+ * <p>
+ * use ndk-stack
+ * https://developer.android.com/ndk/guides/ndk-stack
+ * <p>
+ * <p>
+ * $NDK/ndk-stack -sym $PROJECT_PATH/obj/local/armeabi-v7a -dump foo.txt
+ * $NDK/ndk-stack -sym $PROJECT_PATH/obj/local/armeabi-v7a -dump foo.txt >bar.txt
+ * <p>
+ * <p>
+ * macos :
+ * /Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/ndk-stack -sym /Users/weiwang/AndroidStudioProjects/TestC2/app/build/intermediates/cmake/debug/obj/armeabi-v7a -dump error1.txt
+ * /Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/ndk-stack -sym /Users/weiwang/AndroidStudioProjects/TestC2/app/build/intermediates/cmake/debug/obj/armeabi-v7a -dump error1.txt >error1_parse.txt
+ * /Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/ndk-stack -sym /Users/weiwang/AndroidStudioProjects/TestC2/app/build/intermediates/cmake/debug/obj/armeabi-v7a -dump error2.txt >error2_parse.txt
+ * <p>
+ * win10 : at   D:\sdk\ndk\22.0.7026061
+ * ndk-stack -sym D:\as_projects\testc_git\app\.cxx\cmake\debug\x86 -dump D:\sdk\ndk\22.0.7026061\temp\err1.txt >bar.txt
+ * ndk-stack -sym D:\as_projects\testc_git\app\.cxx\cmake\debug\arm64-v8a -dump D:\sdk\ndk\22.0.7026061\temp\err2.txt >bar2.txt
+ **/
 
 
 /**
@@ -173,11 +201,9 @@ public class MainActivity extends AppCompatActivity {
  /Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/ndk-stack -sym /Users/weiwang/AndroidStudioProjects/TestC2/app/build/intermediates/cmake/debug/obj/armeabi-v7a -dump error1.txt >error1_parse.txt
  /Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/ndk-stack -sym /Users/weiwang/AndroidStudioProjects/TestC2/app/build/intermediates/cmake/debug/obj/armeabi-v7a -dump error2.txt >error2_parse.txt
 
-win10 : at   D:\sdk\ndk\22.0.7026061
+ win10 : at   D:\sdk\ndk\22.0.7026061
  ndk-stack -sym D:\as_projects\testc_git\app\.cxx\cmake\debug\x86 -dump D:\sdk\ndk\22.0.7026061\temp\err1.txt >bar.txt
  ndk-stack -sym D:\as_projects\testc_git\app\.cxx\cmake\debug\arm64-v8a -dump D:\sdk\ndk\22.0.7026061\temp\err2.txt >bar2.txt
-
-
  *
  *
  *
