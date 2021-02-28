@@ -22,6 +22,10 @@ import java.io.File;
  * 2  powershell
  * 3  format-hex filename.xx | more
  *
+ *
+ * on mac:  ???
+ * https://stackoverflow.com/questions/827326/whats-a-good-hex-editor-viewer-for-the-mac
+ *
  */
 public class SpsActivity extends AppCompatActivity {
 

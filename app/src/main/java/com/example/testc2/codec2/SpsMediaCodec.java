@@ -9,6 +9,16 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+
+/**
+ * https://www.cardinalpeak.com/the-h-264-sequence-parameter-set
+ * H264 format
+ *
+ *
+ *
+ * https://zhuanlan.zhihu.com/p/27896239
+ *
+ */
 public class SpsMediaCodec {
 
     static final String TAG = "SPS";
@@ -17,6 +27,24 @@ public class SpsMediaCodec {
     public SpsMediaCodec(String path) {
         this.path = path;
     }
+
+
+
+    /**
+     *
+     *
+     * example 1 :
+     * 00 00 00 01 67 42 C0 29 8D 68 08 81 E7 BE 01 E1 10 8D 40
+     *            |67-->  01100111 --->  0(0) 11(3)  00111(7)    forbidden_zero_bit + nal_ref_idc + nal_unit_type
+     *               |42-->  01000010 --->  66   profile_idc
+     *                  |C0-->  11000000 --->  1(1)1(1)0(0)0(0)0000(0)
+     *                     |29-->  00101001 --->  41   level_idc
+     *                        |8D-->  10001101   ----> 1(0)0001101(12)    seq_parameter_set_id / log2_max_frame_num_minus4
+     *                            |68-->  01101000  ---> 011(2) 010(1)  pic_order_cnt_type
+     *
+     *
+     */
+
 
     public void startCodec() {
         byte[] bytes = null;
@@ -35,16 +63,17 @@ public class SpsMediaCodec {
                 break;
             }
             int nextFrameStart = findByFrame(  bytes, startIndex+2 , totalSize);
-            byte[] h264 = spliteByte(bytes, startIndex, nextFrameStart - startIndex);
+            byte[] h264 = splitByte(bytes, startIndex, nextFrameStart - startIndex);
 
             Log.d(TAG, "startIndex:"+startIndex+"   nextFrameStart:"+nextFrameStart+"   f:"+Utils.print(h264));
 
+            //   00000001  --> 4*8=32 bit
             nStartBit = 4*8;
             int forbidden_zero_bit=u(1, h264);
             int nal_ref_idc       =u(2, h264);
             int nal_unit_type     =u(5, h264);
 
-            Log.d(TAG, "forbidden_zero_bit:"+forbidden_zero_bit+"   nal_ref_idc:"+nal_ref_idc+"   nal_unit_type:"+nal_unit_type );
+            Log.d(TAG, "forbidden_zero_bit:"+forbidden_zero_bit+"   nal_ref_idc:"+nal_ref_idc+"   nal_unit_type:"+nal_unit_type  );
 
             switch (nal_unit_type) {
                 case 1:
@@ -68,21 +97,45 @@ public class SpsMediaCodec {
                     break;
             }
 
-            // show more frames... 
-            startIndex = nextFrameStart;
+            // show more frames...
+//            startIndex = nextFrameStart;
 
             //  show only SPS
-//            break;
+            break;
 
         }
 
 
     }
 
+
     private void parseSps(byte[] h264) {
 
 //            编码等级   Baseline Main Extended High   High 10   High 4:2:2
+        /**
+         * (1) profile_idc：
+         *
+         * 标识当前H.264码流的profile。我们知道，H.264中定义了三种常用的档次profile：
+         *
+         * 基准档次：baseline profile;
+         * 主要档次：main profile;
+         * 扩展档次：extended profile;
+         *
+         * 在H.264的SPS中，第一个字节表示profile_idc，根据profile_idc的值可以确定码流符合哪一种档次。判断规律为：
+         *
+         * profile_idc = 66 → baseline profile;
+         * profile_idc = 77 → main profile;
+         * profile_idc = 88 → extended profile;
+         *
+         * 在新版的标准中，还包括了High、High 10、High 4:2:2、High 4:4:4、High 10 Intra、High
+         * 4:2:2 Intra、High 4:4:4 Intra、CAVLC 4:4:4 Intra等，每一种都由不同的profile_idc表示。
+         */
         int profile_idc = u(8, h264);
+
+
+
+
+
 //            当constrained_set0_flag值为1的时候，就说明码流应该遵循基线profile(Baseline profile)的所有约束.constrained_set0_flag值为0时，说明码流不一定要遵循基线profile的所有约束。
         int constraint_set0_flag = u(1, h264);//(h264[1] & 0x80)>>7;
         //            当constrained_set1_flag值为1的时候，就说明码流应该遵循主profile(Main profile)的所有约束.constrained_set1_flag值为0时，说明码流不一定要遵
@@ -93,10 +146,24 @@ public class SpsMediaCodec {
         int constraint_set3_flag = u(1, h264);//(h264[1] & 0x10)>>4;
 //            4个零位
         int reserved_zero_4bits = u(4, h264);
+
+        Log.d(TAG, "profile_idc:"+profile_idc+"   constraint_set0_flag:"+constraint_set0_flag+"   constraint_set1_flag:"+constraint_set1_flag +"  reserved_zero_4bits:"+reserved_zero_4bits );
+
+
 //            它指的是码流对应的level级
+        /**d
+         * (2) level_ic
+         * 标识当前码流的Level。编码的Level定义了某种条件下的最大视频分辨率、最大视频帧率等参数，码流所遵从的level由level_idc指定。
+         */
         int level_idc = u(8, h264);
+        Log.d(TAG, "level_idc:"+level_idc);
+
+
 //            是否是哥伦布编码  0 是 1 不是
         int seq_parameter_set_id = Ue(h264);
+        Log.d(TAG, "seq_parameter_set_id:"+seq_parameter_set_id);
+
+
         if (profile_idc == 100) {
 //                颜色位数
             int chroma_format_idc=Ue(h264);
@@ -108,14 +175,33 @@ public class SpsMediaCodec {
 
         }
         int log2_max_frame_num_minus4=Ue(h264);
+        Log.d(TAG, "log2_max_frame_num_minus4:"+log2_max_frame_num_minus4);
+
 
         int pic_order_cnt_type       =Ue(h264);
+        Log.d(TAG, "pic_order_cnt_type:"+pic_order_cnt_type);
 
-        {
+
+        /**
+         * pic_order_cnt_type
+         *
+         * 表示解码picture order count(POC)的方法。POC是另一种计量图像序号的方式，与frame_num有着不同的计算方法。该语法元素的取值为0、1或2。
+         */
+
+        if(pic_order_cnt_type == 0){
             int log2_max_pic_order_cnt_lsb_minus4=Ue(h264);
+            Log.d(TAG, "log2_max_pic_order_cnt_lsb_minus4:"+log2_max_pic_order_cnt_lsb_minus4);
+        } else if (pic_order_cnt_type == 1){
+            //......
+
         }
+
         int num_ref_frames                      =Ue(h264);
+        Log.d(TAG, "num_ref_frames:"+num_ref_frames);
+
         int gaps_in_frame_num_value_allowed_flag=u(1,     h264);
+
+
         int pic_width_in_mbs_minus1             =Ue(h264);
         int pic_height_in_map_units_minus1      =Ue(h264);
         int width=(pic_width_in_mbs_minus1       +1)*16;
@@ -123,7 +209,7 @@ public class SpsMediaCodec {
         Log.i(TAG, "width: "+width+"  height: "+height);
     }
 
-    public byte[] spliteByte(byte[] array,int start,int lenght) {
+    public byte[] splitByte(byte[] array, int start, int lenght) {
         byte[] newArray = new byte[lenght];
         for (int i = start; i < start + lenght; i++) {
             newArray[i - start] = array[i];
@@ -157,6 +243,13 @@ public class SpsMediaCodec {
     }
 
 
+    /**
+     * 取bitIndex个bit位
+     *
+     * @param bitIndex
+     * @param h264
+     * @return
+     */
     private static int u(int bitIndex, byte[] h264)
     {
         int dwRet = 0;
