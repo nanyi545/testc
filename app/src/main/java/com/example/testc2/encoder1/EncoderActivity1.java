@@ -79,10 +79,12 @@ public class EncoderActivity1 extends AppCompatActivity {
         super.onDestroy();
     }
 
+    String type = MediaFormat.MIMETYPE_VIDEO_AVC;
+
     private void initMediaCodec() {
         try {
-            mediaCodec = MediaCodec.createEncoderByType(MediaFormat.MIMETYPE_VIDEO_AVC);
-            MediaFormat format= MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC,
+            mediaCodec = MediaCodec.createEncoderByType(type);
+            MediaFormat format= MediaFormat.createVideoFormat(type,
                     540, 960);
 //            MediaFormat format= MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC,
 //                    368, 384);
