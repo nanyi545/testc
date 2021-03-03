@@ -81,8 +81,21 @@ public class EncoderActivity1 extends AppCompatActivity {
 
     String type = MediaFormat.MIMETYPE_VIDEO_AVC;
 
+
+    private String getFileName(){
+        String str = h265()?"record4.h265":"record4.h264";
+        return str;
+    }
+    private void setDecodeType(){
+        type = h265()?MediaFormat.MIMETYPE_VIDEO_HEVC:MediaFormat.MIMETYPE_VIDEO_AVC;
+    }
+    private boolean h265(){
+        return true;
+    }
+
     private void initMediaCodec() {
         try {
+            setDecodeType();
             mediaCodec = MediaCodec.createEncoderByType(type);
             MediaFormat format= MediaFormat.createVideoFormat(type,
                     540, 960);
@@ -139,6 +152,7 @@ public class EncoderActivity1 extends AppCompatActivity {
 
         } catch ( Exception e) {
             e.printStackTrace();
+            Log.i("encoder1", "initMediaCodec fail: "+Log.getStackTraceString(e));
         }
 
     }
@@ -151,7 +165,7 @@ public class EncoderActivity1 extends AppCompatActivity {
             if(!folder.exists()){
                 folder.mkdirs();
             }
-            File f = new File(folder,"record2.h264");
+            File f = new File(folder,getFileName());
             writer = new FileOutputStream(f.getAbsolutePath(), true);
             writer.write(array);
             writer.write('\n');
@@ -195,7 +209,7 @@ public class EncoderActivity1 extends AppCompatActivity {
         FileWriter writer = null;
         try {
             // 打开一个写文件器，构造函数中的第二个参数true表示以追加形式写文件
-            writer = new FileWriter(Environment.getExternalStorageDirectory()+"/aaa/codec.txt", true);
+            writer = new FileWriter(Environment.getExternalStorageDirectory()+"/aaa/codec3.txt", true);
             writer.write(sb.toString());
             writer.write("\n");
         } catch (IOException e) {

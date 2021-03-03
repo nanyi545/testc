@@ -35,16 +35,18 @@ public class H264Player implements Runnable {
         this.path = path;
         this.context = context;
 
+        setDecodeType();
+
         try {
 //            h265  --ISO hevc  兼容 硬编   不兼容   电视    -----》8k  4K
             try {
-                mediaCodec = MediaCodec.createDecoderByType("video/avc");
+                mediaCodec = MediaCodec.createDecoderByType(type);
             } catch (Exception e) {
 //                不支持硬编
             }
 
 //            MediaFormat mediaformat = MediaFormat.createVideoFormat("video/avc", 368, 384);
-            MediaFormat mediaformat = MediaFormat.createVideoFormat("video/avc", 540, 960);
+            MediaFormat mediaformat = MediaFormat.createVideoFormat(type, 540, 960);
             mediaformat.setInteger(MediaFormat.KEY_FRAME_RATE, 15);
             if(printOnSurface()){
                 mediaCodec.configure(mediaformat, surface, null, 0);
@@ -63,9 +65,23 @@ public class H264Player implements Runnable {
      * @return
      */
     boolean printOnSurface(){
-        return true;
+        return false;
     }
 
+
+
+    public static String type = MediaFormat.MIMETYPE_VIDEO_AVC;
+
+    public static String getFileName(){
+        String str = h265()?"record4.h265":"record4.h264";
+        return str;
+    }
+    public static void setDecodeType(){
+        type = h265()?MediaFormat.MIMETYPE_VIDEO_HEVC:MediaFormat.MIMETYPE_VIDEO_AVC;
+    }
+    public static boolean h265(){
+        return true;
+    }
 
 
 
@@ -155,37 +171,33 @@ public class H264Player implements Runnable {
             Log.d("yuvData","outIndex:"+outIndex);
             if (outIndex >= 0) {
 
-                ByteBuffer outputBuffer;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    outputBuffer = mediaCodec.getOutputBuffer(outIndex);
-                } else {
-                    outputBuffer = mediaCodec.getOutputBuffers()[outIndex];
-                }
-                outputBuffer.position(0);
-                outputBuffer.limit(info.offset + info.size);
-                int yuvSize = outputBuffer.remaining();
-                byte[] yuvData = new byte[yuvSize];
-                outputBuffer.get(yuvData);
-                Log.d("yuvData","yuvSize:"+yuvSize);
-
                 if(!printOnSurface()){
+
+                    ByteBuffer outputBuffer;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        outputBuffer = mediaCodec.getOutputBuffer(outIndex);
+                    } else {
+                        outputBuffer = mediaCodec.getOutputBuffers()[outIndex];
+                    }
+                    outputBuffer.position(0);
+                    outputBuffer.limit(info.offset + info.size);
+                    int yuvSize = outputBuffer.remaining();
+                    byte[] yuvData = new byte[yuvSize];
+                    outputBuffer.get(yuvData);
+                    Log.d("yuvData","yuvSize:"+yuvSize);
+
                     FormatUtil.getOutFormat(mediaCodec);
                     MediaFormat mediaFormat = mediaCodec.getOutputFormat();
                     int w = mediaFormat.getInteger(MediaFormat.KEY_WIDTH);
                     int h = mediaFormat.getInteger(MediaFormat.KEY_HEIGHT);
-                    TTT++;
-                    Log.d("yuvData","1  TTT:"+TTT );
-                    if( (TTT%6) ==0 ){
-                        final Bitmap b = FormatUtil.yv12ToBitmap(yuvData,w,h);
-                        Log.d("yuvData","TTT:"+TTT+"   b:"+(b==null));
-                        if(hehe!=null){
-                            hehe.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    hehe.setImageBitmap(b);
-                                }
-                            });
-                        }
+                    final Bitmap b = FormatUtil.yv12ToBitmap(yuvData,w,h);
+                    if(hehe!=null){
+                        hehe.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                hehe.setImageBitmap(b);
+                            }
+                        });
                     }
                 }
 
@@ -206,7 +218,6 @@ public class H264Player implements Runnable {
     }
 
     public static ImageView hehe;
-    static int TTT=0;
 
 
     private int findByFrame( byte[] bytes, int start, int totalSize) {

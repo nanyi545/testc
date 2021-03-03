@@ -61,8 +61,9 @@ public class Player1Activity extends AppCompatActivity {
         if(!folder.exists()){
             folder.mkdirs();
         }
-        final File f = new File(folder,"record2.h264");
-//        final File f = new File(folder,"out.h264");
+        String fileName = H264Player.getFileName();
+        final File f = new File(folder,fileName);
+
         SurfaceView surface = (SurfaceView) findViewById(R.id.preview);
         final SurfaceHolder surfaceHolder = surface.getHolder();
         surfaceHolder.addCallback(new SurfaceHolder.Callback() {
