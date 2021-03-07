@@ -21,6 +21,8 @@ import com.example.testc2.codec2.SpsActivity;
 import com.example.testc2.encoder1.EncoderActivity1;
 import com.example.testc2.gif.GifHandler;
 import com.example.testc2.nestedScroll.NestedScrollActivity;
+import com.example.testc2.selector.Selector2Activity;
+import com.example.testc2.selector.SelectorActivity;
 
 
 import java.io.File;
@@ -28,7 +30,7 @@ import java.io.File;
 public class MainActivity extends AppCompatActivity {
 
 
-    private boolean gotoOtherPage = false;
+    private boolean gotoOtherPage = true;
 
     private void toOtherPage() {
         if (!gotoOtherPage) {
@@ -40,6 +42,12 @@ public class MainActivity extends AppCompatActivity {
 //        Intent i =new Intent(MainActivity.this, NestedScrollActivity.class);
 //        startActivity(i);
 
+
+        // selector
+//        Intent i =new Intent(MainActivity.this, SelectorActivity.class);
+//        startActivity(i);
+        Intent i =new Intent(MainActivity.this, Selector2Activity.class);
+        startActivity(i);
 
     }
 
