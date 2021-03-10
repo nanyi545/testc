@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:name=".App"
@@ -15,7 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".selector.Selector2Activity"></activity>
+        <activity android:name=".videochat2.VideoChatReceiver"></activity>
+        <activity android:name=".videochat1.VideoChatPush" />
+        <activity android:name=".selector.Selector2Activity" />
         <activity android:name=".selector.SelectorActivity" />
         <activity android:name=".codec2.SpsActivity" />
         <activity android:name=".encoder1.EncoderActivity1" />

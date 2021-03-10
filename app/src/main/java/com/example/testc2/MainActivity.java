@@ -20,9 +20,9 @@ import com.example.testc2.codec1.Player1Activity;
 import com.example.testc2.codec2.SpsActivity;
 import com.example.testc2.encoder1.EncoderActivity1;
 import com.example.testc2.gif.GifHandler;
-import com.example.testc2.nestedScroll.NestedScrollActivity;
 import com.example.testc2.selector.Selector2Activity;
-import com.example.testc2.selector.SelectorActivity;
+import com.example.testc2.videochat1.VideoChatPush;
+import com.example.testc2.videochat2.VideoChatReceiver;
 
 
 import java.io.File;
@@ -30,7 +30,7 @@ import java.io.File;
 public class MainActivity extends AppCompatActivity {
 
 
-    private boolean gotoOtherPage = true;
+    private boolean gotoOtherPage = false;
 
     private void toOtherPage() {
         if (!gotoOtherPage) {
@@ -158,6 +158,18 @@ public class MainActivity extends AppCompatActivity {
                 Intent iii = new Intent(MainActivity.this, SpsActivity.class);
                 startActivity(iii);
                 break;
+            case R.id.chat_btn:
+                //  parse sps
+                Intent iiii = new Intent(MainActivity.this, VideoChatPush.class);
+                startActivity(iiii);
+                break;
+            case R.id.chat_btn2:
+                //  parse sps
+                Intent iiii2 = new Intent(MainActivity.this, VideoChatReceiver.class);
+                startActivity(iiii2);
+                break;
+
+
         }
     }
 }
