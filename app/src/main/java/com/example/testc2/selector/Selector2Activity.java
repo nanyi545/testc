@@ -82,11 +82,33 @@ public class Selector2Activity extends AppCompatActivity {
         return paddingTopHeight + itemHeight - itemOffset;
     }
 
+    IndicatorView indicator;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selector2);
+
+
+        indicator = findViewById(R.id.indicator);
+        indicator.setOnClickListener(new View.OnClickListener() {
+            int cc = 0;
+            @Override
+            public void onClick(View v) {
+
+//                int randTotal = (int) (Math.random() * 10)+3;
+//                int current = (int) ((randTotal-1)*Math.random());
+//                Log.d("IndicatorView","total:"+randTotal+"   current:"+current);
+//                indicator.reset( randTotal,current );
+
+                indicator.reset( 6,(cc++)%6 );
+
+            }
+        });
+
+
+
         rv  = findViewById(R.id.rrr1);
 
         monitor = new ScrollMonitor();
