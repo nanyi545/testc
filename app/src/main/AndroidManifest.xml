@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".videochat2.VideoChatReceiver"></activity>
+        <activity android:name=".cam2test.Cam2Activity"></activity>
+        <activity android:name=".videochat2.VideoChatReceiver" />
         <activity android:name=".videochat1.VideoChatPush" />
         <activity android:name=".selector.Selector2Activity" />
         <activity android:name=".selector.SelectorActivity" />

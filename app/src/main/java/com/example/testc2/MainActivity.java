@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.testc2.cam2test.Cam2Activity;
 import com.example.testc2.codec1.Player1Activity;
 import com.example.testc2.codec2.SpsActivity;
 import com.example.testc2.encoder1.EncoderActivity1;
@@ -30,7 +31,7 @@ import java.io.File;
 public class MainActivity extends AppCompatActivity {
 
 
-    private boolean gotoOtherPage = true;
+    private boolean gotoOtherPage = false;
 
     private void toOtherPage() {
         if (!gotoOtherPage) {
@@ -168,7 +169,11 @@ public class MainActivity extends AppCompatActivity {
                 Intent iiii2 = new Intent(MainActivity.this, VideoChatReceiver.class);
                 startActivity(iiii2);
                 break;
-
+            case R.id.cam2:
+                // camera2
+                Intent iiii3 = new Intent(MainActivity.this, Cam2Activity.class);
+                startActivity(iiii3);
+                break;
 
         }
     }
