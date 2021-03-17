@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.lib1.Test1;
+import com.example.lib1.TestRv;
 import com.example.testc2.cam2test.Cam2Activity;
 import com.example.testc2.codec1.Player1Activity;
 import com.example.testc2.codec2.SpsActivity;
@@ -64,6 +66,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        TestRv rv1;
+
 
         //  you need this !!!!!!!!! for ndk read/write ....
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
