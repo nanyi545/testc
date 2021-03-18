@@ -30,6 +30,11 @@ import com.example.testc2.videochat2.VideoChatReceiver;
 
 import java.io.File;
 
+/**
+ * b2
+ */
+
+
 public class MainActivity extends AppCompatActivity {
 
 
