@@ -34,9 +34,16 @@ dependencies {
 
     // test ...
     /**
-     * implementation 'com.android.support:recyclerview-v7:24.2.1'   will auto include androidx ????
+     * implementation 'com.android.support:recyclerview-v7:24.2.1'    ---> below will not include support recyclerview
+     *
+     *
+     * this auto include androidx?  due to below setting in gradle.properties
+     *
+     * android.useAndroidX=true
+     * # Automatically convert third-party libraries to use AndroidX
+     * android.enableJetifier=true
+     *
      */
-//    implementation 'com.android.support:recyclerview-v7:24.2.1'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
+    implementation 'com.android.support:recyclerview-v7:24.2.1'
 
 }

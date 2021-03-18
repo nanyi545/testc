@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         TestRv rv1;
+        com.example.lib2.TestRv rv2;
 
 
         //  you need this !!!!!!!!! for ndk read/write ....

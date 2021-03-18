@@ -36,6 +36,11 @@ repositories {
     flatDir {
         dirs "${project(':app').projectDir}/testlibs"
     }
+
+    /**
+     *  flatDir { dirs 'libs', 'liba'}   ---->  folder path:    app/libs   app/liba
+     *
+     */
 }
 
 dependencies {
@@ -53,4 +58,6 @@ dependencies {
 
     // use local aar file  ----> as specified in  repositories/flatDir....
     implementation(name:'lib1-debug', ext:'aar')
+    implementation(name:'app-debug', ext:'aar')
+
 }
