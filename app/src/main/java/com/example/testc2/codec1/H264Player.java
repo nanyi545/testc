@@ -6,8 +6,14 @@ import android.media.MediaCodec;
 import android.media.MediaFormat;
 import android.os.Build;
 import android.util.Log;
+import android.util.Size;
 import android.view.Surface;
 import android.widget.ImageView;
+
+import androidx.annotation.RequiresApi;
+
+import com.example.testc2.encoder1.EncoderActivity1;
+import com.example.testc2.util.TestUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -29,8 +35,9 @@ public class H264Player implements Runnable {
 //画面
     private Surface surface;
 
-    public H264Player(Context context,String path, Surface surface) {
-
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public H264Player(Context context, String path, Surface surface) {
+        final Size screen = TestUtil.getScreen(context);
         this.surface = surface;
         this.path = path;
         this.context = context;
@@ -46,7 +53,9 @@ public class H264Player implements Runnable {
             }
 
 //            MediaFormat mediaformat = MediaFormat.createVideoFormat("video/avc", 368, 384);
-            MediaFormat mediaformat = MediaFormat.createVideoFormat(type, 540, 960);
+            MediaFormat mediaformat = MediaFormat.createVideoFormat(type, screen.getWidth(), screen.getHeight());
+
+
             mediaformat.setInteger(MediaFormat.KEY_FRAME_RATE, 15);
             if(printOnSurface()){
                 mediaCodec.configure(mediaformat, surface, null, 0);
@@ -65,7 +74,7 @@ public class H264Player implements Runnable {
      * @return
      */
     boolean printOnSurface(){
-        return false;
+        return true;
     }
 
 
@@ -127,6 +136,10 @@ public class H264Player implements Runnable {
             Log.e(TAG, "run: "+e);
         }
     }
+
+    int frames = 0;
+    long frameDur= 1000000/15;
+
     private void decodeH264() {
         byte[] bytes = null;
         try {
@@ -158,7 +171,12 @@ public class H264Player implements Runnable {
                 byteBuffer.clear();
                 byteBuffer.put(bytes, startIndex, nextFrameStart - startIndex);
 //
-                mediaCodec.queueInputBuffer(inIndex, 0, nextFrameStart - startIndex, 0, 0);
+
+                /**
+                 * presentation time (us)  -->  is important !!!!!!!!!
+                 */
+                mediaCodec.queueInputBuffer(inIndex, 0, nextFrameStart - startIndex, frames*frameDur+11, 0);
+                frames++;
                 startIndex = nextFrameStart;
             }else {
                 continue;

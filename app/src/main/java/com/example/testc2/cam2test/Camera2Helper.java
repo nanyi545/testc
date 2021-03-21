@@ -27,6 +27,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
+import com.example.testc2.util.TestUtil;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -59,25 +61,34 @@ public class Camera2Helper {
 //        摄像头的管理类
         CameraManager cameraManager = (CameraManager)context.getSystemService(Context.CAMERA_SERVICE);
 
+        String cameraUsed = "";
 
         try {
 
             String[] ids = cameraManager.getCameraIdList();
             Log.d("cammm","cam ids:"+ ImageUtil.toString(ids));  // cam ids:[0, 1]
+            cameraUsed = ids[1];
 
 
 //            这个摄像头的配置信息
-            CameraCharacteristics characteristics =cameraManager.getCameraCharacteristics("0");
+            CameraCharacteristics characteristics =cameraManager.getCameraCharacteristics(cameraUsed);
 
 
 //            以及获取图片输出的尺寸和预览画面输出的尺寸
 // 支持哪些格式               获取到的  摄像预览尺寸    textView
             StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+            TestUtil.LogToFile("camId:"+cameraUsed,map.toString());
 
 
+            ArrayList<Size> sizes = new ArrayList<Size>(Arrays.asList(map.getOutputSizes(SurfaceTexture.class)));
+            Log.d("cammm","cam id:"+cameraUsed +" out put sizes:"+ sizes);
 
-//寻找一个 最合适的尺寸     ---》 一模一样
-            mPreviewSize = getBestSupportedSize(new ArrayList<Size>(Arrays.asList(map.getOutputSizes(SurfaceTexture.class))));
+
+//寻找一个 最合适的尺寸
+            mPreviewSize = getBestSupportedSize(sizes);
+            Log.d("cammm","cam id:"+cameraUsed +"   best size:"+ mPreviewSize);
+
+
 //nv21      420   保存到文件
 
             mImageReader = ImageReader.newInstance(mPreviewSize.getWidth(),
@@ -92,14 +103,10 @@ public class Camera2Helper {
                 Log.d("cammm","Manifest.permission.CAMERA   not :");
                 return;
             }
-            cameraManager.openCamera("0", mDeviceStateCallback, mBackgroundHandler);
+            cameraManager.openCamera(cameraUsed, mDeviceStateCallback, mBackgroundHandler);
         } catch ( Exception e) {
             e.printStackTrace();
         }
-
-
-
-
     }
 
     private CameraDevice.StateCallback mDeviceStateCallback = new CameraDevice.StateCallback() {
@@ -138,8 +145,7 @@ public class Camera2Helper {
             mPreviewRequestBuilder=  mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
 
 //
-            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,
-                    CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
+            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
 //预览的TexetureView
             mPreviewRequestBuilder.addTarget(surface);
 
@@ -186,26 +192,44 @@ public class Camera2Helper {
 
 
     }
+
+    int frameDur = 1*1000*1000/30;
+
     private class OnImageAvailableListenerImpl implements ImageReader.OnImageAvailableListener {
         private byte[] y;
         private byte[] u;
         private byte[] v;
+        long initDelta  = 11;
+        long frames = 0;
 
 //        摄像 回调应用层  onPreviewFrame(byte[] )  这里 拿哪里
         @Override
         public void onImageAvailable(ImageReader reader) {
+
+
+            Log.d("cammm","onImageAvailable:");
 //            不是设置回调了
            Image image= reader.acquireNextImage();
+            Log.d("cammm","image:"+(image==null)+" format:"+image.getFormat());
 //            搞事情           image 内容转换成
 //           yuv  H264
             Image.Plane[] planes =  image.getPlanes();
+            Log.d("cammm","planes:"+(planes==null)+"  size:"+planes.length);
+
+
+            int ylength = planes[0].getBuffer().limit() - planes[0].getBuffer().position();
+            int ulength = planes[1].getBuffer().limit() - planes[1].getBuffer().position();
+            int vlength = planes[2].getBuffer().limit() - planes[2].getBuffer().position();
+            Log.d("cammm","-----  ylength:"+ylength+"   ulength:"+ulength+"   vlength:"+vlength);
+
+
             // 重复使用同一批byte数组，减少gc频率
             if (y == null) {
 //                new  了一次
 //                limit  是 缓冲区 所有的大小     position 起始大小
-                y = new byte[planes[0].getBuffer().limit() - planes[0].getBuffer().position()];
-                u = new byte[planes[1].getBuffer().limit() - planes[1].getBuffer().position()];
-                v = new byte[planes[2].getBuffer().limit() - planes[2].getBuffer().position()];
+                y = new byte[ylength];
+                u = new byte[ulength];
+                v = new byte[vlength];
             }
             if (image.getPlanes()[0].getBuffer().remaining() == y.length) {
 //                分别填到 yuv
@@ -216,7 +240,10 @@ public class Camera2Helper {
 //                yuv 420
             }
             if(camera2Listener!=null){
-                camera2Listener.onPreview(y, u, v, mPreviewSize, planes[0].getRowStride());
+                int rowStride = planes[0].getRowStride();
+                Log.d("cammm","-----  call on prev  rowStride:"+rowStride);
+                camera2Listener.onPreview(y, u, v, mPreviewSize, rowStride,(frames*frameDur+initDelta) );
+                frames++;
             }
 //良性循环
            image.close();
@@ -230,10 +257,21 @@ public class Camera2Helper {
          * @param v 预览数据，V分量
          * @param previewSize  预览尺寸
          * @param stride    步长
-         */
-        void onPreview(byte[] y, byte[] u, byte[] v, Size previewSize, int stride);
+         * @param presentationTimeUs    *****************  frame time
+         * */
+        void onPreview(byte[] y, byte[] u, byte[] v, Size previewSize, int stride, long presentationTimeUs);
     }
+
+
+    private Size getBestSupportedSize2() {
+            return new Size(640,640);
+    }
+
+
     private Size getBestSupportedSize(List<Size> sizes) {
+            if(true){
+                return getBestSupportedSize2();
+            }
         Point maxPreviewSize = new Point(1920, 1080);
         Point minPreviewSize = new Point(1280, 720);
         Size defaultSize = sizes.get(0);

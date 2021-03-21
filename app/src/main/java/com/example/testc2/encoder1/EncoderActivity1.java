@@ -18,9 +18,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.util.Size;
 import android.view.Surface;
+import android.widget.Toast;
 
 import com.example.testc2.R;
+import com.example.testc2.codec2.Utils;
+import com.example.testc2.util.TestUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -94,18 +98,21 @@ public class EncoderActivity1 extends AppCompatActivity {
     }
 
     private void initMediaCodec() {
+        final Size screen = TestUtil.getScreen(EncoderActivity1.this);
+        Toast.makeText(this,"width:"+screen.getWidth()+"  height:"+screen.getHeight(),Toast.LENGTH_SHORT).show();
+
         try {
             setDecodeType();
             mediaCodec = MediaCodec.createEncoderByType(type);
+
             MediaFormat format= MediaFormat.createVideoFormat(type,
-                    540, 960);
+                    screen.getWidth(), screen.getHeight());
+
 //            MediaFormat format= MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC,
 //                    368, 384);
 
 
-            format.setInteger(MediaFormat.KEY_COLOR_FORMAT,
-                    MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
-
+            format.setInteger(MediaFormat.KEY_COLOR_FORMAT,MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
             format.setInteger(MediaFormat.KEY_FRAME_RATE, 15);
             format.setInteger(MediaFormat.KEY_BIT_RATE, 400_000);
             format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 2);//2s一个I帧
@@ -120,7 +127,7 @@ public class EncoderActivity1 extends AppCompatActivity {
 
 //提供的surface  与MediaProjection关联
                     mediaProjection.createVirtualDisplay("screen-codec",
-                            540, 960, 1,
+                            screen.getWidth(), screen.getHeight(), 1,
                             DisplayManager.VIRTUAL_DISPLAY_FLAG_PUBLIC,
                             surface, null, null);
 

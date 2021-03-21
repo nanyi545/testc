@@ -101,10 +101,16 @@ public class Cam2Activity extends AppCompatActivity implements TextureView.Surfa
     byte[] nv12;
 
 
+    private boolean write2disk = true;
+
     @Override
-    public void onPreview(byte[] y, byte[] u, byte[] v, Size previewSize, int stride) {
+    public void onPreview(byte[] y, byte[] u, byte[] v, Size previewSize, int stride,long presentationTimeUs) {
 //y   1   u  0.25  v  0.25   1.5   =3/2
 //        width*height
+
+        if(!write2disk){
+            return;
+        }
 
         if (nv21 == null) {
 //            实例化了一次
@@ -121,39 +127,66 @@ public class Cam2Activity extends AppCompatActivity implements TextureView.Surfa
 //Nv12     yuv420
         byte[] temp = ImageUtil.nv21toNV12(nv21_rotated, nv12);
 //输出成H264的码流
+
+        Log.d("cammm","temp:"+temp.length);
+
         MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
+
+        Log.d("cammm"," *************  dequeueInputBuffer:");
         int inIndex = mediaCodec.dequeueInputBuffer(100000);
+        Log.d("cammm"," *************  inIndex:"+inIndex);
         if (inIndex >= 0) {
             ByteBuffer byteBuffer = mediaCodec.getInputBuffer(inIndex);
             byteBuffer.clear();
             byteBuffer.put(temp, 0, temp.length);
             mediaCodec.queueInputBuffer(inIndex, 0, temp.length,
-                    0, 0);
+                    presentationTimeUs, 0);
         }
+
+        Log.d("cammm","OMX   *************  dequeueOutputBuffer:");
         int outIndex = mediaCodec.dequeueOutputBuffer(info, 100000);
+        Log.d("cammm","OMX   *************  outIndex:"+outIndex);
         if (outIndex >= 0) {
             ByteBuffer byteBuffer = mediaCodec.getOutputBuffer(outIndex);
             byte[] ba = new byte[byteBuffer.remaining()];
             byteBuffer.get(ba);
-            Log.e("rtmp", "ba = " + ba.length + "");
-            writeContent(ba);
+            Log.d("cammm","onPreview  ba:"+ba.length);
+//            writeContent(ba);
             writeBytes(ba);
             mediaCodec.releaseOutputBuffer(outIndex, false);
         }
 
     }
 
-    private void initCodec(Size size) {
-        try {
-            mediaCodec = MediaCodec.createEncoderByType("video/avc");
 
-            final MediaFormat format = MediaFormat.createVideoFormat("video/avc",
-                    size.getHeight(), size.getWidth());
-            //设置帧率  手动触发一个I帧
-            format.setInteger(MediaFormat.KEY_COLOR_FORMAT,
-                    MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Flexible);
+
+    String type;
+
+    public String getDecoderType() {
+        return type;
+    }
+
+    public void setDecodeType(){
+        type = h265()?MediaFormat.MIMETYPE_VIDEO_HEVC:MediaFormat.MIMETYPE_VIDEO_AVC;
+    }
+    public boolean h265(){
+        return true;
+    }
+    public String getFileName(){
+        String str = h265()?"record4.h265":"record4.h264";
+        return str;
+    }
+
+
+    private void initCodec(Size size) {
+        setDecodeType();
+        try {
+            mediaCodec = MediaCodec.createEncoderByType(getDecoderType());
+
+            final MediaFormat format = MediaFormat.createVideoFormat(getDecoderType(),size.getHeight(), size.getWidth());
+            format.setInteger(MediaFormat.KEY_COLOR_FORMAT,MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Flexible);
             format.setInteger(MediaFormat.KEY_FRAME_RATE, 15);//15*2 =30帧
-            format.setInteger(MediaFormat.KEY_BIT_RATE, 4000_000);
+            format.setInteger(MediaFormat.KEY_BIT_RATE, 400_000);
             format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 2);//2s一个I帧
             mediaCodec.configure(format, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
             mediaCodec.start();
@@ -197,7 +230,7 @@ public class Cam2Activity extends AppCompatActivity implements TextureView.Surfa
         FileOutputStream writer = null;
         try {
             // 打开一个写文件器，构造函数中的第二个参数true表示以追加形式写文件
-            writer = new FileOutputStream(Environment.getExternalStorageDirectory() + "/codec.h264", true);
+            writer = new FileOutputStream(Environment.getExternalStorageDirectory() + "/aaa/"+getFileName(), true);
             writer.write(array);
             writer.write('\n');
 
