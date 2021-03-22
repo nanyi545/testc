@@ -33,7 +33,7 @@ import java.io.File;
 public class MainActivity extends AppCompatActivity {
 
 
-    private boolean gotoOtherPage = false;
+    private boolean gotoOtherPage = true;
 
     private void toOtherPage() {
         if (!gotoOtherPage) {
