@@ -165,8 +165,6 @@
             android:background="#f9f"
             android:layout_margin="5dp"
             android:paddingBottom="10dp"/>
-
-
     </com.example.testc2.selector.FlowLayout>
 
 

@@ -6,6 +6,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,9 @@ public class FlowLayout extends ViewGroup {
     List<Integer> listLineHeight = new ArrayList<>();
     //防止测量多次
     private boolean isMeasure = false;
+
+    private boolean computed = false;
+
 
     public FlowLayout(Context context) {
         super(context);
@@ -35,9 +39,12 @@ public class FlowLayout extends ViewGroup {
         return new MarginLayoutParams(getContext(),attributeSet);
     }
 
+
     //在被调用这个方法之前   它的父容器  已经把它的测量模式改成了当前控件的测量模式
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+
+        Log.e("FLOW_LO",  "onMeasure");
         //获取到父容器 给我们的参考值
         int widthSize = MeasureSpec.getSize(widthMeasureSpec);
         int heightSize = MeasureSpec.getSize(heightMeasureSpec);
@@ -51,6 +58,7 @@ public class FlowLayout extends ViewGroup {
         if(!isMeasure){
             isMeasure = true;
         }else{
+
             //当前控件中子控件一行使用的宽度值
             int lineCountWidth = 0;
             //保存一行中最高的子控件的高度
@@ -113,17 +121,23 @@ public class FlowLayout extends ViewGroup {
                     list.add(viewList);
                 }
             }
-            Log.e("MN------->",listLineHeight.size()+"");
+
         }
         //设置控件最终的大小
-        int measureWidth = widthMode == MeasureSpec.EXACTLY?widthSize:childCountWidth;
-        int measureHeight = heighthMode == MeasureSpec.EXACTLY?heightSize:childCountHieght;
+        int measureWidth = ((widthMode == MeasureSpec.EXACTLY)?widthSize:childCountWidth);
+        int measureHeight = ((heighthMode == MeasureSpec.EXACTLY)?heightSize:childCountHieght);
+
+        Log.e("FLOW_LO","widthMode:"+widthMode+"   heighthMode:"+heighthMode+"   childCountWidth:"+childCountWidth+   "  childCountHieght:"+childCountHieght);
+
         setMeasuredDimension(measureWidth,measureHeight);
+        Log.e("FLOW_LO","setMeasuredDimension  measureWidth:"+measureWidth+"   measureHeight:"+measureHeight );
 
     }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+
+        Log.e("FLOW_LO","onLayout   changed:"+changed+"  size:"+list.size());
         //摆放子控件的位置
         int left,top,bottom,right;
         //保存上一个控件的边距
@@ -140,8 +154,12 @@ public class FlowLayout extends ViewGroup {
                 top = countTop + layoutParams.topMargin;
                 right = left+view.getMeasuredWidth();
                 bottom = top+view.getMeasuredHeight();
-                view.layout(left,top,right,bottom);
 
+                Object tag = view.getTag();
+                if(tag==null){
+                    view.layout(left,top,right,bottom);
+                    view.setTag("layed");
+                }
                 countLeft+=view.getMeasuredWidth() + layoutParams.leftMargin + layoutParams.rightMargin;
             }
 
@@ -150,8 +168,8 @@ public class FlowLayout extends ViewGroup {
             countLeft = 0;
             countTop+= listLineHeight.get(i);
         }
-//        list.clear();
-//        listLineHeight.clear();
+        list.clear();
+        listLineHeight.clear();
     }
 
     @Override
