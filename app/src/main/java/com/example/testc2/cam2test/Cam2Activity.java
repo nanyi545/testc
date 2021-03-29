@@ -170,7 +170,7 @@ public class Cam2Activity extends AppCompatActivity implements TextureView.Surfa
         type = h265()?MediaFormat.MIMETYPE_VIDEO_HEVC:MediaFormat.MIMETYPE_VIDEO_AVC;
     }
     public boolean h265(){
-        return true;
+        return false;
     }
     public String getFileName(){
         String str = h265()?"record4.h265":"record4.h264";
@@ -186,7 +186,7 @@ public class Cam2Activity extends AppCompatActivity implements TextureView.Surfa
             final MediaFormat format = MediaFormat.createVideoFormat(getDecoderType(),size.getHeight(), size.getWidth());
             format.setInteger(MediaFormat.KEY_COLOR_FORMAT,MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Flexible);
             format.setInteger(MediaFormat.KEY_FRAME_RATE, 15);//15*2 =30帧
-            format.setInteger(MediaFormat.KEY_BIT_RATE, 400_000);
+            format.setInteger(MediaFormat.KEY_BIT_RATE, size.getWidth() * size.getHeight());
             format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 2);//2s一个I帧
             mediaCodec.configure(format, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
             mediaCodec.start();

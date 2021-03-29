@@ -193,7 +193,7 @@ public class Camera2Helper {
 
     }
 
-    int frameDur = 1*1000*1000/30;
+    int frameDur = 1*1000*1000/15;
 
     private class OnImageAvailableListenerImpl implements ImageReader.OnImageAvailableListener {
         private byte[] y;
@@ -210,7 +210,13 @@ public class Camera2Helper {
             Log.d("cammm","onImageAvailable:");
 //            不是设置回调了
            Image image= reader.acquireNextImage();
-            Log.d("cammm","image:"+(image==null)+" format:"+image.getFormat());
+
+
+           //  android.graphics.ImageFormat.YUV_420_888
+            /**
+             *    35 --> {@link android.graphics.ImageFormat.YUV_420_888}
+             */
+            Log.d("cammm","image:"+(image==null)+" format:"+image.getFormat() );
 //            搞事情           image 内容转换成
 //           yuv  H264
             Image.Plane[] planes =  image.getPlanes();
@@ -264,7 +270,7 @@ public class Camera2Helper {
 
 
     private Size getBestSupportedSize2() {
-            return new Size(640,640);
+            return new Size(640,400);
     }
 
 

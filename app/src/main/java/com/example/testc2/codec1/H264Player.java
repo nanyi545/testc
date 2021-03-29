@@ -89,7 +89,7 @@ public class H264Player implements Runnable {
         type = h265()?MediaFormat.MIMETYPE_VIDEO_HEVC:MediaFormat.MIMETYPE_VIDEO_AVC;
     }
     public static boolean h265(){
-        return true;
+        return false;
     }
 
 
@@ -169,7 +169,11 @@ public class H264Player implements Runnable {
 //            找到了  david
                 ByteBuffer byteBuffer = inputBuffers[inIndex];
                 byteBuffer.clear();
-                byteBuffer.put(bytes, startIndex, nextFrameStart - startIndex);
+
+                /**
+                 *    -1  ???
+                 */
+                byteBuffer.put(bytes, startIndex, nextFrameStart - startIndex - 1 );
 //
 
                 /**

@@ -101,12 +101,14 @@ public class EncoderActivity1 extends AppCompatActivity {
         final Size screen = TestUtil.getScreen(EncoderActivity1.this);
         Toast.makeText(this,"width:"+screen.getWidth()+"  height:"+screen.getHeight(),Toast.LENGTH_SHORT).show();
 
+
+        final int width = screen.getWidth();
+        final int height= screen.getHeight();
         try {
             setDecodeType();
             mediaCodec = MediaCodec.createEncoderByType(type);
 
-            MediaFormat format= MediaFormat.createVideoFormat(type,
-                    screen.getWidth(), screen.getHeight());
+            MediaFormat format= MediaFormat.createVideoFormat(type,width, height);
 
 //            MediaFormat format= MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC,
 //                    368, 384);
@@ -114,7 +116,7 @@ public class EncoderActivity1 extends AppCompatActivity {
 
             format.setInteger(MediaFormat.KEY_COLOR_FORMAT,MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface);
             format.setInteger(MediaFormat.KEY_FRAME_RATE, 15);
-            format.setInteger(MediaFormat.KEY_BIT_RATE, 400_000);
+            format.setInteger(MediaFormat.KEY_BIT_RATE, width * height);
             format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 2);//2s一个I帧
 
             mediaCodec.configure(format, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
@@ -127,7 +129,7 @@ public class EncoderActivity1 extends AppCompatActivity {
 
 //提供的surface  与MediaProjection关联
                     mediaProjection.createVirtualDisplay("screen-codec",
-                            screen.getWidth(), screen.getHeight(), 1,
+                            width, height, 1,
                             DisplayManager.VIRTUAL_DISPLAY_FLAG_PUBLIC,
                             surface, null, null);
 
