@@ -56,8 +56,6 @@ public class Cam2Activity extends AppCompatActivity implements TextureView.Surfa
 
 
 
-
-
     private boolean checkPermissions() {
         boolean allGranted = true;
         allGranted &= ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;

@@ -22,6 +22,7 @@ import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
 import android.view.TextureView;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -48,18 +49,37 @@ public class Camera2Helper {
     CaptureRequest.Builder mPreviewRequestBuilder;
     private CameraCaptureSession mCaptureSession;
     private Camera2Listener camera2Listener;
+
+
     public Camera2Helper(Context context) {
         this.context = context;
         camera2Listener = (Camera2Listener) context;
+        cameraManager = (CameraManager)context.getSystemService(Context.CAMERA_SERVICE);
     }
+
+
+
+    //        摄像头的管理类
+    CameraManager cameraManager;
+
+
+    private void resizeTextureView(){
+        if(mPreviewSize==null || mTextureView==null){
+            throw new RuntimeException("can not resize!!");
+        }
+        ViewGroup.LayoutParams p = mTextureView.getLayoutParams();
+        /**
+         * switch   width/height
+         */
+        p.width = mPreviewSize.getHeight();
+        p.height = mPreviewSize.getWidth();
+        mTextureView.setLayoutParams(p);
+    }
+
 
     //    开启摄像头
     public synchronized void start(TextureView textureView) {
         mTextureView = textureView;
-
-
-//        摄像头的管理类
-        CameraManager cameraManager = (CameraManager)context.getSystemService(Context.CAMERA_SERVICE);
 
         String cameraUsed = "";
 
@@ -88,6 +108,7 @@ public class Camera2Helper {
             mPreviewSize = getBestSupportedSize(sizes);
             Log.d("cammm","cam id:"+cameraUsed +"   best size:"+ mPreviewSize);
 
+            resizeTextureView();
 
 //nv21      420   保存到文件
 
