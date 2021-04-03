@@ -55,6 +55,7 @@ public class Camera2Helper {
         this.context = context;
         camera2Listener = (Camera2Listener) context;
         cameraManager = (CameraManager)context.getSystemService(Context.CAMERA_SERVICE);
+        CamerUtil.printCams(cameraManager);
     }
 
 
@@ -85,9 +86,10 @@ public class Camera2Helper {
 
         try {
 
+
             String[] ids = cameraManager.getCameraIdList();
             Log.d("cammm","cam ids:"+ ImageUtil.toString(ids));  // cam ids:[0, 1]
-            cameraUsed = ids[1];
+            cameraUsed = ids[0];
 
 
 //            这个摄像头的配置信息
