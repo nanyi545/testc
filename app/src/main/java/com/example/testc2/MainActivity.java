@@ -23,6 +23,7 @@ import com.example.testc2.codec1.Player1Activity;
 import com.example.testc2.codec2.SpsActivity;
 import com.example.testc2.encoder1.EncoderActivity1;
 import com.example.testc2.gif.GifHandler;
+import com.example.testc2.rtmp.RtmpBilibiliActivity;
 import com.example.testc2.selector.Selector2Activity;
 import com.example.testc2.videochat1.VideoChatPush;
 import com.example.testc2.videochat2.VideoChatReceiver;
@@ -180,9 +181,14 @@ public class MainActivity extends AppCompatActivity {
                 Intent iiii3 = new Intent(MainActivity.this, Cam2Activity.class);
                 startActivity(iiii3);
                 break;
-
+            case R.id.rtmp_push:
+                // camera2
+                Intent iiiii3 = new Intent(MainActivity.this, RtmpBilibiliActivity.class);
+                startActivity(iiiii3);
+                break;
         }
     }
+
 }
 
 

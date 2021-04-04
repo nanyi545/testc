@@ -57,7 +57,7 @@ dependencies {
     implementation "org.java-websocket:Java-WebSocket:1.4.0"
 
     // use local aar file  ----> as specified in  repositories/flatDir....
-    implementation(name:'lib1-debug', ext:'aar')
-    implementation(name:'app-debug', ext:'aar')
+    implementation(name: 'lib1-debug', ext: 'aar')
+    implementation(name: 'app-debug', ext: 'aar')
 
 }

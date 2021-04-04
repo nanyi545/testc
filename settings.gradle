@@ -1,2 +1,1 @@
 include ':app', ':lib1'
-rootProject.name='TestC2'

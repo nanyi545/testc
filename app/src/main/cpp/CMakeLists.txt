@@ -5,6 +5,7 @@
 
 cmake_minimum_required(VERSION 3.4.1)
 
+add_subdirectory(librtmp)
 
 
 # Creates and names a library, sets it as either STATIC
@@ -62,4 +63,5 @@ target_link_libraries( # Specifies the target library.
         # included in the NDK.
         ${log-lib}
         ${jnigraphics-lib}
+        rtmp
         )
