@@ -27,6 +27,7 @@ import com.example.testc2.rtmp.RtmpBilibiliActivity;
 import com.example.testc2.selector.Selector2Activity;
 import com.example.testc2.videochat1.VideoChatPush;
 import com.example.testc2.videochat2.VideoChatReceiver;
+import com.example.testc2.x264.X264Activity;
 
 
 import java.io.File;
@@ -182,10 +183,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(iiii3);
                 break;
             case R.id.rtmp_push:
-                // camera2
                 Intent iiiii3 = new Intent(MainActivity.this, RtmpBilibiliActivity.class);
                 startActivity(iiiii3);
                 break;
+            case R.id.x264_1:
+                Intent p = new Intent(MainActivity.this, X264Activity.class);
+                startActivity(p);
+                break;
+
         }
     }
 

@@ -20,7 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".rtmp.RtmpBilibiliActivity"></activity>
+        <activity android:name=".x264.X264Activity"></activity>
+        <activity android:name=".rtmp.RtmpBilibiliActivity" />
         <activity android:name=".cam2test.Cam2Activity" />
         <activity android:name=".videochat2.VideoChatReceiver" />
         <activity android:name=".videochat1.VideoChatPush" />

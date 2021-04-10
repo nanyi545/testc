@@ -8,6 +8,27 @@ cmake_minimum_required(VERSION 3.4.1)
 add_subdirectory(librtmp)
 
 
+message("-----------ss----------")
+message(${CMAKE_BUILD_TYPE})
+message(${ANDROID_PLATFORM})
+message(${CMAKE_SOURCE_DIR})
+message(${ANDROID_ABI})
+message(${CMAKE_CXX_FLAGS})
+message("-----------ee----------")
+
+#   app/.cxx/cmake/debug/armeabi-v7a/build_output.txt
+#   app/.cxx/cmake/debug/arm64-v8a/build_output.txt
+
+
+
+# include x264
+#头文件成功引入
+include_directories(${CMAKE_SOURCE_DIR}/x264/${ANDROID_ABI}/include)
+#静态库 FFmpeg   ---> 把-L参数添加到现有的CMAKE_CXX_FLAGS之上
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${CMAKE_SOURCE_DIR}/x264/${ANDROID_ABI}/lib")
+
+
+
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
 # You can define multiple libraries, and CMake builds them for you.
@@ -64,4 +85,5 @@ target_link_libraries( # Specifies the target library.
         ${log-lib}
         ${jnigraphics-lib}
         rtmp
+        x264
         )
