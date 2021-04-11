@@ -30,6 +30,22 @@ import com.example.testc2.videochat2.VideoChatReceiver;
 import com.example.testc2.x264.X264Activity;
 
 
+/**
+ *
+ *
+ * LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to
+ * ---->
+ *
+ * git config --global --unset http.proxy
+ * git config --global --unset https.proxy
+ *
+ *
+ *
+ * 
+ *
+ *
+ *
+ */
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
