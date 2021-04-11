@@ -20,6 +20,7 @@ import android.view.TextureView;
 import android.view.ViewGroup;
 
 import com.example.testc2.R;
+import com.example.testc2.cam2test.ImageUtil;
 
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -177,6 +178,11 @@ public class X264Activity extends AppCompatActivity {
     private byte[] y;
     private byte[] u;
     private byte[] v;
+    private byte[] nv21;
+    byte[] nv21_rotated;
+    byte[] nv12;
+
+
 
 
     ImageAnalysis.Analyzer analyzer = new ImageAnalysis.Analyzer(){
@@ -186,6 +192,35 @@ public class X264Activity extends AppCompatActivity {
                 lock.lock();
 
 
+                //          能够 播放  H264码流   x264     摸索   x264
+//3 ge
+                ImageProxy.PlaneProxy[] planes =  image.getPlanes();
+                // 重复使用同一批byte数组，减少gc频率
+                if (y == null) {
+//            初始化y v  u
+                    y = new byte[planes[0].getBuffer().limit() - planes[0].getBuffer().position()];
+                    u = new byte[planes[1].getBuffer().limit() - planes[1].getBuffer().position()];
+                    v = new byte[planes[2].getBuffer().limit() - planes[2].getBuffer().position()];
+
+                }
+
+                if (image.getPlanes()[0].getBuffer().remaining() == y.length) {
+                    planes[0].getBuffer().get(y);
+                    planes[1].getBuffer().get(u);
+                    planes[2].getBuffer().get(v);
+                    int stride = planes[0].getRowStride();
+                    Size size = new Size(image.getWidth(), image.getHeight());
+                    int width = size.getHeight();
+                    int heigth = image.getWidth();
+//            Log.i(TAG, "analyze: "+width+"  heigth "+heigth);
+                    if (nv21 == null) {
+                        nv21 = new byte[heigth * width * 3 / 2];
+                        nv21_rotated = new byte[heigth * width * 3 / 2];
+                    }
+                    ImageUtil.yuvToNv21(y, u, v, nv21, heigth, width);
+                    ImageUtil.nv21_rotate_to_90(nv21, nv21_rotated, heigth, width);
+                    endcoder.encode(nv21_rotated);
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();

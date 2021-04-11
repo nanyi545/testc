@@ -15,6 +15,16 @@ struct Person{
     std::string name;
 };
 
+
+JavaVM *javaVM;
+
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
+    javaVM = vm;
+    __android_log_print(ANDROID_LOG_VERBOSE, "jni_onload","jni onload");
+    return JNI_VERSION_1_4;
+}
+
+
 /**
  * test function to get a string through JNI
  */
@@ -756,7 +766,18 @@ void setVideoEncInfo(int width, int height, int fps, int bitrate){
 
 
 
-void doEncode(int8_t *data){
+
+jobject jobj;
+jmethodID jmid_postData;
+
+void postH264(JNIEnv *env,char *data, int length){
+    jbyteArray array = env->NewByteArray(length);
+    env->SetByteArrayRegion(array, 0, length, reinterpret_cast<const jbyte *>(data));
+    env->CallVoidMethod(jobj, jmid_postData,array);
+}
+
+
+void doEncode(int8_t *data,JNIEnv *env){
 //    容器   y的数据
     memcpy(pic_in->img.plane[0], data, ySize);
     for (int i = 0; i < uvSize; ++i) {
@@ -790,13 +811,13 @@ void doEncode(int8_t *data){
     if (pi_nal > 0) {
         for (int i = 0; i < pi_nal; ++i) {
             LOGI("输出索引:  %d  输出长度 %d",i,pi_nal);
-//                javaCallHelper->postH264(reinterpret_cast<char *>(pp_nals[i].p_payload), pp_nals[i].i_payload);
+                postH264(env,reinterpret_cast<char *>(pp_nals[i].p_payload), pp_nals[i].i_payload);
             if (pp_nals[i].i_type == NAL_SPS) {
-//        sps    发送  1   一起发送
+//        sps
                 sps_len = pp_nals[i].i_payload - 4;
                 memcpy(sps, pp_nals[i].p_payload + 4, sps_len);
             }  else if (pp_nals[i].i_type == NAL_PPS) {
-//        到了pps   需要 1  不需要 2
+//        到了pps
                 pps_len = pp_nals[i].i_payload - 4;
                 memcpy(pps, pp_nals[i].p_payload + 4, pps_len);
 //                发送出去
@@ -816,9 +837,13 @@ void doEncode(int8_t *data){
 
 }
 
+
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_example_testc2_x264_X264Encoder_init(JNIEnv *env, jobject thiz, jint width, jint height, jint fps, jint bitrate) {
+    jobj = env->NewGlobalRef(thiz);
+    jclass jclazz = env->GetObjectClass(jobj);
+    jmid_postData = env->GetMethodID(jclazz, "postData", "([B)V");
     setVideoEncInfo(width, height,fps,bitrate);
 }
 
@@ -826,7 +851,7 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_example_testc2_x264_X264Encoder_encode(JNIEnv *env, jobject thiz, jbyteArray frame) {
     jbyte *data = env->GetByteArrayElements(frame, NULL);
-    doEncode(data);
+    doEncode(data,env);
     env->ReleaseByteArrayElements(frame, data, 0);
 }
 
