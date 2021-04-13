@@ -23,6 +23,7 @@ import com.example.testc2.codec1.Player1Activity;
 import com.example.testc2.codec2.SpsActivity;
 import com.example.testc2.encoder1.EncoderActivity1;
 import com.example.testc2.gif.GifHandler;
+import com.example.testc2.opengl.OpenGl1Activity;
 import com.example.testc2.rtmp.RtmpBilibiliActivity;
 import com.example.testc2.selector.Selector2Activity;
 import com.example.testc2.videochat1.VideoChatPush;
@@ -41,7 +42,7 @@ import com.example.testc2.x264.X264Activity;
  *
  *
  *
- * 
+ *
  *
  *
  *
@@ -51,7 +52,7 @@ import java.io.File;
 public class MainActivity extends AppCompatActivity {
 
 
-    private boolean gotoOtherPage = false;
+    private boolean gotoOtherPage = true;
 
     private void toOtherPage() {
         if (!gotoOtherPage) {
@@ -67,8 +68,15 @@ public class MainActivity extends AppCompatActivity {
         // selector
 //        Intent i =new Intent(MainActivity.this, SelectorActivity.class);
 //        startActivity(i);
-        Intent i =new Intent(MainActivity.this, Selector2Activity.class);
+//        Intent i =new Intent(MainActivity.this, Selector2Activity.class);
+//        startActivity(i);
+
+
+        // open gl
+        Intent i =new Intent(MainActivity.this, OpenGl1Activity.class);
         startActivity(i);
+
+
 
     }
 
