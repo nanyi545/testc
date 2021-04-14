@@ -20,7 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".opengl.OpenGl1Activity"></activity>
+        <activity android:name=".opengl.camera_gl.CameraOpenGlActivity"></activity>
+        <activity android:name=".opengl.OpenGl1Activity" />
         <activity android:name=".x264.X264Activity" />
         <activity android:name=".rtmp.RtmpBilibiliActivity" />
         <activity android:name=".cam2test.Cam2Activity" />
