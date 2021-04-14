@@ -13,6 +13,13 @@ import java.nio.FloatBuffer;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+
+/**
+ * see  {@link com.example.testc2.opengl.projectAndView.MyGLRenderer} for demo of projection/camera view  ....
+ *
+ */
+
+@Deprecated
 public class TriangleRender implements GLSurfaceView.Renderer {
 
     private int mProgram;
