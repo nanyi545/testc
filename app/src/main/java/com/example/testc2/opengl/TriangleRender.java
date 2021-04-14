@@ -2,6 +2,9 @@ package com.example.testc2.opengl;
 
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
+import android.opengl.Matrix;
+
+import com.example.testc2.util.TestUtil;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -92,16 +95,65 @@ public class TriangleRender implements GLSurfaceView.Renderer {
         GLES20.glLinkProgram(mProgram);
     }
 
+
+    // vPMatrix is an abbreviation for "Model View Projection Matrix"
+    private final float[] vPMatrix = new float[16];
+    private final float[] projectionMatrix = new float[16];
+    private final float[] viewMatrix = new float[16];
+
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
 
+
+        defineProjection(width, height);
+
+//        int windowW = TestUtil.getScreen(null).getWidth();
+//        int windowH = TestUtil.getScreen(null).getHeight();
+//        defineProjection(windowW, windowH);
+
     }
+
+
+    /**
+     *
+     *  define projection
+     *
+     *  This transformation adjusts the coordinates of drawn objects based on the width and height of the GLSurfaceView where they are displayed.
+     *  Without this calculation, objects drawn by OpenGL ES are skewed by the unequal proportions of the view window.
+     *
+     * @param width
+     * @param height
+     */
+    private void defineProjection(int width, int height) {
+        GLES20.glViewport(0, 0, width, height);
+        float ratio = ((float)width) / height;
+        // this projection matrix is applied to object coordinates
+        // in the onDrawFrame() method
+        Matrix.frustumM(projectionMatrix, 0, -ratio, ratio, -1, 1, 3, 7);
+    }
+
+
 
     private int mPositionHandle;
     private int mColorHandle;
     //顶点个数
     @Override
     public void onDrawFrame(GL10 gl) {
+
+
+        // apply camera view ....
+
+
+        // Set the camera position (View matrix)
+        Matrix.setLookAtM(viewMatrix, 0, 0, 0, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+
+        // Calculate the projection and view transformation
+        Matrix.multiplyMM(vPMatrix, 0, projectionMatrix, 0, viewMatrix, 0);
+
+
+
+
+
         //将程序加入到OpenGLES2.0环境
         GLES20.glUseProgram(mProgram);
 

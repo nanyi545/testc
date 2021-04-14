@@ -138,9 +138,19 @@ import xcrash.XCrash;
 
 public class App extends Application {
 
+    public static App getInstance(){
+        return instance;
+    }
+
+    static App instance;
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        instance = this;
+
+
 //        File f = new File("/sdcard/Download/textc_x");
 
         //   /storage/self/primary/Android/data/com.example.testc2/cache

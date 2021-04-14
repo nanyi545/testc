@@ -12,6 +12,8 @@ import android.view.WindowManager;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.testc2.App;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -45,7 +47,13 @@ public class TestUtil {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public static Size getScreen(Context c){
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        WindowManager wm = (WindowManager) c.getSystemService(Context.WINDOW_SERVICE);
+        Context app = null;
+        if(c == null){
+            app = App.getInstance();
+        } else {
+            app = c.getApplicationContext();
+        }
+        WindowManager wm = (WindowManager) app.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         display.getRealMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
