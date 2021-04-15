@@ -1,1 +1,1 @@
-include ':app', ':lib1'
+include ':app', ':lib1', ':smartcamera'
