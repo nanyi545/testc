@@ -74,10 +74,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         // open gl
-        Intent i =new Intent(MainActivity.this, OpenGl1Activity.class);
-        startActivity(i);
-//        Intent i =new Intent(MainActivity.this, CameraOpenGlActivity.class);
+//        Intent i =new Intent(MainActivity.this, OpenGl1Activity.class);
 //        startActivity(i);
+        Intent i =new Intent(MainActivity.this, CameraOpenGlActivity.class);
+        startActivity(i);
 
     }
 

@@ -58,9 +58,9 @@ public class ScreenFilter {
     };
 //    float[] TEXTURE = {
 //            0.0f, 0.0f,
-//            0.5f, 0.0f,
-//            0.0f, 0.5f,
-//            0.5f, 0.5f
+//            0.8f, 0.0f,
+//            0.0f, 0.8f,
+//            0.8f, 0.8f
 //    };
 
 
@@ -74,19 +74,17 @@ public class ScreenFilter {
         textureBuffer.clear();
         textureBuffer.put(TEXTURE);
 
-//
         String vertexSharder = OpenGLUtils.readRawTextFile(context, R.raw.camera_vert);
-        //  先编译    再链接   再运行  程序
         String fragSharder = OpenGLUtils.readRawTextFile(context, R.raw.camera_frag1_1);
-
+        //  先编译    再链接   再运行  程序
 
         //cpu 1   没有用  索引     program gpu
         program = OpenGLUtils.loadProgram(vertexSharder, fragSharder);
 
-        vPosition = GLES20.glGetAttribLocation(program, "vPosition");//0
+        vPosition = GLES20.glGetAttribLocation(program, "vPosition"); //0
 
         //接收纹理坐标，接收采样器采样图片的坐标
-        vCoord = GLES20.glGetAttribLocation(program, "vCoord");//1
+        vCoord = GLES20.glGetAttribLocation(program, "vCoord"); //1
 
         //采样点的坐标
         vTexture = GLES20.glGetUniformLocation(program, "vTexture");
@@ -102,9 +100,11 @@ public class ScreenFilter {
         mHeight = height;
     }
 
+
     public void setTransformMatrix(float[] mtx) {
         this.mtx = mtx;
     }
+
 
     //摄像头数据  渲染   摄像  开始渲染
     public void onDraw(int texture) {
@@ -120,9 +120,10 @@ public class ScreenFilter {
         //        type  指定数组中每个组件的数据类型。
         //        接受符号常量GL_FLOAT  GL_BYTE，GL_UNSIGNED_BYTE，GL_SHORT，GL_UNSIGNED_SHORT或GL_FIXED。 初始值为GL_FLOAT。
 //      normalized    指定在访问定点数据值时是应将其标准化（GL_TRUE）还是直接转换为定点值（GL_FALSE）。
-//cpu 和 GPU
-//        反人类的操作
+
+
         GLES20.glVertexAttribPointer(vPosition, 2, GL_FLOAT, false, 0, vertexBuffer);
+
 //        生效
         GLES20.glEnableVertexAttribArray(vPosition);
 
@@ -143,6 +144,8 @@ public class ScreenFilter {
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, texture);
         GLES20.glUniform1i(vTexture, 0);
         GLES20.glUniformMatrix4fv(vMatrix, 1, false, mtx, 0);
+
+
 //通知画画，
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
     }

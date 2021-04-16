@@ -7,6 +7,26 @@ import android.opengl.Matrix;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+
+/**
+ *
+ * https://sites.google.com/site/pavelkolodin/js-javascript/webgl
+ *
+ *
+ attribute:VERTEX	   Global variables.May change per vertex. Passed from app to vertex shader.
+ uniform:ALL     Global variables. May change per primitive (pixel?). Passed from app to shaders.
+ varying:ALL     Interpolating data between VERTEX and FRAGMENT shaders. Write in vertex. RO in fragment shader.
+ const:ALL	   	 Compile-time constant.
+
+
+
+
+ *
+ *
+ *
+ *
+ *
+ */
 public class MyGLRenderer implements GLSurfaceView.Renderer {
 
     public static int loadShader(int type, String shaderCode){

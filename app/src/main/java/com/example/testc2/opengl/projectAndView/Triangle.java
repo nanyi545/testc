@@ -49,6 +49,7 @@ public class Triangle {
 
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
+
     static float triangleCoords[] = {   // in counterclockwise order  ????
             0.5f,  0.5f, 0.0f, // top   ,  first triangle
             -0.5f, -0.5f, 0.0f, // bottom left
@@ -97,10 +98,8 @@ public class Triangle {
          */
 
 
-        int vertexShader = MyGLRenderer.loadShader(GLES20.GL_VERTEX_SHADER,
-                vertexShaderCode);
-        int fragmentShader = MyGLRenderer.loadShader(GLES20.GL_FRAGMENT_SHADER,
-                fragmentShaderCode);
+        int vertexShader = MyGLRenderer.loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
+        int fragmentShader = MyGLRenderer.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
 
         // create empty OpenGL ES Program
         mProgram = GLES20.glCreateProgram();
@@ -117,6 +116,88 @@ public class Triangle {
     }
 
 
+    /**
+     *
+     * flow
+     *  ----------init------------
+     *  0
+     *      // number of coordinates per vertex in this array
+     *     static final int COORDS_PER_VERTEX = 3;
+     *
+     *      // vertex count
+     *      private final int vertexCount = triangleCoords.length / COORDS_PER_VERTEX;
+     *
+     *      // 4 bytes per vertex  ---> total bytes per vertex
+     *      private final int vertexStride = COORDS_PER_VERTEX * 4;
+     *
+     *
+     *
+     *   1 load shader
+     *   2 create program:    int mProgram = GLES20.glCreateProgram();
+     *   3 attach shader:     GLES20.glAttachShader(mProgram, vertexShader);
+     *                        GLES20.glAttachShader(mProgram, fragmentShader);
+     *
+     *   4 creates OpenGL ES program executables:
+     *
+     *                        GLES20.glLinkProgram(mProgram);
+     *  ----------end of init------------
+     *
+     *  ----------draw---------------
+     *   4.1  viewport
+     *                  GLES20.glViewport(0, 0, mWidth, mHeight);
+     *
+     *   5  Add program to OpenGL ES environment :
+     *
+     *                  GLES20.glUseProgram(mProgram);
+     *
+     *   6  pass in params of shader programs:
+     *
+     *                  6.1  attribute :
+     *
+     *                          // get handle to vertex shader's vPosition member
+     *                             int positionHandle = GLES20.glGetAttribLocation(mProgram, "vPosition");
+     *
+     *                          // Enable a handle to the triangle vertices
+     *                             GLES20.glEnableVertexAttribArray(positionHandle);
+     *
+     *                          // Prepare the triangle coordinate data
+     *                             GLES20.glVertexAttribPointer(positionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, vertexBuffer);
+     *
+     *                  6.2   uniform :
+     *                          // get handle to uniform member
+     *                             int colorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
+     *
+     *                          // Set color for drawing the triangle
+     *                             GLES20.glUniform4fv(colorHandle, 1, color, 0);
+     *
+     *
+     *                        uniform matrix:
+     *                          // get handle to shape's transformation matrix
+     *                             int vPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
+     *
+     *                          // Pass the projection and view transformation to the shader
+     *                             GLES20.glUniformMatrix4fv(vPMatrixHandle, 1, false, mvpMatrix, 0);
+     *
+     *
+     *
+     *     7   final step
+     *
+     *         // Draw the triangle
+     *              GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount);
+     *
+     *                  GL_TRIANGLES、GL_TRIANGLE_STRIP、GL_TRIANGLE_FAN -----> 
+     *                  https://blog.csdn.net/u013749540/article/details/91826613
+     *
+     *
+     *
+     *         // Disable vertex array
+     *              GLES20.glDisableVertexAttribArray(positionHandle);
+     *
+     *
+     *
+     *  ----------end of draw---------
+     *
+     */
 
 
 
