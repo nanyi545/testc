@@ -25,6 +25,7 @@ import com.example.testc2.encoder1.EncoderActivity1;
 import com.example.testc2.gif.GifHandler;
 import com.example.testc2.opengl.OpenGl1Activity;
 import com.example.testc2.opengl.camera_gl.CameraOpenGlActivity;
+import com.example.testc2.opengl.player_gl.PlayerGLActivity;
 import com.example.testc2.rtmp.RtmpBilibiliActivity;
 import com.example.testc2.selector.Selector2Activity;
 import com.example.testc2.videochat1.VideoChatPush;
@@ -76,9 +77,10 @@ public class MainActivity extends AppCompatActivity {
         // open gl
 //        Intent i =new Intent(MainActivity.this, OpenGl1Activity.class);
 //        startActivity(i);
-        Intent i =new Intent(MainActivity.this, CameraOpenGlActivity.class);
+//        Intent i =new Intent(MainActivity.this, CameraOpenGlActivity.class);
+//        startActivity(i);
+        Intent i =new Intent(MainActivity.this, PlayerGLActivity.class);
         startActivity(i);
-
     }
 
 

@@ -185,7 +185,7 @@ public class Triangle {
      *         // Draw the triangle
      *              GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount);
      *
-     *                  GL_TRIANGLES、GL_TRIANGLE_STRIP、GL_TRIANGLE_FAN -----> 
+     *                  GL_TRIANGLES、GL_TRIANGLE_STRIP、GL_TRIANGLE_FAN ----->
      *                  https://blog.csdn.net/u013749540/article/details/91826613
      *
      *
@@ -196,6 +196,14 @@ public class Triangle {
      *
      *
      *  ----------end of draw---------
+     *
+     *  ****** 生成一个采样  ：
+     *     FragmentShader:    uniform samplerExternalOES vTexture;
+     *     java:              GLES20.glUniform1i(vTexture, 0);
+     *
+     *         GLES20.glActiveTexture(GL_TEXTURE0);
+     *         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, texture);
+     *         GLES20.glUniform1i(vTexture, 0);
      *
      */
 
