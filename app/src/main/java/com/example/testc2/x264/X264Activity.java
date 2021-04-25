@@ -63,8 +63,11 @@ import java.util.concurrent.locks.ReentrantLock;
  * CANNOT LINK EXECUTABLE: empty/missing DT_HASH in "./hello" (built with --hash-style=gnu?)
  *
  *
+ *
+ *
+ *
  * ---x264:script
- * source ./mac.sh
+ * source ./mac.sh    ----> this has issue ???
  *
  *
  *
@@ -98,7 +101,7 @@ public class X264Activity extends AppCompatActivity {
     int height = 640;
     private HandlerThread handlerThread;
     //    直播中  480 640
-    private CameraX.LensFacing currentFacing = CameraX.LensFacing.BACK;
+    private CameraX.LensFacing currentFacing = CameraX.LensFacing.FRONT;
     private TextureView textureView;
 
     public boolean checkPermission() {

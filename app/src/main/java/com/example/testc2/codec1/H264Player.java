@@ -65,6 +65,7 @@ public class H264Player implements Runnable {
 
         } catch ( Exception e) {
             e.printStackTrace();
+            Log.d(TAG,"err:"+Log.getStackTraceString(e));
         }
     }
 

@@ -16,7 +16,7 @@ import java.io.IOException;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-public class CameraRender implements GLSurfaceView.Renderer, Preview.OnPreviewOutputUpdateListener, SurfaceTexture.OnFrameAvailableListener {
+public class CameraRender implements GLSurfaceView.Renderer {
     private static final String TAG = "david";
     private CameraHelper cameraHelper;
     private CameraView cameraView;
@@ -33,7 +33,7 @@ public class CameraRender implements GLSurfaceView.Renderer, Preview.OnPreviewOu
         this.cameraView = cameraView;
         LifecycleOwner lifecycleOwner = (LifecycleOwner) cameraView.getContext();
 //        打开摄像头
-        cameraHelper = new CameraHelper(lifecycleOwner, this);
+        cameraHelper = new CameraHelper(lifecycleOwner, previewOutputUpdateListener);
 
     }
 //textures 主线程    1   EGL线程
@@ -45,7 +45,11 @@ public class CameraRender implements GLSurfaceView.Renderer, Preview.OnPreviewOu
 //        让 SurfaceTexture   与 Gpu  共享一个数据源  0-31
         mCameraTexure.attachToGLContext(textures[0]);
 //监听摄像头数据回调，
-        mCameraTexure.setOnFrameAvailableListener(this);
+        mCameraTexure.setOnFrameAvailableListener(onFrameAvailableListener);
+
+
+
+
         cameraFilter = new CameraFilter(cameraView.getContext());
         Context context = cameraView.getContext();
         recordFilter = new RecordFilter(context);
@@ -107,17 +111,26 @@ public class CameraRender implements GLSurfaceView.Renderer, Preview.OnPreviewOu
         mRecorder.fireFrame(id,mCameraTexure.getTimestamp());
     }
 //
-    @Override
-    public void onUpdated(Preview.PreviewOutput output) {
-//        摄像头预览到的数据 在这里
-        mCameraTexure=output.getSurfaceTexture();
-    }
+
+
+
+
+    Preview.OnPreviewOutputUpdateListener previewOutputUpdateListener = new Preview.OnPreviewOutputUpdateListener() {
+        @Override
+        public void onUpdated(Preview.PreviewOutput output) {
+            mCameraTexure=output.getSurfaceTexture();
+        }
+    };
+
+
 //当有数据 过来的时候
-    @Override
-    public void onFrameAvailable(SurfaceTexture surfaceTexture) {
 //一帧 一帧回调时
-        cameraView.requestRender();
-    }
+    SurfaceTexture.OnFrameAvailableListener onFrameAvailableListener = new SurfaceTexture.OnFrameAvailableListener() {
+        @Override
+        public void onFrameAvailable(SurfaceTexture surfaceTexture) {
+            cameraView.requestRender();
+        }
+    };
 
     public void startRecord(float speed) {
         try {
