@@ -3,6 +3,7 @@ package com.example.testc2.opengl;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.util.Log;
@@ -80,6 +81,13 @@ public class OpenGl1Activity extends AppCompatActivity {
         glSurfaceView = (GLSurfaceView) findViewById(R.id.glSurfaceView);
         //GLContext设置OpenGLES2.0
         glSurfaceView.setEGLContextClientVersion(2);
+
+
+        // ---enable opaque back ground -------
+        glSurfaceView.setZOrderOnTop(true);
+        glSurfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+        glSurfaceView.getHolder().setFormat(PixelFormat.RGBA_8888);
+
 
 //        glSurfaceView.setRenderer(new TriangleRender());
 //        glSurfaceView.setRenderer(new MyGLRenderer1());

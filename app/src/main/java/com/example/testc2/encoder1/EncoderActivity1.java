@@ -94,7 +94,7 @@ public class EncoderActivity1 extends AppCompatActivity {
         type = h265()?MediaFormat.MIMETYPE_VIDEO_HEVC:MediaFormat.MIMETYPE_VIDEO_AVC;
     }
     private boolean h265(){
-        return true;
+        return false;
     }
 
     private void initMediaCodec() {

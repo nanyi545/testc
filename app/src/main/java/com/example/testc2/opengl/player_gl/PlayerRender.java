@@ -1,97 +1,42 @@
 package com.example.testc2.opengl.player_gl;
 
-import android.content.Context;
 import android.graphics.SurfaceTexture;
+import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.Surface;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
-
-import com.example.testc2.R;
-import com.example.testc2.codec1.H264Player;
-import com.example.testc2.codec1.Player1Activity;
-import com.example.testc2.opengl.camera_gl.OpenGLUtils;
-
-import java.io.File;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import static android.opengl.GLES11Ext.GL_TEXTURE_EXTERNAL_OES;
-import static android.opengl.GLES20.GL_FLOAT;
-import static android.opengl.GLES20.GL_TEXTURE0;
-
 public class PlayerRender implements GLSurfaceView.Renderer {
+    private static final String TAG = "david";
 
+    private GLSurfaceView playerView;
+    private SurfaceTexture mCameraTexure;
 
-    Context c;
-    GLSurfaceView glSurfaceView;
+//    int
+private ScreenFilter screenFilter;
 
-    public PlayerRender(GLSurfaceView glSurfaceView) {
-        this.c = glSurfaceView.getContext();
-        this.glSurfaceView = glSurfaceView;
-    }
-
-
-    //    顶点着色器
-//    片元着色器
-    public int program;
-    //句柄  gpu中  vPosition
-    private int vPosition;
-    FloatBuffer textureBuffer; // 纹理坐标
-    private int vCoord;
-    private int vTexture;
-    private int vMatrix;
-    private int mWidth;
-    private int mHeight;
-    private float[] mtx;
-
-
-    //gpu顶点缓冲区
-    FloatBuffer vertexBuffer; //顶点坐标缓存区
-    float[] VERTEX = {
-            -1.0f, -1.0f,
-            1.0f, -1.0f,
-            -1.0f, 1.0f,
-            1.0f, 1.0f
-    };
-    float[] TEXTURE = {
-            0.0f, 0.0f,
-            1.0f, 0.0f,
-            0.0f, 1.0f,
-            1.0f, 1.0f
-    };
-
-
-
-
-
-    String TAG = "PlayerRender";
 
     private  int[] textures;
+    float[] mtx = new float[16];
+    public PlayerRender(GLSurfaceView playerView) {
+        this.playerView = playerView;
 
-    SurfaceTexture.OnFrameAvailableListener onFrameAvailableListener = new SurfaceTexture.OnFrameAvailableListener() {
-        @Override
-        public void onFrameAvailable(SurfaceTexture surfaceTexture) {
-            Log.d("MyGl","--aa   onFrameAvailable-");
-            glSurfaceView.requestRender();
-        }
-    };
+    }
 
-    SurfaceTexture st;
+    int mTextureID;
+    SurfaceTexture mSurfaceTexture;
+    Boolean updateSurface = false;
+    Surface mDecoderSurface;
 
-    H264Player h264Player;
 
     Handler mainHandler = new Handler(Looper.getMainLooper()){
         @Override
@@ -99,18 +44,12 @@ public class PlayerRender implements GLSurfaceView.Renderer {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 111:
-                    File sd = Environment.getExternalStorageDirectory();
-                    File folder = new File(sd,"aaa");
-                    if(!folder.exists()){
-                        folder.mkdirs();
-                    }
-                    String fileName = H264Player.getFileName();
-                    final File f = new File(folder,fileName);
 
-                    h264Player = new H264Player(c,
-                            f.getAbsolutePath(),
-                            new Surface(st));
-                    h264Player.play();
+                    Log.i(TAG, "onSurfaceReady  线程: " + Thread.currentThread().getName());
+
+                    if(onSurfacePreparedCallBack!=null){
+                        onSurfacePreparedCallBack.onSurfaceReady(mDecoderSurface, mSurfaceTexture);
+                    }
 
                     break;
             }
@@ -118,56 +57,109 @@ public class PlayerRender implements GLSurfaceView.Renderer {
     };
 
 
-
-
-    private void checkGlError(String op) {
-        int error;
-        while ((error = GLES20.glGetError()) != GLES20.GL_NO_ERROR) {
-            Log.e(TAG, op + ": glError " + error);
-            throw new RuntimeException(op + ": glError " + error);
-        }
+    public interface OnSurfacePreparedCallBack {
+        void onSurfaceReady(Surface s, SurfaceTexture st);
     }
 
+    OnSurfacePreparedCallBack onSurfacePreparedCallBack;
+
+    public void setOnSurfacePreparedCallBack(OnSurfacePreparedCallBack onSurfacePreparedCallBack) {
+        this.onSurfacePreparedCallBack = onSurfacePreparedCallBack;
+    }
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        Log.d("MyGl","--PlayerRender   onSurfaceCreated  in:"+Thread.currentThread().getName());
 
-//        textures = new int[1];
-//        GLES20.glGenTextures(1, textures, 0);
-//
-//        int mTextureID = textures[0];
-//
-//        GLES20.glBindTexture(GL_TEXTURE_EXTERNAL_OES, mTextureID);
-//        checkGlError("glBindTexture mTextureID");
-//        GLES20.glTexParameterf(GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_MIN_FILTER,
-//                GLES20.GL_NEAREST);
-//        GLES20.glTexParameterf(GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_MAG_FILTER,
-//                GLES20.GL_LINEAR);
-//
-//        st = new SurfaceTexture(mTextureID);
-//        st.setOnFrameAvailableListener(onFrameAvailableListener);
-//
-//        mainHandler.sendEmptyMessage(111);
+//        GLES20.glClearColor( 0, 0, 0, 0 );
+        GLES20.glBlendFunc(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+        GLES20.glEnable(GLES20.GL_BLEND);
 
+
+        Log.i(TAG, "onSurfaceCreated  线程: " + Thread.currentThread().getName());
+        textures = new int[1];
+        screenFilter = new ScreenFilter(playerView.getContext());
+
+
+        // Prepare texture handler
+        GLES20.glGenTextures(1, textures, 0);
+
+        mTextureID = textures[0];
+        GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, mTextureID);
+
+        GLES20.glTexParameterf(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
+        GLES20.glTexParameterf(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+
+        GLES20.glTexParameteri(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
+        GLES20.glTexParameteri(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
+
+        // Link the texture handler to surface texture
+        mSurfaceTexture = new SurfaceTexture(mTextureID);
+//        mSurfaceTexture.setDefaultBufferSize(320, 240);
+
+
+        mSurfaceTexture.setOnFrameAvailableListener(new SurfaceTexture.OnFrameAvailableListener() {
+            @Override
+            public void onFrameAvailable(SurfaceTexture surfaceTexture) {
+                Log.i(TAG, "onFrameAvailable  线程: " + Thread.currentThread().getName());
+                synchronized(updateSurface) {
+                    updateSurface = true;
+                }
+                playerView.requestRender();
+            }
+        });
+
+
+        mainHandler.sendEmptyMessage(111);
+
+        // Create decoder surface
+        mDecoderSurface = new Surface(mSurfaceTexture);
 
 
     }
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
-        mWidth = width;
-        mHeight = height;
-
-        Log.d("MyGl","--PlayerRender   onSurfaceChanged  width:"+width+"   height:"+height);
-
+//
+        screenFilter.setSize(width,height);
+        Log.i(TAG, "onSurfaceChanged  width:"+width+"  height:"+height  );
+        Log.i("info", "onSurfaceChanged  width:"+width+"  height:"+height  );
     }
 
+
+//  有数据的时候给
     @Override
     public void onDrawFrame(GL10 gl) {
-        Log.d("MyGl","--PlayerRender   onDrawFrame-");
+        Log.i(TAG, "onDrawFrame  线程: " + Thread.currentThread().getName()+"  updateSurface:"+updateSurface);
+
+        if(!updateSurface){
+            return;
+        }
+        GLES20.glClear( GLES20.GL_COLOR_BUFFER_BIT );
 
 
+//        摄像头的数据  ---》
+//        更新摄像头的数据  给了  gpu
+        mSurfaceTexture.updateTexImage();
+//        不是数据
+
+        printMtx("pre get");
+        mSurfaceTexture.getTransformMatrix(mtx);
+        printMtx("after get");
+
+        screenFilter.setTransformMatrix(mtx);
+//int   数据   byte[]
+        screenFilter.onDraw(textures[0]);
     }
+
+
+    private void printMtx(String info){
+        StringBuilder sb = new StringBuilder();
+        for (float f:mtx){
+            sb.append("-"+f);
+        }
+        Log.i("info", "printMtx_"+info+":"+sb.toString()  );
+    }
+
+
 
 }
