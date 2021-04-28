@@ -1,4 +1,4 @@
-package com.example.testc2.cam2test;
+package com.hehe.smartcamera.camera2;
 
 import android.Manifest;
 import android.content.Context;
@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
+import android.util.Range;
 import android.util.Size;
 import android.view.Surface;
 import android.view.TextureView;
@@ -27,8 +28,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
-
-import com.example.testc2.util.TestUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,9 +50,9 @@ public class Camera2Helper {
     private Camera2Listener camera2Listener;
 
 
-    public Camera2Helper(Context context) {
+    public Camera2Helper(Context context, Camera2Listener listener) {
         this.context = context;
-        camera2Listener = (Camera2Listener) context;
+        camera2Listener = listener;
         cameraManager = (CameraManager)context.getSystemService(Context.CAMERA_SERVICE);
         CamerUtil.printCams(cameraManager);
     }
@@ -99,7 +98,7 @@ public class Camera2Helper {
 //            以及获取图片输出的尺寸和预览画面输出的尺寸
 // 支持哪些格式               获取到的  摄像预览尺寸    textView
             StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-            TestUtil.LogToFile("camId:"+cameraUsed,map.toString());
+
 
 
             ArrayList<Size> sizes = new ArrayList<Size>(Arrays.asList(map.getOutputSizes(SurfaceTexture.class)));
@@ -164,21 +163,23 @@ public class Camera2Helper {
 //            创建有一个Surface   画面  ---》1
 
             Surface surface = new Surface(texture);
-
-//            预览 还不够
-            mPreviewRequestBuilder=  mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-
-//
+//            mPreviewRequestBuilder=  mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
+            mPreviewRequestBuilder=  mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
             mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-//预览的TexetureView
-            mPreviewRequestBuilder.addTarget(surface);
 
-//必须设置  不然  文件   -----》
+            Range<Integer>[] fps = new Range[1];
+            fps[0] = Range.create(20,30);
+
+
+            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE,fps[0]);
+
+
+
+            mPreviewRequestBuilder.addTarget(surface);
             mPreviewRequestBuilder.addTarget(mImageReader.getSurface());
-            //            保存摄像头   数据  ---H264码流
-//  各种回调了
-//建立 链接     目的  几路 数据出口
+
             mCameraDevice.createCaptureSession(Arrays.asList(surface, mImageReader.getSurface()),mCaptureStateCallback,mBackgroundHandler);
+
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -211,34 +212,38 @@ public class Camera2Helper {
         }
     };
 
-        public synchronized void openCamera() {
-
-
-
-    }
-
-    int frameDur = 1*1000*1000/15;
-
     private class OnImageAvailableListenerImpl implements ImageReader.OnImageAvailableListener {
         private byte[] y;
         private byte[] u;
         private byte[] v;
         long initDelta  = 11;
         long frames = 0;
+        long startTime;
+        long elapseTime;// us !!!, not ms
+
+        private void setupTime(){
+            if(frames==0){
+                startTime = System.currentTimeMillis() * 1000 ;
+                elapseTime = 0 + initDelta;
+            } else {
+                elapseTime = System.currentTimeMillis() * 1000 - startTime + initDelta;
+            }
+        }
 
 //        摄像 回调应用层  onPreviewFrame(byte[] )  这里 拿哪里
         @Override
         public void onImageAvailable(ImageReader reader) {
 
+            setupTime();
 
-            Log.d("cammm","onImageAvailable:");
+            Log.d("cammm","onImageAvailable  frames:"+frames );
 //            不是设置回调了
            Image image= reader.acquireNextImage();
 
 
            //  android.graphics.ImageFormat.YUV_420_888
             /**
-             *    35 --> {@link android.graphics.ImageFormat.YUV_420_888}
+             *    35 --> {@link ImageFormat.YUV_420_888}
              */
             Log.d("cammm","image:"+(image==null)+" format:"+image.getFormat() );
 //            搞事情           image 内容转换成
@@ -250,7 +255,7 @@ public class Camera2Helper {
             int ylength = planes[0].getBuffer().limit() - planes[0].getBuffer().position();
             int ulength = planes[1].getBuffer().limit() - planes[1].getBuffer().position();
             int vlength = planes[2].getBuffer().limit() - planes[2].getBuffer().position();
-            Log.d("cammm","-----  ylength:"+ylength+"   ulength:"+ulength+"   vlength:"+vlength);
+            Log.d("cammm","-----  ylength:"+ylength+"   ulength:"+ulength+"   vlength:"+vlength+"   size:"+mPreviewSize+"  *:"+(mPreviewSize.getHeight()*mPreviewSize.getWidth()) );
 
 
             // 重复使用同一批byte数组，减少gc频率
@@ -272,7 +277,7 @@ public class Camera2Helper {
             if(camera2Listener!=null){
                 int rowStride = planes[0].getRowStride();
                 Log.d("cammm","-----  call on prev  rowStride:"+rowStride);
-                camera2Listener.onPreview(y, u, v, mPreviewSize, rowStride,(frames*frameDur+initDelta) );
+                camera2Listener.onPreview(y, u, v, mPreviewSize, rowStride, elapseTime );
                 frames++;
             }
 //良性循环
@@ -294,11 +299,14 @@ public class Camera2Helper {
 
 
     private Size getBestSupportedSize2() {
-            return new Size(640,400);
+            return new Size(640,480);
     }
 
 
     private Size getBestSupportedSize(List<Size> sizes) {
+        for(Size t:sizes){
+            Log.d("fff","size:"+t);
+        }
             if(true){
                 return getBestSupportedSize2();
             }
