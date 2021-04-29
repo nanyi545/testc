@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends AppCompatActivity {
+public class Camera2RecordActivity extends AppCompatActivity {
 
 
     private TextureView textureView;

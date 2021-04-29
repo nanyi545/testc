@@ -64,7 +64,7 @@ public class MediaEncoder {
             MediaFormat format = MediaFormat.createVideoFormat(getDecoderType(), size.getHeight(), size.getWidth());
             format.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Flexible);
             format.setInteger(MediaFormat.KEY_FRAME_RATE, 20);//
-            format.setInteger(MediaFormat.KEY_BIT_RATE, size.getWidth() * size.getHeight() * 2 );
+            format.setInteger(MediaFormat.KEY_BIT_RATE, size.getWidth() * size.getHeight() );
             format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 10);
             mediaCodec.configure(format, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
             mediaCodec.start();
@@ -134,10 +134,12 @@ public class MediaEncoder {
                 nv21_rotated = new byte[stride * previewSize.getHeight() * 3 / 2];
             }
 
-
+            long t1 = System.currentTimeMillis();
             ImageUtil.yuvToNv21(y, u, v, nv21, stride, previewSize.getHeight());
             ImageUtil.nv21_rotate_to_90(nv21, nv21_rotated, stride, previewSize.getHeight());
             byte[] temp = ImageUtil.nv21toNV12(nv21_rotated, nv12);
+            long ellapse = System.currentTimeMillis() - t1;
+            Log.d("diff","conversion time:"+ellapse);
 
             MediaCodec.BufferInfo info = new MediaCodec.BufferInfo();
 

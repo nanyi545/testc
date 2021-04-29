@@ -48,7 +48,7 @@ public class CameraRender implements GLSurfaceView.Renderer {
         mCameraTexure.setOnFrameAvailableListener(onFrameAvailableListener);
 
 
-        
+
         cameraFilter = new CameraFilter(cameraView.getContext());
         Context context = cameraView.getContext();
         recordFilter = new RecordFilter(context);

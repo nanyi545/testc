@@ -1,15 +1,14 @@
-package com.example.testc2.opengl.camera_gl;
+package com.hehe.smartcamera.opgl;
 
 import android.content.Context;
 import android.opengl.GLES20;
+import com.hehe.smartcamera.R;
 
-import com.example.testc2.R;
+public class SimpleFilter extends AbstractFilter {
 
-public class CameraFilter extends AbstractFboFilter {
 
-    private float[] mtx;
-    private int vMatrix;
-    public CameraFilter(Context context) {
+
+    public SimpleFilter(Context context) {
         super(context, R.raw.camera_vert, R.raw.camera_frag);
         vMatrix = GLES20.glGetUniformLocation(program, "vMatrix");
     }
@@ -19,11 +18,5 @@ public class CameraFilter extends AbstractFboFilter {
         super.beforeDraw();
         GLES20.glUniformMatrix4fv(vMatrix, 1, false, mtx, 0);
     }
-
-    @Override
-    public void setTransformMatrix(float[] mtx) {
-        this.mtx = mtx;
-    }
-
 
 }

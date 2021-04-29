@@ -299,7 +299,8 @@ public class Camera2Helper {
 
 
     private Size getBestSupportedSize2() {
-            return new Size(640,480);
+//        return new Size(640,480);
+        return new Size(1920,1080);
     }
 
 
