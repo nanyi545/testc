@@ -2,12 +2,14 @@ package com.hehe.smartcamera.opgl;
 
 import android.content.Context;
 import android.opengl.GLES20;
+
 import com.hehe.smartcamera.R;
 
-public class SimpleFilter extends AbstractFilter {
 
-    public SimpleFilter(Context context) {
-        super(context, R.raw.camera_vert, R.raw.camera_frag);
+public class CameraFilter extends AbstractFboFilter {
+
+    public CameraFilter(Context context) {
+        super(context, R.raw.camera_vert, R.raw.camera_frag1);
         vMatrix = GLES20.glGetUniformLocation(program, "vMatrix");
     }
 
@@ -15,6 +17,13 @@ public class SimpleFilter extends AbstractFilter {
     public void beforeDraw() {
         super.beforeDraw();
         GLES20.glUniformMatrix4fv(vMatrix, 1, false, mtx, 0);
+    }
+
+
+    @Override
+    public int onDraw(int texture) {
+        super.onDraw(texture);
+        return frameTextures[0];
     }
 
 }

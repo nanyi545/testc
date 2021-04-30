@@ -178,16 +178,11 @@ public class MediaEncoder {
 //                metaInfo.flags = 0;
 //                metaInfo.size = bufferSize;
 
-
-
                 muxer.writeSampleData(videoTrackIndex,byteBuffer,info);
-
-
                 mediaCodec.releaseOutputBuffer(outIndex, false);
             }
 
             Log.d("ccc","muxer:"+getState(muxer) );
-
 
         }
     };

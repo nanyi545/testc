@@ -11,7 +11,7 @@ import androidx.lifecycle.LifecycleOwner;
 public class CameraHelper {
 
     private HandlerThread handlerThread;
-    private CameraX.LensFacing currentFacing = CameraX.LensFacing.FRONT;
+    private CameraX.LensFacing currentFacing = CameraX.LensFacing.BACK;
     private Preview.OnPreviewOutputUpdateListener listener;
 
 
@@ -26,7 +26,8 @@ public class CameraHelper {
     private Preview getPreView() {
         // 分辨率并不是最终的分辨率，CameraX会自动根据设备的支持情况，结合你的参数，设置一个最为接近的分辨率
         PreviewConfig previewConfig = new PreviewConfig.Builder()
-                .setTargetResolution(new Size(640, 480))
+//                .setTargetResolution(new Size(640, 480))
+                .setTargetResolution(new Size(1920,1080))
                 .setLensFacing(currentFacing) //前置或者后置摄像头
                 .build();
 //        要不  得到他的数据

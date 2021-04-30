@@ -55,7 +55,7 @@ import java.io.File;
 public class MainActivity extends AppCompatActivity {
 
 
-    private boolean gotoOtherPage = false;
+    private boolean gotoOtherPage = true;
 
     private void toOtherPage() {
         if (!gotoOtherPage) {
@@ -64,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         // nested scroll
-        Intent i =new Intent(MainActivity.this, NestedScrollActivity.class);
-        startActivity(i);
+//        Intent i =new Intent(MainActivity.this, NestedScrollActivity.class);
+//        startActivity(i);
 
 
         // selector
@@ -78,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
         // open gl
 //        Intent i =new Intent(MainActivity.this, OpenGl1Activity.class);
 //        startActivity(i);
-//        Intent i =new Intent(MainActivity.this, CameraOpenGlActivity.class);
-//        startActivity(i);
+        Intent i =new Intent(MainActivity.this, CameraOpenGlActivity.class);
+        startActivity(i);
 //        Intent i =new Intent(MainActivity.this, PlayerGLActivity.class);
 //        startActivity(i);
     }

@@ -66,7 +66,6 @@ public class CameraRender implements GLSurfaceView.Renderer {
         mRecorder = new MediaRecorder(cameraView.getContext(), path,
                 EGL14.eglGetCurrentContext(),
                 480, 640);
-
     }
 
     @Override
