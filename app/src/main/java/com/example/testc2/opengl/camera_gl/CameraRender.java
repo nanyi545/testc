@@ -95,12 +95,12 @@ public class CameraRender implements GLSurfaceView.Renderer {
 //        显示到屏幕
 
 
-        id =  soulFilter.onDraw(id);
+//        id = soulFilter.onDraw(id);
 //        id = splitFilter.onDraw(id);
 
 
 //        是一样的
-        id = recordFilter.onDraw(id);
+//        id = recordFilter.onDraw(id);
 
 
 //        拿到了fbo的引用   ---》  编码视频      输出  直播推理

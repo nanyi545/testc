@@ -7,5 +7,9 @@ uniform samplerExternalOES vTexture;
 void main(){
 //Opengl 自带函数
     vec4 rgba = texture2D(vTexture,aCoord);
+
     gl_FragColor=vec4(rgba.r,rgba.g,rgba.b,rgba.a);
+
+    //float f = (rgba.r + rgba.g + rgba.b)/3.0;
+    //gl_FragColor=vec4(f,f,f,1.0);
 }
