@@ -10,13 +10,13 @@ void main(){
     vec4 rgba = texture2D(vTexture,aCoord);
 
     // 尽量不要用 if
-//    if( aCoord.x>0.5 ){
-//        float color=(rgba.r + rgba.g + rgba.b) / 3.0;
-//        vec4 tempColor=vec4(color,color,color,1);
-//        gl_FragColor=tempColor;
-//    } else {
-//        gl_FragColor=rgba;
-//    }
+    if( aCoord.x>0.5 ){
+        float color=(rgba.r + rgba.g + rgba.b) / 3.0;
+        vec4 tempColor=vec4(color,color,color,1);
+        gl_FragColor=tempColor;
+    } else {
+        gl_FragColor=rgba;
+    }
 
 
     // 以下和if等效

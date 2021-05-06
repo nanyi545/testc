@@ -35,6 +35,10 @@ public class CameraRender implements GLSurfaceView.Renderer {
     AbstractFilter filter;
 
 
+//    private MediaRecorder mRecorder;
+    private MediaRecorder1 mRecorder;
+
+
     public CameraRender(GLSurfaceView cameraView) {
         this.cameraView = cameraView;
         LifecycleOwner lifecycleOwner = (LifecycleOwner) cameraView.getContext();
@@ -51,10 +55,21 @@ public class CameraRender implements GLSurfaceView.Renderer {
         filter = new CameraFilter(cameraView.getContext());
         simpleFilter = new SimpleFilter(cameraView.getContext());
 
+
+
     }
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
+
+//        mRecorder = new MediaRecorder(cameraView.getContext(), "",
+//                EGL14.eglGetCurrentContext(),
+//                width, height);
+
+        mRecorder = new MediaRecorder1(cameraView.getContext(), Environment.getExternalStorageDirectory()+"/aaa/t.mp4",
+                EGL14.eglGetCurrentContext(),
+                width, height);
+
         Log.i(TAG, "onSurfaceChanged: " + Thread.currentThread().getName());
         filter.setSize(width,height);
         simpleFilter.setSize(width,height);
@@ -73,6 +88,8 @@ public class CameraRender implements GLSurfaceView.Renderer {
         filter.setTransformMatrix(mtx);
         int id = filter.onDraw(textures[0]);
         id = simpleFilter.onDraw(id);
+
+        mRecorder.fireFrame(id, mCameraTexure.getTimestamp());
 
     }
 
@@ -124,5 +141,19 @@ public class CameraRender implements GLSurfaceView.Renderer {
             cameraView.requestRender();
         }
     };
+
+
+
+    public void startRecord(float speed) {
+        try {
+            mRecorder.start(speed);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void stopRecord() {
+        mRecorder.stop();
+    }
+
 
 }

@@ -15,8 +15,11 @@ public class EnterActivity extends AppCompatActivity {
     }
 
     private void jump() {
+        // camera2 ---> record
 //        Intent i = new Intent(this,Camera2RecordActivity.class);
 //        startActivity(i);
+
+        // cameraX ---> opengl FBO record
         Intent i = new Intent(this,GlRecordActivity.class);
         startActivity(i);
     }

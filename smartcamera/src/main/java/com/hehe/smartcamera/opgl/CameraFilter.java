@@ -9,7 +9,8 @@ import com.hehe.smartcamera.R;
 public class CameraFilter extends AbstractFboFilter {
 
     public CameraFilter(Context context) {
-        super(context, R.raw.camera_vert, R.raw.camera_frag1);
+//        super(context, R.raw.camera_vert, R.raw.camera_frag1);
+        super(context, R.raw.camera_vert, R.raw.camera_frag);
         vMatrix = GLES20.glGetUniformLocation(program, "vMatrix");
     }
 

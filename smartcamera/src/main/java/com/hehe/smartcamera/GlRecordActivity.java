@@ -20,5 +20,19 @@ public class GlRecordActivity extends AppCompatActivity {
         surface.setEGLContextClientVersion(2);
         render = new CameraRender(surface);
         surface.setRenderer(render);
+
+        surface.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                render.startRecord(1.0f);
+            }
+        },2000);
+        surface.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                render.stopRecord();
+            }
+        },18000);
+
     }
 }

@@ -1,4 +1,4 @@
-package com.example.testc2.opengl.camera_gl;
+package com.hehe.smartcamera.opgl;
 
 import android.content.Context;
 import android.opengl.EGL14;
@@ -28,13 +28,11 @@ public class EGLEnv {
             throw new RuntimeException("eglGetDisplay failed");
         }
 
-//        100%  固定代码
         // 初始化顯示窗口
         int[] version = new int[2];
         if(!EGL14.eglInitialize(mEglDisplay, version,0,version,1)) {
             throw new RuntimeException("eglInitialize failed");
         }
-
 
         // 配置 属性选项
         int[] configAttribs = {
