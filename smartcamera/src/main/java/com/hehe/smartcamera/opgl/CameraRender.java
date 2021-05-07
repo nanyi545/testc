@@ -55,8 +55,6 @@ public class CameraRender implements GLSurfaceView.Renderer {
         filter = new CameraFilter(cameraView.getContext());
         simpleFilter = new SimpleFilter(cameraView.getContext());
 
-
-
     }
 
     @Override
@@ -77,6 +75,8 @@ public class CameraRender implements GLSurfaceView.Renderer {
     }
 
 
+    long preTimeStamp = 0;
+
     @Override
     public void onDrawFrame(GL10 gl) {
         Log.i(TAG, "线程: " + Thread.currentThread().getName());
@@ -87,11 +87,26 @@ public class CameraRender implements GLSurfaceView.Renderer {
 
         filter.setTransformMatrix(mtx);
         int id = filter.onDraw(textures[0]);
-        id = simpleFilter.onDraw(id);
+//        id = simpleFilter.onDraw(id);
 
-        mRecorder.fireFrame(id, mCameraTexure.getTimestamp());
+
+        long textureTime = mCameraTexure.getTimestamp();
+        /**
+         *
+         * 多次onDrawFrame回调， mCameraTexure.getTimestamp()的返回值相同  ---->
+         *
+         * 摄像头预览的framerate 比 SurfaceView的onDrawFrame的frame rate 低
+         *
+         */
+        if(preTimeStamp!=textureTime){
+            preTimeStamp = textureTime;
+            mRecorder.fireFrame(id, textureTime);
+        } else {
+
+        }
 
     }
+
 
     Size previewOutputSize;
 

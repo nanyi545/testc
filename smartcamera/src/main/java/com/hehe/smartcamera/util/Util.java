@@ -21,8 +21,35 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
 
 public class Util {
+    static DecimalFormat DF;
+
+    static  {
+        DF = new DecimalFormat();
+        DF.setMaximumFractionDigits(2);
+    }
+
+
+    public static String getTime(long us){
+        int hour = (int) (us / (1000*1000*3600));
+        long hRemain = (us - hour * 1000*1000*3600L );
+        int min = (int) (hRemain / (1000*1000*60));
+        long mRemain = hRemain - min * 1000*1000*60L;
+        int sec = (int) (mRemain / (1000*1000));
+        long sRemain = mRemain - sec*1000*1000L;
+        StringBuilder sb = new StringBuilder();
+        sb.append(hour);
+        sb.append(":");
+        sb.append(min);
+        sb.append(":");
+        sb.append(sec);
+        sb.append(".");
+        sb.append(sRemain);
+        return sb.toString();
+    }
+
 
     public static void LogToFile(String name,String content){
         FileWriter writer = null;

@@ -8,11 +8,16 @@ import android.media.MediaMuxer;
 import android.opengl.EGLContext;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 import android.view.Surface;
 
+import com.hehe.smartcamera.GlRecordActivity;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MediaRecorder1 {
 
@@ -37,6 +42,11 @@ public class MediaRecorder1 {
     private int track;
     private float mSpeed;
 
+    String getFormat(){
+//        return MediaFormat.MIMETYPE_VIDEO_AVC;
+        return MediaFormat.MIMETYPE_VIDEO_HEVC;
+    }
+
     public MediaRecorder1(Context context, String path, EGLContext glContext, int width, int
             height) {
         mContext = context.getApplicationContext();
@@ -47,19 +57,20 @@ public class MediaRecorder1 {
     }
     public void start(float speed) throws IOException {
         mSpeed = speed;
-        MediaFormat format = MediaFormat.createVideoFormat(MediaFormat.MIMETYPE_VIDEO_AVC,
-                mWidth, mHeight);
+        MediaFormat format = MediaFormat.createVideoFormat(getFormat(), mWidth, mHeight);
+
         //颜色空间 从 surface当中获得
         format.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities
                 .COLOR_FormatSurface);
         //码率
-        format.setInteger(MediaFormat.KEY_BIT_RATE, mWidth * mHeight);
+        format.setInteger(MediaFormat.KEY_BIT_RATE, mWidth * mHeight/2);
         //帧率
-        format.setInteger(MediaFormat.KEY_FRAME_RATE, 25);
+        format.setInteger(MediaFormat.KEY_FRAME_RATE, 24);
         //关键帧间隔
-        format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 10);
+        format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, 12);
         //创建编码器
-        mMediaCodec = MediaCodec.createEncoderByType(MediaFormat.MIMETYPE_VIDEO_AVC);
+        mMediaCodec = MediaCodec.createEncoderByType(getFormat());
+
         //配置编码器
         mMediaCodec.configure(format, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
 //输入数据     byte[]    gpu  mediaprojection
@@ -89,9 +100,21 @@ public class MediaRecorder1 {
         });
 
     }
+
+
+    /**
+     *   will queue size grow indefinitely ??? .....
+     */
+    ConcurrentHashMap<Long,Object> queueMap = new ConcurrentHashMap<>();
+
+
+
 //    编码   textureId数据  并且编码
 //byte[]
     public void fireFrame(final int textureId, final long timestamp) {
+
+        Log.d(TAG,"fireFrame    isStart:"+isStart+"   timestamp:"+timestamp);
+
 //        主动拉去openglfbo数据
         if (!isStart) {
             return;
@@ -99,16 +122,24 @@ public class MediaRecorder1 {
         //录制用的opengl已经和handler的线程绑定了 ，所以需要在这个线程中使用录制的opengl
         mHandler.post(new Runnable() {
             public void run() {
+
+                queueMap.put(timestamp,"");
+
+                Message msg = Message.obtain(GlRecordActivity.getMainHandler(),10087);
+                msg.arg1 = queueMap.size();
+                GlRecordActivity.getMainHandler().sendMessage(msg);
+
+
 //                opengl   能 1  不能2  draw  ---》surface
                 eglEnv.draw(textureId,timestamp);
 //                获取对应的数据
-                codec(false);
+                codec(false,timestamp);
             }
         });
 
     }
 
-    private void codec(boolean endOfStream) {
+    private void codec(boolean endOfStream,long timeStamp) {
 //        数据什么时候
 //        编码
         //给个结束信号
@@ -121,10 +152,14 @@ public class MediaRecorder1 {
             int index = mMediaCodec.dequeueOutputBuffer(bufferInfo, 10_000);
 //            编码的地方
             //需要更多数据
-            Log.d(TAG,"index:"+index);
+            Log.d(TAG,"index:"+index+"  timeStamp:"+timeStamp);
             if (index == MediaCodec.INFO_TRY_AGAIN_LATER) {
                 //如果是结束那直接退出，否则继续循环
                 if (!endOfStream) {
+                    queueMap.remove(timeStamp);
+                    Message msg = Message.obtain(GlRecordActivity.getMainHandler(),10087);
+                    msg.arg1 = queueMap.size();
+                    GlRecordActivity.getMainHandler().sendMessage(msg);
                     break;
                 }
             } else if (index == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
@@ -168,12 +203,13 @@ public class MediaRecorder1 {
         }
     }
     public void stop() {
+        Log.d("timer","media recorder stop:");
         // 释放
         isStart = false;
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                codec(true);
+                codec(true,-1);
                 mMediaCodec.stop();
                 mMediaCodec.release();
                 mMediaCodec = null;
@@ -185,6 +221,10 @@ public class MediaRecorder1 {
                 mSurface = null;
                 mHandler.getLooper().quitSafely();
                 mHandler = null;
+                Message msg = Message.obtain(GlRecordActivity.getMainHandler(),10088);
+                msg.arg1 = queueMap.size();
+                GlRecordActivity.getMainHandler().sendMessage(msg);
+
             }
         });
     }
