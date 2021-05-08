@@ -76,10 +76,11 @@ public class CameraRender implements GLSurfaceView.Renderer {
 
 
     long preTimeStamp = 0;
+    int counter = 0;
+    int SKIP_FACTOR = 1;    // 2 : 帧率降一半  , 1 : 不变
 
     @Override
     public void onDrawFrame(GL10 gl) {
-        Log.i(TAG, "线程: " + Thread.currentThread().getName());
         mCameraTexure.updateTexImage();
         mCameraTexure.getTransformMatrix(mtx);
         simpleFilter.setTransformMatrix(mtx);
@@ -91,6 +92,9 @@ public class CameraRender implements GLSurfaceView.Renderer {
 
 
         long textureTime = mCameraTexure.getTimestamp();
+
+        Log.i(TAG, " ------ onDrawFrame  textureTime:" + textureTime);
+
         /**
          *
          * 多次onDrawFrame回调， mCameraTexure.getTimestamp()的返回值相同  ---->
@@ -99,8 +103,21 @@ public class CameraRender implements GLSurfaceView.Renderer {
          *
          */
         if(preTimeStamp!=textureTime){
+
+            // frame rate ---> preview frame rate决定
+            //  降一半 ？？
+            //  -----> 帧率降一半，好像视频大小影响很小（h265对非i帧压缩很高？）
+            int remain = counter % SKIP_FACTOR;
+
             preTimeStamp = textureTime;
-            mRecorder.fireFrame(id, textureTime);
+            Log.i(TAG, " ------  remain:"+remain+"  counter:"+counter+"  fireFrame:" + textureTime);
+
+            if(remain==0){
+                mRecorder.fireFrame(id, textureTime);
+            }
+
+            counter++;
+
         } else {
 
         }
@@ -150,10 +167,11 @@ public class CameraRender implements GLSurfaceView.Renderer {
     }
 
     SurfaceTexture.OnFrameAvailableListener onFrameAvailableListener = new SurfaceTexture.OnFrameAvailableListener() {
+
         @Override
         public void onFrameAvailable(SurfaceTexture surfaceTexture) {
-            Log.i(TAG, "onFrameAvailable: " + Thread.currentThread().getName());
-            cameraView.requestRender();
+            Log.i(TAG, " ------ onFrameAvailable: " + Thread.currentThread().getName()+ "---  equal:"+(mCameraTexure==surfaceTexture)+"  t:"+mCameraTexure.getTimestamp());
+//            cameraView.requestRender();
         }
     };
 

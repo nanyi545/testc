@@ -73,7 +73,7 @@ public class EGLEnv {
 //        mediaProjection.createVirtualDisplay()
 
 //        录屏推流
-        mEglSurface = EGL14.eglCreateWindowSurface(mEglDisplay, mEglConfig, surface, surface_attrib_list, 0);
+        mEglSurface = EGL14.eglCreateWindowSurface(mEglDisplay, mEglConfig,  surface, surface_attrib_list, 0);
         // mEglSurface == null
         if (mEglSurface == null){
             throw new RuntimeException("EGL error " + EGL14.eglGetError());

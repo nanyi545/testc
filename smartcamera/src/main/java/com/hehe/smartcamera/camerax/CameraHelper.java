@@ -1,8 +1,10 @@
 package com.hehe.smartcamera.camerax;
 
+import android.hardware.camera2.CaptureRequest;
 import android.os.HandlerThread;
 import android.util.Size;
 
+import androidx.camera.camera2.Camera2Config;
 import androidx.camera.core.CameraX;
 import androidx.camera.core.Preview;
 import androidx.camera.core.PreviewConfig;
