@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.player.PlayerActivity"></activity>
+        <activity android:name=".ui.cam2record.Cam2GlRecordActivity"></activity>
+        <activity android:name=".ui.player.PlayerActivity" />
         <activity android:name=".GlRecordActivity" />
         <activity android:name=".EnterActivity">
             <intent-filter>

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.hehe.smartcamera.ui.cam2record.Cam2GlRecordActivity;
 import com.hehe.smartcamera.ui.player.PlayerActivity;
 
 public class EnterActivity extends AppCompatActivity {
@@ -50,6 +51,12 @@ public class EnterActivity extends AppCompatActivity {
                 Intent ii = new Intent(this,PlayerActivity.class);
                 startActivity(ii);
                 break;
+            case R.id.btn3:
+                // player
+                Intent iii = new Intent(this, Cam2GlRecordActivity.class);
+                startActivity(iii);
+                break;
+
         }
     }
 }

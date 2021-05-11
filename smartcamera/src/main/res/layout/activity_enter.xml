@@ -8,7 +8,7 @@
     tools:context=".EnterActivity">
 
     <Button
-        android:text="record"
+        android:text="camerax gl record"
         android:id="@+id/btn1"
         android:onClick="click"
         android:layout_width="wrap_content"
@@ -16,6 +16,12 @@
     <Button
         android:text="play"
         android:id="@+id/btn2"
+        android:onClick="click"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:text="camera2 gl record"
+        android:id="@+id/btn3"
         android:onClick="click"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

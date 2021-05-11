@@ -17,6 +17,13 @@ import com.hehe.smartcamera.opgl.CameraRender;
 
 public class GlRecordActivity extends AppCompatActivity {
 
+
+    /**
+     *   this demo activity use old cameraX api
+     */
+    public static boolean USE_OLD_CAMERAX_API = true;
+
+
     GLSurfaceView surface;
     CameraRender render;
     TextView info;

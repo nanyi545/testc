@@ -1,7 +1,9 @@
-package com.hehe.smartcamera.opgl;
+package com.hehe.smartcamera.ui.cam2record;
 
 import android.graphics.SurfaceTexture;
 import android.opengl.EGL14;
+import android.opengl.GLES11Ext;
+import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.os.Environment;
 import android.util.Log;
@@ -12,23 +14,26 @@ import androidx.camera.core.Preview;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.hehe.smartcamera.camerax.CameraHelper;
+import com.hehe.smartcamera.opgl.AbstractFilter;
+import com.hehe.smartcamera.opgl.CameraFilter;
+import com.hehe.smartcamera.opgl.MediaRecorder1;
+import com.hehe.smartcamera.opgl.SimpleFilter;
 import com.hehe.smartcamera.util.Util;
 
-import java.io.File;
 import java.io.IOException;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-public class CameraRender implements GLSurfaceView.Renderer {
+public class Camera2GlRender implements GLSurfaceView.Renderer {
 
 
-    private static final String TAG = "CameraRender";
-    private CameraHelper cameraHelper;
+    private static final String TAG = "Camera2GlRender";
+
     private GLSurfaceView cameraView;
     private SurfaceTexture mCameraTexure;
 
-    private  int[] textures;
+    private int[] textures;
     float[] mtx = new float[16];
 
     private SimpleFilter simpleFilter;
@@ -39,18 +44,47 @@ public class CameraRender implements GLSurfaceView.Renderer {
     private MediaRecorder1 mRecorder;
 
 
-    public CameraRender(GLSurfaceView cameraView) {
+    public Camera2GlRender(GLSurfaceView cameraView) {
         this.cameraView = cameraView;
-        LifecycleOwner lifecycleOwner = (LifecycleOwner) cameraView.getContext();
-        cameraHelper = new CameraHelper(lifecycleOwner, previewOutputUpdateListener);
     }
+
+
+    public interface OnSurfaceCreated {
+        void onSurfaceCreated(SurfaceTexture mCameraTexure);
+    }
+    public void setCb(OnSurfaceCreated cb) {
+        this.cb = cb;
+    }
+    OnSurfaceCreated cb;
+
+
+
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         Log.i(TAG, "onSurfaceCreated: " + Thread.currentThread().getName());
+
         textures = new int[1];
-        mCameraTexure.attachToGLContext(textures[0]);
+        GLES20.glGenTextures(1, textures, 0);
+        int mTextureID = textures[0];
+        GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, mTextureID);
+
+        GLES20.glTexParameterf(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_MIN_FILTER, GLES20.GL_NEAREST);
+        GLES20.glTexParameterf(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_MAG_FILTER, GLES20.GL_LINEAR);
+
+        GLES20.glTexParameteri(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_WRAP_S, GLES20.GL_CLAMP_TO_EDGE);
+        GLES20.glTexParameteri(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, GLES20.GL_TEXTURE_WRAP_T, GLES20.GL_CLAMP_TO_EDGE);
+
+        // Link the texture handler to surface texture
+        mCameraTexure = new SurfaceTexture(mTextureID);
+//        mCameraTexure.setDefaultBufferSize(320, 240);
+
+
         mCameraTexure.setOnFrameAvailableListener(onFrameAvailableListener);
+
+        if(cb!=null){
+            cb.onSurfaceCreated(mCameraTexure);
+        }
 
         filter = new CameraFilter(cameraView.getContext());
         simpleFilter = new SimpleFilter(cameraView.getContext());
@@ -60,6 +94,9 @@ public class CameraRender implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
 
+        mCameraTexure.setDefaultBufferSize(width, height);
+//        mCameraTexure.setDefaultBufferSize(1920, 1920);
+
 //        mRecorder = new MediaRecorder(cameraView.getContext(), "",
 //                EGL14.eglGetCurrentContext(),
 //                width, height);
@@ -68,7 +105,7 @@ public class CameraRender implements GLSurfaceView.Renderer {
                 EGL14.eglGetCurrentContext(),
                 width, height);
 
-        Log.i(TAG, "onSurfaceChanged: " + Thread.currentThread().getName());
+        Log.i(TAG, "onSurfaceChanged: " + Thread.currentThread().getName()+"  width:"+width+"  height:"+height);
         filter.setSize(width,height);
         simpleFilter.setSize(width,height);
 
@@ -101,42 +138,25 @@ public class CameraRender implements GLSurfaceView.Renderer {
          * 摄像头预览的framerate 比 SurfaceView的onDrawFrame的frame rate 低
          *
          */
-        if(preTimeStamp!=textureTime){
-
-            // frame rate ---> preview frame rate决定
-            //  降一半 ？？
-            //  -----> 帧率降一半，好像视频大小影响很小（h265对非i帧压缩很高？）
-            int remain = counter % SKIP_FACTOR;
-
-            preTimeStamp = textureTime;
-            Log.i(TAG, " ------  remain:"+remain+"  counter:"+counter+"  fireFrame:" + textureTime);
-
-            if(remain==0){
-                mRecorder.fireFrame(id, textureTime);
-            }
-
-            counter++;
-
-        } else {
-
-        }
+//        if(preTimeStamp!=textureTime){
+//            // frame rate ---> preview frame rate决定
+//            //  降一半 ？？
+//            //  -----> 帧率降一半，好像视频大小影响很小（h265对非i帧压缩很高？）
+//            int remain = counter % SKIP_FACTOR;
+//            preTimeStamp = textureTime;
+//            Log.i(TAG, " ------  remain:"+remain+"  counter:"+counter+"  fireFrame:" + textureTime);
+//            if(remain==0){
+//                mRecorder.fireFrame(id, textureTime);
+//            }
+//            counter++;
+//        } else {
+//
+//        }
 
     }
 
 
     Size previewOutputSize;
-
-
-//    Object previewOutputUpdateListener;
-    Preview.OnPreviewOutputUpdateListener previewOutputUpdateListener = new Preview.OnPreviewOutputUpdateListener() {
-        @Override
-        public void onUpdated(Preview.PreviewOutput output) {
-            previewOutputSize = output.getTextureSize();
-            resetSurfaceSize();
-            Log.i(TAG, "on preview Updated:"+previewOutputSize+"  t:" + Thread.currentThread().getName());
-            mCameraTexure=output.getSurfaceTexture();
-        }
-    };
 
 
 
@@ -174,7 +194,7 @@ public class CameraRender implements GLSurfaceView.Renderer {
         @Override
         public void onFrameAvailable(SurfaceTexture surfaceTexture) {
             Log.i(TAG, " ------ onFrameAvailable: " + Thread.currentThread().getName()+ "---  equal:"+(mCameraTexure==surfaceTexture)+"  t:"+mCameraTexure.getTimestamp());
-//            cameraView.requestRender();
+            cameraView.requestRender();
         }
     };
 

@@ -7,10 +7,16 @@ import android.util.Size;
 import androidx.camera.camera2.Camera2Config;
 import androidx.camera.core.CameraX;
 import androidx.camera.core.Preview;
+//import androidx.camera.core.PreviewConfig;
 import androidx.camera.core.PreviewConfig;
 import androidx.lifecycle.LifecycleOwner;
 
 public class CameraHelper {
+
+//    public CameraHelper(LifecycleOwner lifecycleOwner, Object listener){
+//
+//    }
+
 
     private HandlerThread handlerThread;
     private CameraX.LensFacing currentFacing = CameraX.LensFacing.FRONT;
