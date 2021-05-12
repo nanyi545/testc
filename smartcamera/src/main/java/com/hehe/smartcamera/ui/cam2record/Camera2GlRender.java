@@ -94,8 +94,8 @@ public class Camera2GlRender implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
 
-        mCameraTexure.setDefaultBufferSize(width, height);
-//        mCameraTexure.setDefaultBufferSize(1920, 1920);
+//        mCameraTexure.setDefaultBufferSize(width, height);
+        mCameraTexure.setDefaultBufferSize(1080, 1920);
 
 //        mRecorder = new MediaRecorder(cameraView.getContext(), "",
 //                EGL14.eglGetCurrentContext(),
@@ -160,7 +160,8 @@ public class Camera2GlRender implements GLSurfaceView.Renderer {
 
 
 
-    private void resetSurfaceSize(){
+    public void resetSurfaceSize(Size size){
+        this.previewOutputSize = size;
         if(previewOutputSize!=null){
 
             int previewWidth = previewOutputSize.getHeight();
@@ -168,7 +169,7 @@ public class Camera2GlRender implements GLSurfaceView.Renderer {
             Size screenSize = Util.getScreen(null);
             int screenWidth = screenSize.getWidth();
             int screenHeight = screenSize.getHeight();
-
+            Log.d(TAG,"  -----size issue    previewOutputSize: "+previewWidth+"  "+previewHeight);
             ViewGroup.LayoutParams p = cameraView.getLayoutParams();
             if((previewWidth>screenWidth)||(previewHeight>screenHeight)){
                 float widthContraction =  (screenWidth+0f)/previewWidth;
@@ -185,6 +186,7 @@ public class Camera2GlRender implements GLSurfaceView.Renderer {
                 p.width = previewWidth;
                 p.height = previewHeight;
             }
+            Log.d(TAG,"  -----size issue    resetSurfaceSize: "+p.width+"   "+p.height);
             cameraView.setLayoutParams(p);
         }
     }

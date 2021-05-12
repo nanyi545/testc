@@ -39,7 +39,7 @@ import java.util.List;
 
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-public class Camera2GlHelper {
+public class Camera2GlHelper implements Camera2GlInterface{
     private Context context;
     private Size mPreviewSize;
     private Point previewViewSize;
@@ -78,11 +78,8 @@ public class Camera2GlHelper {
     }
 
 
-    Surface surface;
-    //    开启摄像头
-    public synchronized void start(Surface surface) {
-        this.surface = surface;
-
+    @Override
+    public void init(Camera2GlRender render){
         String cameraUsed = "";
 
         try {
@@ -90,7 +87,7 @@ public class Camera2GlHelper {
 
             String[] ids = cameraManager.getCameraIdList();
             Log.d("cammm","cam ids:"+ ImageUtil.toString(ids));  // cam ids:[0, 1]
-            cameraUsed = ids[0];
+            cameraUsed = ids[1];
 
 
 //            这个摄像头的配置信息
@@ -110,6 +107,8 @@ public class Camera2GlHelper {
 //寻找一个 最合适的尺寸
             mPreviewSize = getBestSupportedSize(sizes);
             Log.d("cammm","cam id:"+cameraUsed +"   best size:"+ mPreviewSize);
+
+            render.resetSurfaceSize(mPreviewSize);
 
             resizeTextureView();
 
@@ -134,6 +133,16 @@ public class Camera2GlHelper {
         }
     }
 
+
+    Surface surface;
+    //    开启摄像头
+
+    @Override
+    public void start(SurfaceTexture st) {
+        this.surface = new Surface(st);
+        createCameraPreviewSession();
+    }
+
     private CameraDevice.StateCallback mDeviceStateCallback = new CameraDevice.StateCallback() {
 
 
@@ -141,8 +150,7 @@ public class Camera2GlHelper {
         public void onOpened(@NonNull CameraDevice cameraDevice) {
 //            成功     前提       绝对
             mCameraDevice = cameraDevice;
-//            建立绘画
-            createCameraPreviewSession();
+
         }
 
         @Override
@@ -157,6 +165,9 @@ public class Camera2GlHelper {
             mCameraDevice = null;
         }
     };
+
+
+    private boolean multipleOutputs = false;
 
     private void createCameraPreviewSession() {
         try {
@@ -181,11 +192,14 @@ public class Camera2GlHelper {
             mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE,fps[0]);
 
 
-
             mPreviewRequestBuilder.addTarget(surface);
-            mPreviewRequestBuilder.addTarget(mImageReader.getSurface());
+            if(multipleOutputs){
+                mPreviewRequestBuilder.addTarget(mImageReader.getSurface());
+                mCameraDevice.createCaptureSession(Arrays.asList(surface, mImageReader.getSurface()),mCaptureStateCallback,mBackgroundHandler);
+            } else {
+                mCameraDevice.createCaptureSession(Arrays.asList(surface),mCaptureStateCallback,mBackgroundHandler);
+            }
 
-            mCameraDevice.createCaptureSession(Arrays.asList(surface, mImageReader.getSurface()),mCaptureStateCallback,mBackgroundHandler);
 
         } catch (CameraAccessException e) {
             e.printStackTrace();
