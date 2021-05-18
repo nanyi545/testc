@@ -4,12 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.cam2record.Cam2GlRecordActivity">
+    tools:context=".ui.cam2record.Cam2GlRecordActivity"
+    >
 
     <android.opengl.GLSurfaceView
         android:id="@+id/glsurface"
         android:layout_centerInParent="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <ImageView
+        android:layout_centerInParent="true"
+        android:id="@+id/img"
+        android:layout_width="300px"
+        android:layout_height="300px"/>
 
 </RelativeLayout>

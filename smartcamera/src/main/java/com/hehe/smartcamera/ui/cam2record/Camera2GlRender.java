@@ -27,6 +27,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class Camera2GlRender implements GLSurfaceView.Renderer {
 
+    private boolean FBO_ENABLED = true;
 
     private static final String TAG = "Camera2GlRender";
 
@@ -62,7 +63,7 @@ public class Camera2GlRender implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        Log.i(TAG, "onSurfaceCreated: " + Thread.currentThread().getName());
+        Log.i(TAG, "perform   onSurfaceCreated: " + Thread.currentThread().getName());
 
         textures = new int[1];
         GLES20.glGenTextures(1, textures, 0);
@@ -86,7 +87,10 @@ public class Camera2GlRender implements GLSurfaceView.Renderer {
             cb.onSurfaceCreated(mCameraTexure);
         }
 
-        filter = new CameraFilter(cameraView.getContext());
+        if(FBO_ENABLED){
+            filter = new CameraFilter(cameraView.getContext());
+        }
+
         simpleFilter = new SimpleFilter(cameraView.getContext());
 
     }
@@ -94,8 +98,23 @@ public class Camera2GlRender implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
 
-//        mCameraTexure.setDefaultBufferSize(width, height);
-        mCameraTexure.setDefaultBufferSize(1080, 1920);
+
+        /**
+         * {@link #previewOutputSize}
+         * previewOutputSize  --->   previewOutputSize: 从camera过来的预览尺寸
+         * width/height       --->   GlSurfaceView 的 尺寸
+         *
+         * 由于摄像头转了90度， 这两个尺寸的 宽高对换。。。
+         *
+         */
+
+        Log.d(TAG,"  -----size issue    onSurfaceChanged:    surface-w:"+width+"  surface-h"+height+"    prev-w:"+previewOutputSize.getWidth()
+                + "   prev-h:"+previewOutputSize.getHeight());
+
+
+        mCameraTexure.setDefaultBufferSize(width, height);
+//        mCameraTexure.setDefaultBufferSize(previewOutputSize.getWidth(), previewOutputSize.getHeight());
+
 
 //        mRecorder = new MediaRecorder(cameraView.getContext(), "",
 //                EGL14.eglGetCurrentContext(),
@@ -106,7 +125,9 @@ public class Camera2GlRender implements GLSurfaceView.Renderer {
                 width, height);
 
         Log.i(TAG, "onSurfaceChanged: " + Thread.currentThread().getName()+"  width:"+width+"  height:"+height);
-        filter.setSize(width,height);
+        if(FBO_ENABLED){
+            filter.setSize(width,height);
+        }
         simpleFilter.setSize(width,height);
 
     }
@@ -122,14 +143,19 @@ public class Camera2GlRender implements GLSurfaceView.Renderer {
         mCameraTexure.getTransformMatrix(mtx);
         simpleFilter.setTransformMatrix(mtx);
 
-        filter.setTransformMatrix(mtx);
-        int id = filter.onDraw(textures[0]);
+        int id = textures[0];
+
+        if(FBO_ENABLED){
+            filter.setTransformMatrix(mtx);
+            id = filter.onDraw(textures[0]);
+        }
+
         id = simpleFilter.onDraw(id);
 
 
         long textureTime = mCameraTexure.getTimestamp();
 
-        Log.i(TAG, " ------ onDrawFrame  textureTime:" + textureTime);
+        Log.i(TAG, " ------ perform  onDrawFrame  textureTime:" + textureTime);
 
         /**
          *
@@ -138,20 +164,20 @@ public class Camera2GlRender implements GLSurfaceView.Renderer {
          * 摄像头预览的framerate 比 SurfaceView的onDrawFrame的frame rate 低
          *
          */
-//        if(preTimeStamp!=textureTime){
-//            // frame rate ---> preview frame rate决定
-//            //  降一半 ？？
-//            //  -----> 帧率降一半，好像视频大小影响很小（h265对非i帧压缩很高？）
-//            int remain = counter % SKIP_FACTOR;
-//            preTimeStamp = textureTime;
-//            Log.i(TAG, " ------  remain:"+remain+"  counter:"+counter+"  fireFrame:" + textureTime);
-//            if(remain==0){
-//                mRecorder.fireFrame(id, textureTime);
-//            }
-//            counter++;
-//        } else {
-//
-//        }
+        if(preTimeStamp!=textureTime){
+            // frame rate ---> preview frame rate决定
+            //  降一半 ？？
+            //  -----> 帧率降一半，好像视频大小影响很小（h265对非i帧压缩很高？）
+            int remain = counter % SKIP_FACTOR;
+            preTimeStamp = textureTime;
+            Log.i(TAG, " ------  remain:"+remain+"  counter:"+counter+"  fireFrame:" + textureTime);
+            if(remain==0){
+                mRecorder.fireFrame(id, textureTime);
+            }
+            counter++;
+        } else {
+
+        }
 
     }
 
@@ -164,12 +190,23 @@ public class Camera2GlRender implements GLSurfaceView.Renderer {
         this.previewOutputSize = size;
         if(previewOutputSize!=null){
 
+            /**
+             *  由于摄像头转了90度， 这两个尺寸的 宽高对换
+             */
+
+            // switch width-height
             int previewWidth = previewOutputSize.getHeight();
             int previewHeight = previewOutputSize.getWidth();
+
+            // no switch width-height
+//            int previewWidth = previewOutputSize.getWidth();
+//            int previewHeight = previewOutputSize.getHeight();
+
+
             Size screenSize = Util.getScreen(null);
             int screenWidth = screenSize.getWidth();
             int screenHeight = screenSize.getHeight();
-            Log.d(TAG,"  -----size issue    previewOutputSize: "+previewWidth+"  "+previewHeight);
+            Log.d(TAG,"  -----size issue    previewOutputSize:  w:"+previewOutputSize.getWidth()+"  h:"+previewOutputSize.getHeight());
             ViewGroup.LayoutParams p = cameraView.getLayoutParams();
             if((previewWidth>screenWidth)||(previewHeight>screenHeight)){
                 float widthContraction =  (screenWidth+0f)/previewWidth;
@@ -186,17 +223,16 @@ public class Camera2GlRender implements GLSurfaceView.Renderer {
                 p.width = previewWidth;
                 p.height = previewHeight;
             }
-            Log.d(TAG,"  -----size issue    resetSurfaceSize: "+p.width+"   "+p.height);
+            Log.d(TAG,"  -----size issue    resetSurfaceSize w:"+p.width+"   h:"+p.height);
             cameraView.setLayoutParams(p);
         }
     }
 
     SurfaceTexture.OnFrameAvailableListener onFrameAvailableListener = new SurfaceTexture.OnFrameAvailableListener() {
-
         @Override
         public void onFrameAvailable(SurfaceTexture surfaceTexture) {
-            Log.i(TAG, " ------ onFrameAvailable: " + Thread.currentThread().getName()+ "---  equal:"+(mCameraTexure==surfaceTexture)+"  t:"+mCameraTexure.getTimestamp());
-            cameraView.requestRender();
+            Log.i(TAG, " ------ perform    onFrameAvailable: " + Thread.currentThread().getName()+ "---  equal:"+(mCameraTexure==surfaceTexture)+"  t:"+mCameraTexure.getTimestamp());
+//            cameraView.requestRender();
         }
     };
 

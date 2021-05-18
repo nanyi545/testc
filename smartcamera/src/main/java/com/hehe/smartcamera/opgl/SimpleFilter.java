@@ -8,6 +8,7 @@ public class SimpleFilter extends AbstractFilter {
 
     public SimpleFilter(Context context) {
         super(context, R.raw.camera_vert, R.raw.camera_frag);
+//        super(context, R.raw.camera_vert, R.raw.camera_frag1);
         vMatrix = GLES20.glGetUniformLocation(program, "vMatrix");
     }
 

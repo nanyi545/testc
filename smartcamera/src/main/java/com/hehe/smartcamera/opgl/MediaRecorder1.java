@@ -122,7 +122,7 @@ public class MediaRecorder1 {
 //byte[]
     public void fireFrame(final int textureId, final long timestamp) {
 
-        Log.d(TAG,"fireFrame    isStart:"+isStart+"   timestamp:"+timestamp);
+        Log.d(TAG,"perform     fireFrame    isStart:"+isStart+"   timestamp:"+timestamp);
 
 //        主动拉去openglfbo数据
         if (!isStart) {
@@ -134,9 +134,11 @@ public class MediaRecorder1 {
 
                 queueMap.put(timestamp,"");
 
-                Message msg = Message.obtain(GlRecordActivity.getMainHandler(),10087);
-                msg.arg1 = queueMap.size();
-                GlRecordActivity.getMainHandler().sendMessage(msg);
+                if(GlRecordActivity.getMainHandler()!=null){
+                    Message msg = Message.obtain(GlRecordActivity.getMainHandler(),10087);
+                    msg.arg1 = queueMap.size();
+                    GlRecordActivity.getMainHandler().sendMessage(msg);
+                }
 
 
 //                opengl   能 1  不能2  draw  ---》surface
@@ -166,9 +168,11 @@ public class MediaRecorder1 {
                 //如果是结束那直接退出，否则继续循环
                 if (!endOfStream) {
                     queueMap.remove(timeStamp);
-                    Message msg = Message.obtain(GlRecordActivity.getMainHandler(),10087);
-                    msg.arg1 = queueMap.size();
-                    GlRecordActivity.getMainHandler().sendMessage(msg);
+                    if(GlRecordActivity.getMainHandler()!=null){
+                        Message msg = Message.obtain(GlRecordActivity.getMainHandler(),10087);
+                        msg.arg1 = queueMap.size();
+                        GlRecordActivity.getMainHandler().sendMessage(msg);
+                    }
                     break;
                 }
             } else if (index == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
@@ -274,10 +278,11 @@ public class MediaRecorder1 {
                 mSurface = null;
                 mHandler.getLooper().quitSafely();
                 mHandler = null;
-                Message msg = Message.obtain(GlRecordActivity.getMainHandler(),10088);
-                msg.arg1 = queueMap.size();
-                GlRecordActivity.getMainHandler().sendMessage(msg);
-
+                if(GlRecordActivity.getMainHandler()!=null){
+                    Message msg = Message.obtain(GlRecordActivity.getMainHandler(),10088);
+                    msg.arg1 = queueMap.size();
+                    GlRecordActivity.getMainHandler().sendMessage(msg);
+                }
             }
         });
     }
