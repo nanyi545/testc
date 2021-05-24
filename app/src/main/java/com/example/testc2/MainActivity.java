@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.lib1.Test1;
 import com.example.lib1.TestRv;
+import com.example.testc2.basics.threads.DemoReentrantLock;
 import com.example.testc2.cam2test.Cam2Activity;
 import com.example.testc2.codec1.Player1Activity;
 import com.example.testc2.codec2.SpsActivity;
@@ -32,7 +33,6 @@ import com.example.testc2.selector.Selector2Activity;
 import com.example.testc2.videochat1.VideoChatPush;
 import com.example.testc2.videochat2.VideoChatReceiver;
 import com.example.testc2.x264.X264Activity;
-
 
 /**
  *
@@ -80,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
 //        startActivity(i);
 //        Intent i =new Intent(MainActivity.this, CameraOpenGlActivity.class);
 //        startActivity(i);
-        Intent i =new Intent(MainActivity.this, PlayerGLActivity.class);
-        startActivity(i);
+//        Intent i =new Intent(MainActivity.this, PlayerGLActivity.class);
+//        startActivity(i);
     }
 
 
@@ -114,6 +114,41 @@ public class MainActivity extends AppCompatActivity {
         image = findViewById(R.id.iv1);
         toOtherPage();
         testSd();
+        testThreads();
+    }
+
+    private void testThreads() {
+        com.example.testc2.basics.threads.Test1.test1();
+
+        DemoReentrantLock lock = new DemoReentrantLock();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                lock.lock();
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                lock.unlock();
+            }
+        }).start();
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                lock.lock();
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                lock.unlock();
+            }
+        }).start();
+
     }
 
 
