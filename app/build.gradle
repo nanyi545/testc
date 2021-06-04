@@ -74,3 +74,60 @@ dependencies {
     implementation "androidx.camera:camera-camera2:1.0.0-alpha05"
 
 }
+
+
+
+// ---------- gradle tests  ----------
+
+class MyTask extends DefaultTask {
+
+    @Input
+    // optional 非必须，
+    @Optional
+    String from
+
+    @OutputFile
+    @Optional
+    File out
+
+    @TaskAction
+    void func1() {
+        println "MyTask func1"
+        println from
+        println out //  /Users/weiwang/AndroidStudioProjects/TestC2/app/test.txt
+        println inputs.files.singleFile  //   /Users/weiwang/AndroidStudioProjects/TestC2/app/build.gradle
+
+
+        // copy file to an output file ....
+        def file = out
+        file.createNewFile()
+        file.text = inputs.files.singleFile.text
+    }
+}
+
+task myTask(type:MyTask) {
+    // specify group
+    group = "wwgroup"
+    from = "a/b/c"
+    out = file("test.txt")
+
+    inputs.file file("build.gradle")
+    outputs.file file("test2.txt")
+
+}
+
+
+// 自定义任务，zip打包
+task mzip(type:Zip){
+    group = "wwgroup"
+    archiveName "outputs.zip"
+    destinationDir file("${buildDir}/costum")
+    from "${buildDir}/outputs"   // build/outputs folder  ---> zip this folder
+}
+
+
+afterEvaluate {
+    println "-------afterEvaluate------"
+    println tasks.getByName("packageDebug")
+}
+
