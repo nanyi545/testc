@@ -1,0 +1,112 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.1"
+    defaultConfig {
+        applicationId "com.example.testc2"
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        externalNativeBuild {
+            cmake {
+                cppFlags ""
+                abiFilters 'armeabi-v7a'
+            }
+        }
+//        ndk {
+//            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+//        }
+        ndk {
+            abiFilters 'armeabi-v7a'
+        }
+        // abiFilters  --->   app/.cxx/cmake/debug/armeabi-v7a
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
+            version "3.10.2"
+        }
+    }
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+}
+repositories {
+    flatDir {
+        dirs "${project(':app').projectDir}/testlibs"
+    }
+
+    /**
+     *  flatDir { dirs 'libs', 'liba'}   ---->  folder path:    app/libs   app/liba
+     *
+     */
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+
+    implementation 'com.iqiyi.xcrash:xcrash-android-lib:3.0.0'
+
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation "org.java-websocket:Java-WebSocket:1.4.0"
+
+    // use local aar file  ----> as specified in  repositories/flatDir....
+    implementation(name: 'lib1-debug', ext: 'aar')
+    implementation(name: 'app-debug', ext: 'aar')
+
+
+    implementation "androidx.camera:camera-core:1.0.0-alpha05"
+    implementation "androidx.camera:camera-camera2:1.0.0-alpha05"
+
+}
+
+
+class MyTask extends DefaultTask {
+
+    @Input
+    // optional 非必须，
+    @Optional
+    String from
+
+    @OutputFile
+    @Optional
+    File out
+
+    @TaskAction
+    void func1() {
+        println "MyTask func1"
+        println from
+        println out
+        println inputs.files.singleFile
+
+        def file = out
+        file.createNewFile()
+        file.text = inputs.files.singleFile.text
+    }
+}
+
+task myTask(type:MyTask) {
+    // specify group
+    group = "wwgroup"
+    from = "a/b/c"
+    out = file("test.txt")
+
+    inputs.file file("build.gradle")
+    outputs.file file("test2.txt")
+
+}
