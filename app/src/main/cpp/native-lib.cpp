@@ -38,7 +38,7 @@ Java_com_example_testc2_MainActivity_stringFromJNI(
     __android_log_print(ANDROID_LOG_VERBOSE, "hehe", "age:%d",p1->age);
 
 
-    std::string hello = "Hello from C++";
+    std::string hello = "Hello -- from C++";
 
     //std::string to char*
     //   https://stackoverflow.com/questions/7352099/stdstring-to-char

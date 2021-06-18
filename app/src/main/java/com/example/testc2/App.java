@@ -136,7 +136,7 @@ import xcrash.XCrash;
  */
 
 
-public class App extends Application {
+public class  App extends Application {
 
     public static App getInstance(){
         return instance;

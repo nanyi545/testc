@@ -55,7 +55,7 @@ import java.io.File;
 public class MainActivity extends AppCompatActivity {
 
 
-    private boolean gotoOtherPage = true;
+    private boolean gotoOtherPage = false;
 
     private void toOtherPage() {
         if (!gotoOtherPage) {
@@ -97,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Log.d("TAG","-------test----call-----");
+
         TestRv rv1;
         com.example.lib2.TestRv rv2;
 
@@ -108,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Example of a call to a native method
         TextView tv = findViewById(R.id.sample_text);
-        tv.setText(stringFromJNI());
+        tv.setText(getStr1());
 
 
         image = findViewById(R.id.iv1);
@@ -168,7 +170,11 @@ public class MainActivity extends AppCompatActivity {
      * A native method that is implemented by the 'native-lib' native library,
      * which is packaged with this application.
      */
-    public native String stringFromJNI();
+    private native String stringFromJNI();
+
+    public String getStr1(){
+        return stringFromJNI();
+    }
 
 
     Bitmap bitmap;
