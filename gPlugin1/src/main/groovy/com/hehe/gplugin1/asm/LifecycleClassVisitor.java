@@ -3,6 +3,7 @@ package com.hehe.gplugin1.asm;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 public class LifecycleClassVisitor extends ClassVisitor {
     private String className;
@@ -21,16 +22,36 @@ public class LifecycleClassVisitor extends ClassVisitor {
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
-        System.out.println("ClassVisitor visitMethod name-------" + name + ", superName is " + superName);
+        System.out.println("ClassVisitor visitMethod name-------" + name + ", superName:" + superName +"  className:"+className+"   desc:"+desc);
         MethodVisitor mv = cv.visitMethod(access, name, desc, signature, exceptions);
 
+//        if (superName.equals("androidx/appcompat/app/AppCompatActivity")) {
+//            if (name.startsWith("onCreate")) {
+//                //处理onCreate()方法
+//                return new AddLogVisitor(mv, className, name);
+//            }
+//        }
+
+
+        /**
+         * 茶庄修改 testCall1方法
+         */
         if (superName.equals("androidx/appcompat/app/AppCompatActivity")) {
-            if (name.startsWith("onCreate")) {
-                //处理onCreate()方法
-                return new LifecycleMethodVisitor(mv, className, name);
+            if (name.startsWith("testCall1")) {
+                ReplaceWithEmptyBody mv2 = new ReplaceWithEmptyBody(mv,(Type.getArgumentsAndReturnSizes(desc)>>2)-1);
+                return mv2;
             }
         }
 
+        /**
+         * 茶庄修改 getStr1 方法
+         */
+        if (superName.equals("androidx/appcompat/app/AppCompatActivity")) {
+            if (name.startsWith("getStr1")) {
+                ReplaceWithAnotherString mv2 = new ReplaceWithAnotherString(mv,(Type.getArgumentsAndReturnSizes(desc)>>2)-1);
+                return mv2;
+            }
+        }
 
         return mv;
     }

@@ -4,7 +4,7 @@ import com.android.build.gradle.AppExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-class MyPlugin1 implements Plugin<Project> {
+public class MyPlugin1 implements Plugin<Project> {
     @Override
     void apply(Project project) {
         println("----------- this is my plugin1 ----------")

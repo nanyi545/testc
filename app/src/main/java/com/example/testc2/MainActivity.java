@@ -117,6 +117,11 @@ public class MainActivity extends AppCompatActivity {
         toOtherPage();
         testSd();
         testThreads();
+        testCall1();
+    }
+
+    public void testCall1(){
+        Log.d("TAG","-------testCall1-----");
     }
 
     private void testThreads() {

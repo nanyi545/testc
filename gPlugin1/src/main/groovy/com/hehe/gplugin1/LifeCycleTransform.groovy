@@ -46,8 +46,13 @@ class LifeCycleTransform extends Transform {
             transformInput.directoryInputs.each { DirectoryInput directoryInput ->
                 File dir = directoryInput.file
                 if (dir) {
+                    System.out.println("----dir: " + dir.getAbsolutePath())
+
                     dir.traverse(type: FileType.FILES, nameFilter: ~/.*\.class/) { File file ->
-                        System.out.println("find class---------------: " + file.name)
+
+                        def inSize = file.bytes.length
+
+
                         //对class文件进行读取与解析
                         ClassReader classReader = new ClassReader(file.bytes)
                         //对class文件的写入
@@ -59,11 +64,19 @@ class LifeCycleTransform extends Transform {
                         //toByteArray方法会将最终修改的字节码以 byte 数组形式返回。
                         byte[] bytes = classWriter.toByteArray()
 
+                        def outSize = bytes.length
+
+                        if(inSize!=outSize) {
+                            System.out.println(" --------- find class: " + file.name+"  in:"+inSize+"  out:"+outSize)
+                        }
+
+
                         //通过文件流写入方式覆盖掉原先的内容，实现class文件的改写。
                         //FileOutputStream outputStream = new FileOutputStream( file.parentFile.absolutePath + File.separator + fileName)
                         FileOutputStream outputStream = new FileOutputStream(file.path)
                         outputStream.write(bytes)
                         outputStream.close()
+
                     }
                 }
 
