@@ -22,7 +22,11 @@ public class LifecycleClassVisitor extends ClassVisitor {
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
+
         System.out.println("ClassVisitor visitMethod name-------" + name + ", superName:" + superName +"  className:"+className+"   desc:"+desc);
+
+
+        
         MethodVisitor mv = cv.visitMethod(access, name, desc, signature, exceptions);
 
 //        if (superName.equals("androidx/appcompat/app/AppCompatActivity")) {
@@ -32,16 +36,24 @@ public class LifecycleClassVisitor extends ClassVisitor {
 //            }
 //        }
 
+        /**
+         * 茶庄修改   MainActivity 的静态代码块
+         */
+        if(name.equals("<clinit>") && className.equals("com/example/testc2/MainActivity") ) {
+            ReplaceWithEmptyBody mv2 = new ReplaceWithEmptyBody(mv,(Type.getArgumentsAndReturnSizes(desc)>>2)-1);
+            return mv2;
+        }
+
 
         /**
          * 茶庄修改 testCall1方法
          */
-        if (superName.equals("androidx/appcompat/app/AppCompatActivity")) {
-            if (name.startsWith("testCall1")) {
-                ReplaceWithEmptyBody mv2 = new ReplaceWithEmptyBody(mv,(Type.getArgumentsAndReturnSizes(desc)>>2)-1);
-                return mv2;
-            }
-        }
+//        if (superName.equals("androidx/appcompat/app/AppCompatActivity")) {
+//            if (name.startsWith("testCall1")) {
+//                ReplaceWithEmptyBody mv2 = new ReplaceWithEmptyBody(mv,(Type.getArgumentsAndReturnSizes(desc)>>2)-1);
+//                return mv2;
+//            }
+//        }
 
         /**
          * 茶庄修改 getStr1 方法

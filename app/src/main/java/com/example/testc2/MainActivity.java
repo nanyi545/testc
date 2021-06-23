@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Used to load the 'native-lib' library on application startup.
     static {
+        Log.d("TAG","MainActivity-static-block");
         System.loadLibrary("native-lib");
     }
 
