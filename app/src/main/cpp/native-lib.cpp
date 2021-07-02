@@ -6,6 +6,7 @@ extern "C"{
 #include "giflib/gif_lib.h"
 }
 #include "abi.h"
+#include "ctest1/test1.h"
 
 #define  argb(a,r,g,b) ( ((a) & 0xff) << 24 ) | ( ((b) & 0xff) << 16 ) | ( ((g) & 0xff) << 8 ) | ((r) & 0xff)
 
@@ -19,6 +20,9 @@ struct Person{
 JavaVM *javaVM;
 
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
+    test1 obj1;
+    obj1.action1();
+
     javaVM = vm;
     __android_log_print(ANDROID_LOG_VERBOSE, "jni_onload","jni onload");
     return JNI_VERSION_1_4;

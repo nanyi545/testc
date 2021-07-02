@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.example.lib1.Test1;
 import com.example.lib1.TestRv;
 import com.example.testc2.basics.threads.DemoReentrantLock;
+import com.example.testc2.callsuper.BBB;
 import com.example.testc2.cam2test.Cam2Activity;
 import com.example.testc2.codec1.Player1Activity;
 import com.example.testc2.codec2.SpsActivity;
@@ -119,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
         testSd();
         testThreads();
         testCall1();
+
+        new BBB().call1();
     }
 
     public void testCall1(){

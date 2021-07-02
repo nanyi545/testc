@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.hehe.gplugin1'
+//apply plugin: 'com.hehe.gplugin1'
 
 android {
     compileSdkVersion 30

@@ -6,6 +6,7 @@
 cmake_minimum_required(VERSION 3.4.1)
 
 add_subdirectory(librtmp)
+add_subdirectory(ctest1)
 
 
 message("-----------ss----------")
@@ -86,4 +87,5 @@ target_link_libraries( # Specifies the target library.
         ${jnigraphics-lib}
         rtmp
         x264
+        ctest1
         )
