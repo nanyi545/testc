@@ -47,8 +47,13 @@ class LifeCycleTransform extends Transform {
                 File dir = directoryInput.file
                 if (dir) {
                     System.out.println("----dir: " + dir.getAbsolutePath())
+                    //    /media/ww/diskd/as_projects/demo/app/build/intermediates/javac/debug/classes
 
                     dir.traverse(type: FileType.FILES, nameFilter: ~/.*\.class/) { File file ->
+
+
+                        System.out.println("----file: " + file.getAbsolutePath())
+
 
                         def inSize = file.bytes.length
 

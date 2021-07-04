@@ -9,9 +9,9 @@ import android.util.Log;
  *
  *
  */
-public class Test1 {
+public class Test1InLib1 {
 
-    public static void call1(){
+    public static void call1Test(){
         Log.d("aaa","call in lib");
     }
 

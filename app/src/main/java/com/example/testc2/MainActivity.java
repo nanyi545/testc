@@ -16,7 +16,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.lib1.Test1;
+import com.example.lib1.Test1InLib1;
 import com.example.lib1.TestRv;
 import com.example.testc2.basics.threads.DemoReentrantLock;
 import com.example.testc2.callsuper.BBB;
@@ -122,6 +122,11 @@ public class MainActivity extends AppCompatActivity {
         testCall1();
 
         new BBB().call1();
+        testCallLib();
+    }
+
+    public void testCallLib(){
+        Test1InLib1.call1Test();
     }
 
     public void testCall1(){

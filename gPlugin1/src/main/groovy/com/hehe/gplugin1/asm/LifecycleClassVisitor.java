@@ -39,10 +39,10 @@ public class LifecycleClassVisitor extends ClassVisitor {
         /**
          * 茶庄修改   MainActivity 的静态代码块
          */
-        if(name.equals("<clinit>") && className.equals("com/example/testc2/MainActivity") ) {
-            ReplaceWithEmptyBody mv2 = new ReplaceWithEmptyBody(mv,(Type.getArgumentsAndReturnSizes(desc)>>2)-1);
-            return mv2;
-        }
+//        if(name.equals("<clinit>") && className.equals("com/example/testc2/MainActivity") ) {
+//            ReplaceWithEmptyBody mv2 = new ReplaceWithEmptyBody(mv,(Type.getArgumentsAndReturnSizes(desc)>>2)-1);
+//            return mv2;
+//        }
 
 
         /**
@@ -58,12 +58,12 @@ public class LifecycleClassVisitor extends ClassVisitor {
         /**
          * 茶庄修改 MainActivity。getStr1 方法
          */
-        if (superName.equals("androidx/appcompat/app/AppCompatActivity")) {
-            if (name.startsWith("getStr1")) {
-                ReplaceWithAnotherString mv2 = new ReplaceWithAnotherString(mv,(Type.getArgumentsAndReturnSizes(desc)>>2)-1);
-                return mv2;
-            }
-        }
+//        if (superName.equals("androidx/appcompat/app/AppCompatActivity")) {
+//            if (name.startsWith("getStr1")) {
+//                ReplaceWithAnotherString mv2 = new ReplaceWithAnotherString(mv,(Type.getArgumentsAndReturnSizes(desc)>>2)-1);
+//                return mv2;
+//            }
+//        }
 
         return mv;
     }

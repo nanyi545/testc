@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'com.hehe.gplugin1'
+apply plugin: 'com.hehe.gplugin1'
 
 android {
     compileSdkVersion 30
@@ -72,9 +72,12 @@ dependencies {
     implementation "org.java-websocket:Java-WebSocket:1.4.0"
 
     // use local aar file  ----> as specified in  repositories/flatDir....
-    implementation(name: 'lib1-debug', ext: 'aar')
     implementation(name: 'app-debug', ext: 'aar')
 
+    // use local aar ... method 1
+//    implementation(name: 'lib1-debug', ext: 'aar')
+    // method2 -----> publish .. then use ....
+    implementation 'com.example.lib1:exampleLib1:1.0.0@aar'
 
     implementation "androidx.camera:camera-core:1.0.0-alpha05"
     implementation "androidx.camera:camera-camera2:1.0.0-alpha05"

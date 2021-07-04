@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven'  //要想发布到Maven，此插件必须使用
 
 android {
     compileSdkVersion 30
@@ -13,10 +14,26 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
+        /**
+         *
+         * https://developer.android.com/studio/projects/android-library
+         * *
+         * By embedding a ProGuard file in your library module, you ensure that app modules that depend on your library do not have
+         * to manually update their ProGuard files to use your library. When the Android Studio build system builds your app, it uses
+         * the directives from both the app module and the library. So, there's no need to run a code shrinker on the library in a
+         * separate step.
+         *
+         * To add the ProGuard rules to your library project, you must specify the file's name with consumerProguardFiles property,
+         *
+         */
     }
 
     buildTypes {
         release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -47,3 +64,25 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:24.2.1'
 
 }
+
+
+def group='com.example.lib1' //组
+def version='1.0.0' //版本
+def artifactId='exampleLib1' //唯一标示
+
+
+//将插件打包上传到本地maven仓库
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            pom.groupId = group
+            pom.artifactId = artifactId
+            pom.version = version
+            //指定本地maven的路径，在项目根目录下
+            //  ....../TestC2/repos/com/hehe/gplugin1/myGradlePlugin1/1.0.0
+            repository(url: uri('../repos'))
+        }
+    }
+}
+
+

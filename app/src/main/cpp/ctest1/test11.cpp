@@ -2,8 +2,9 @@
 // Created by wei wang on 2021-07-02.
 //
 
+#include <android/log.h>
 #include "test1.h"
-#include "../../../../../../../Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/android/log.h"
+//#include "../../../../../../../Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/android/log.h"
 
 
 /**

@@ -4,7 +4,12 @@
 
 
 #include "test1.h"
-#include "../../../../../../../Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/android/log.h"
+
+// mac
+//#include "../../../../../../../Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/android/log.h"
+
+// ubuntu
+#include "../../../../../../../../../../home/ww/Android/Sdk/ndk/21.0.6113669/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/android/log.h"
 
 test1::test1() {
     action2();
