@@ -1,5 +1,13 @@
-apply plugin: 'com.android.library'
+
+if(rootProject.ext.apkMode) {
+    apply plugin: 'com.android.application'
+} else {
+    apply plugin: 'com.android.library'
+}
+
 apply plugin: 'maven'  //要想发布到Maven，此插件必须使用
+
+
 
 android {
     compileSdkVersion 30
