@@ -1,5 +1,4 @@
-
-if(rootProject.ext.apkMode) {
+if (rootProject.ext.apkMode) {
     apply plugin: 'com.android.application'
 } else {
     apply plugin: 'com.android.library'
@@ -8,6 +7,25 @@ if(rootProject.ext.apkMode) {
 apply plugin: 'maven'  //要想发布到Maven，此插件必须使用
 
 
+def group = 'com.example.lib1' //组
+def version = '1.0.0' //版本
+def artifactId = 'exampleLib1' //唯一标示
+
+
+//将插件打包上传到本地maven仓库
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            pom.groupId = group
+            pom.artifactId = artifactId
+            pom.version = version
+            //指定本地maven的路径，在项目根目录下
+            //  ....../TestC2/repos/com/hehe/gplugin1/myGradlePlugin1/1.0.0
+            repository(url: uri('../repos'))
+        }
+    }
+}
+
 
 android {
     compileSdkVersion 30
@@ -15,6 +33,12 @@ android {
 
 
     defaultConfig {
+
+        if (rootProject.ext.apkMode) {
+            applicationId group
+        } else {
+        }
+
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
@@ -36,6 +60,18 @@ android {
          */
     }
 
+
+    sourceSets {
+        main {
+            if (rootProject.ext.apkMode) {
+                manifest.srcFile "src/main/AndroidManifest-apk.xml"
+            } else {
+                manifest.srcFile "src/main/AndroidManifest.xml"
+            }
+        }
+    }
+
+
     buildTypes {
         release {
             minifyEnabled false
@@ -53,6 +89,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
@@ -72,25 +109,3 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:24.2.1'
 
 }
-
-
-def group='com.example.lib1' //组
-def version='1.0.0' //版本
-def artifactId='exampleLib1' //唯一标示
-
-
-//将插件打包上传到本地maven仓库
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            pom.groupId = group
-            pom.artifactId = artifactId
-            pom.version = version
-            //指定本地maven的路径，在项目根目录下
-            //  ....../TestC2/repos/com/hehe/gplugin1/myGradlePlugin1/1.0.0
-            repository(url: uri('../repos'))
-        }
-    }
-}
-
-

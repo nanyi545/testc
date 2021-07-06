@@ -4,7 +4,6 @@
 
 #include <android/log.h>
 #include "test1.h"
-//#include "../../../../../../../Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/sysroot/usr/include/android/log.h"
 
 
 /**
