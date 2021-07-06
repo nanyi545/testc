@@ -11,6 +11,11 @@ struct Point {
     int y;
 };
 
+typedef struct {
+    int x;
+    int y;
+} Point2;
+
 
 
 
@@ -18,14 +23,11 @@ class test1 {
 private:
     int a;
     int b;
-
 public:
     test1();
     ~test1();
     void action1();
     void action2();
-
 };
-
 
 #endif //TESTC2_TEST1_H
