@@ -5,6 +5,8 @@
 #ifndef TESTC2_TEST1_H
 #define TESTC2_TEST1_H
 
+#include <functional>
+
 
 struct Point {
     int x;
@@ -17,6 +19,14 @@ typedef struct {
 } Point2;
 
 
+/**
+ *
+ * function pointers :
+ *
+ * https://www.learncpp.com/cpp-tutorial/function-pointers/
+ *
+ */
+typedef bool (*Compare)(Point* p1,Point* p2);
 
 
 class test1 {
@@ -28,6 +38,7 @@ public:
     ~test1();
     void action1();
     void action2();
+    void order(Point* p, int size, Compare comparator );
 };
 
 #endif //TESTC2_TEST1_H

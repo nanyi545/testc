@@ -105,8 +105,6 @@ This would actually assign the return value from a call to function goo() to fcn
     //  call by implicit dereference
     __android_log_print(ANDROID_LOG_VERBOSE, "test1","function pointer by implicit dereference:%d",fcnPtr());
 
-
-
 }
 
 //void test1::action2() {
