@@ -29,8 +29,9 @@ void test1::action1() {
     p.y = 200;
     __android_log_print(ANDROID_LOG_VERBOSE, "test1","p:[%d,%d]",p.x, p.y);
 
-
-
+    // struct with initialization
+    Point p1 = { 99 };
+    __android_log_print(ANDROID_LOG_VERBOSE, "test1","p1:[%d,%d]",p1.x, p1.y);
 
 }
 
