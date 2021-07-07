@@ -154,3 +154,41 @@ task printExt {
         }
     }
 }
+
+
+task printDependencyUrl() {
+    doFirst {
+        project.configurations.implementation.dependencies.each {
+            item -> println(item)
+        }
+    }
+}
+
+task getAllConfigs() {
+    doFirst {
+
+        project.configurations.each {
+            config -> println(config.name+"  dep:"+config.dependencies)
+        }
+
+//        project.configurations.implementation.dependencies.each { dependency ->
+//            for (ArtifactRepository repository : project.repositories.asList()) {
+//                def url = repository.properties.get('url')
+//                //https://repo.maven.apache.org/maven2/com/google/code/gson/gson/2.8.6/gson-2.8.6.jar
+//                def jarUrl = String.format("%s%s/%s/%s/%s-%s.jar", url.toString(),
+//                        dependency.group.replace('.', '/'), dependency.name, dependency.version,
+//                        dependency.name, dependency.version)
+//                try {
+//                    def jarfile = new URL(jarUrl)
+//                    def inStream = jarfile.openStream();
+//                    if (inStream != null) {
+//                        println(String.format("%s:%s:%s", dependency.group, dependency.name, dependency.version)
+//                                + " -> " + jarUrl)
+//                        return
+//                    }
+//                } catch (Exception ignored) {
+//                }
+//            }
+//        }
+    }
+}

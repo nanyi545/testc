@@ -25,6 +25,14 @@ public class LifecycleClassVisitor extends ClassVisitor {
 
         System.out.println("ClassVisitor visitMethod name-------" + name + ", superName:" + superName +"  className:"+className+"   desc:"+desc);
 
+        /**
+         * 茶庄修改   MainActivity.mod1 的 modifier
+         * */
+        if (superName.equals("androidx/appcompat/app/AppCompatActivity")) {
+            if (name.startsWith("mod1")) {
+                access = Opcodes.ACC_PROTECTED | Opcodes.ACC_FINAL;
+            }
+        }
 
 
         MethodVisitor mv = cv.visitMethod(access, name, desc, signature, exceptions);
@@ -64,6 +72,8 @@ public class LifecycleClassVisitor extends ClassVisitor {
 //                return mv2;
 //            }
 //        }
+
+
 
         return mv;
     }

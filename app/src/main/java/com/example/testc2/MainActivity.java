@@ -52,6 +52,8 @@ import com.example.testc2.x264.X264Activity;
  *
  */
 import java.io.File;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -123,6 +125,15 @@ public class MainActivity extends AppCompatActivity {
 
         new BBB().call1();
         testCallLib();
+
+        try {
+            Method mod1 = getClass().getDeclaredMethod("mod1",null);
+            Log.d("TAG","mod1    getModifiers:"+ Modifier.toString(mod1.getModifiers())+"   name:"+mod1.getName());
+            mod1();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void testCallLib(){
@@ -231,8 +242,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void mod1(){
+        Log.d("TAG","-------mod1 original call-----");
+    }
 
-    public void handleClick(View view) {
+
+   public void handleClick(View view) {
         int id = view.getId();
         switch (id) {
             case R.id.record_btn:

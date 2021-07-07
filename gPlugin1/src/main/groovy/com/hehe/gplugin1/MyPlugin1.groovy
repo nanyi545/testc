@@ -14,6 +14,8 @@ public class MyPlugin1 implements Plugin<Project> {
         LifeCycleTransform transform = new LifeCycleTransform()
         android.registerTransform(transform)
 
+        println '----------- registering transforms -----------' +android.getTransforms()
+
     }
 }
 
