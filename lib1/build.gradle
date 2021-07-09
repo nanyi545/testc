@@ -184,44 +184,98 @@ build\/intermediates\/javac\/debug\/classes\/com\/example\/lib1\/Test1InLib1.cla
 
 :lib1:transformClassesAndResourcesWithSyncLibJarsForDebug 
 --->
-build\/intermediates\/packaged-classes\/debug\/classes.jar
-
+mac:    build\/intermediates\/packaged-classes\/debug\/classes.jar
+ubuntu: 
 
 :lib1:transformClassesAndResourcesWithSyncLibJarsForRelease
 ---> 
-build\/intermediates\/packaged-classes\/release\/classes.jar
-
+mac:    build\/intermediates\/packaged-classes\/release\/classes.jar
+ubuntu: 
 
 
 *
  **/
+
+
+/**
+ *  demo of remove DummyMainActivity.class ....
+ */
+//gradle.taskGraph.whenReady {taskGraph ->
+//    println "Found task graph: " + taskGraph
+//    println "Found " + taskGraph.allTasks.size() + " tasks."
+//    taskGraph.allTasks.forEach { task ->
+//
+//        if(task.name.contains("transformClassesAndResourcesWithSyncLibJarsForDebug")
+//        ||task.name.contains("transformClassesAndResourcesWithSyncLibJarsForRelease")
+//        ){
+//
+//            /**
+//             * remove classes
+//             */
+//            task.doFirst {
+//                println "  ******* doFirst "
+//                inputs.getFiles().getFiles().each {
+//                    f ->
+//                        if(f.getName().contains("DummyMainActivity")){
+//                            f.delete()
+//                            println " ----------delete "+f
+//                        }
+//                }
+//            }
+//            task.doLast {
+//            }
+//        }
+//
+//        println "  ----  view task of ---- " + task
+//        println "input  :"+task.inputs.getFiles().getFiles()
+//        println "out  :"+task.outputs.getFiles().getFiles()
+//        task.dependsOn.forEach { dep ->
+//            println "  ---- " + dep
+//        }
+//        println "  --------------- "
+//        println ""
+//        println ""
+//        println ""
+//    }
+//}
+
+
+
+
+/**
+ *  demo of replacing DummyMainActivity.class ....
+ */
+
 gradle.taskGraph.whenReady {taskGraph ->
-    println "Found task graph: " + taskGraph
-    println "Found " + taskGraph.allTasks.size() + " tasks."
     taskGraph.allTasks.forEach { task ->
 
-        if(task.name.contains("transformClassesAndResourcesWithSyncLibJarsForDebug")){
+        if(task.name.contains("transformClassesAndResourcesWithSyncLibJarsForDebug")
+                ||task.name.contains("transformClassesAndResourcesWithSyncLibJarsForRelease")
+        ){
             task.doFirst {
-                println "  ******* doFirst "
-            }
-            task.doLast {
-                println "  ******* doLast "
+                println "  ******* doFirst *********  build path:" + project.getBuildDir().getAbsolutePath()
+                File toReplaceClass = new File(project.getBuildDir().getAbsolutePath(),"DummyMainActivity.class")
+
+                /**
+                 * replace DummyMainActivity.class
+                 */
+                if ( toReplaceClass.exists() ){
+                    inputs.getFiles().getFiles().each {
+                        f ->
+                            if(f.getName().contains("DummyMainActivity")){
+                                String fpath = f.getAbsolutePath()
+
+                                // delete the original class file
+                                f.delete()
+
+                                // copy the class file to replace the original file
+                                new File(fpath).bytes = toReplaceClass.bytes
+                            }
+                    }
+                }
             }
         }
 
-        println "  ----  view task of ---- " + task
-        println "input  :"+task.inputs.getFiles().getFiles()
-        println "out  :"+task.outputs.getFiles().getFiles()
-        task.dependsOn.forEach { dep ->
-            println "  ---- " + dep
-        }
-        println "  --------------- "
-        println ""
-        println ""
-        println ""
     }
 }
 
-
-//  transformClassesAndResourcesWithSyncLibJarsForDebug
-//  transformClassesAndResourcesWithSyncLibJarsForDebug

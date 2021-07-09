@@ -34,3 +34,30 @@ dependencies {
 
     implementation 'com.example.lib1:exampleLib1:1.0.0@aar'
 }
+
+
+/**
+ * copy get class file
+ */
+
+gradle.taskGraph.whenReady {taskGraph ->
+    println "Found task graph: " + taskGraph
+    println "Found " + taskGraph.allTasks.size() + " tasks."
+    taskGraph.allTasks.forEach { task ->
+
+        if(task.name.contains("transformClassesAndResourcesWithSyncLibJarsForRelease")
+        ){
+            task.doFirst {
+                println "  ******* doFirst ********* "
+                inputs.getFiles().getFiles().each {
+                    f ->
+                        if(f.getName().contains("DummyMainActivity")){
+                            println " ----------DummyMainActivity: "+f.getPath()
+                        }
+                }
+            }
+            task.doLast {
+            }
+        }
+    }
+}
