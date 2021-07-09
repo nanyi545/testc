@@ -1,6 +1,6 @@
 ext {
 
-    apkMode = true
+    apkMode = false
 
     dependencies = [
             constraintLayout      : 'androidx.constraintlayout:constraintlayout:2.0.4',

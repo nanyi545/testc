@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.lib1.Test1InLib1;
 import com.example.lib1.TestRv;
+import com.example.lib1.ui.DummyMainActivity;
 import com.example.testc2.basics.threads.DemoReentrantLock;
 import com.example.testc2.callsuper.BBB;
 import com.example.testc2.cam2test.Cam2Activity;
@@ -58,7 +59,7 @@ import java.lang.reflect.Modifier;
 public class MainActivity extends AppCompatActivity {
 
 
-    private boolean gotoOtherPage = false;
+    private boolean gotoOtherPage = true;
 
     private void toOtherPage() {
         if (!gotoOtherPage) {
@@ -85,6 +86,11 @@ public class MainActivity extends AppCompatActivity {
 //        startActivity(i);
 //        Intent i =new Intent(MainActivity.this, PlayerGLActivity.class);
 //        startActivity(i);
+
+
+
+        Intent i = new Intent(MainActivity.this, DummyMainActivity.class);
+        startActivity(i);
     }
 
 

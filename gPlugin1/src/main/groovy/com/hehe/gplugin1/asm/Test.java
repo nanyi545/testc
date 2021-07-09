@@ -15,13 +15,6 @@ package com.hehe.gplugin1.asm;
  *
  *
  *
- *
- *
- *
- *
- *
- *
- *
  */
 public class Test {
     private int num1 = 1;

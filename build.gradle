@@ -9,11 +9,27 @@ buildscript {
         maven {//本地Maven仓库地址  ....
             url uri("${project.rootDir}/repos")
         }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
 
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.2'
-        
+
+        /**
+         * view task tree ....
+         *
+         * https://plugins.gradle.org/plugin/com.dorongold.task-tree
+         * https://plugins.gradle.org/plugin/com.dorongold.task-tree/1.5
+         */
+//        classpath "com.dorongold.plugins:task-tree:2.1.0"
+        // ERROR: Current version of task-tree plugin does not support Gradle versions older than 6.8.
+        // You can try using taks-tree version 1.5 which supports Gradle versions 2.3-6.7.
+
+        classpath "gradle.plugin.com.dorongold.plugins:task-tree:1.5"
+
+
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
 

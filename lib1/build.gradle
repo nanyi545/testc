@@ -5,6 +5,9 @@ if (rootProject.ext.apkMode) {
 }
 
 apply plugin: 'maven'  //要想发布到Maven，此插件必须使用
+apply plugin: 'com.dorongold.task-tree'
+
+
 
 
 def group = 'com.example.lib1' //组
@@ -109,3 +112,116 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:24.2.1'
 
 }
+
+
+/**
+ *
+ *
+ *
+ *
+
+ https://stackoverflow.com/questions/10422054/is-there-a-way-to-list-task-dependencies-in-gradle
+ View tasks
+
+
+ ------1------
+
+ ./gradlew tasks --all
+ ./gradlew tasks --all >tasks.txt
+ ./gradlew :lib1:tasks --all >tasks.txt     //  lib1 only
+
+
+
+ ------2------
+ for this you can use --dry-run (or -m) option which lists tasks which are executed in order for particular command, but does not execute the command, e.g.
+
+ ./gradlew assemble --dry-run
+ ./gradlew :lib1:assemble --dry-run
+
+
+ ------3------
+
+ You can try com.dorongold.task-tree plugin with simple usage:
+
+ https://plugins.gradle.org/plugin/com.dorongold.task-tree
+
+
+
+ gradle <task 1>...<task N> taskTree
+
+
+ ./gradlew :lib1:assemble taskTree
+ ./gradlew :lib1:assemble taskTree --no-repeat
+ ./gradlew :lib1:assemble taskTree >tasks-tree.txt
+ ./gradlew :lib1:assemble taskTree --no-repeat >tasks-tree.txt
+
+ **/
+
+
+
+
+task viewAllTAsks() {
+    doLast {
+        println "------list of tasks----"
+        tasks.all {
+            task-> println task
+        }
+    }
+}
+
+
+/ **
+*
+
+view task dep 
+
+
+classes to jar : 
+
+build\/intermediates\/javac\/debug\/classes\/com\/example\/lib1\/ui\/DummyMainActivity.class
+build\/intermediates\/javac\/debug\/classes\/com\/example\/lib1\/Test1InLib1.class
+
+
+:lib1:transformClassesAndResourcesWithSyncLibJarsForDebug 
+--->
+build\/intermediates\/packaged-classes\/debug\/classes.jar
+
+
+:lib1:transformClassesAndResourcesWithSyncLibJarsForRelease
+---> 
+build\/intermediates\/packaged-classes\/release\/classes.jar
+
+
+
+*
+ **/
+gradle.taskGraph.whenReady {taskGraph ->
+    println "Found task graph: " + taskGraph
+    println "Found " + taskGraph.allTasks.size() + " tasks."
+    taskGraph.allTasks.forEach { task ->
+
+        if(task.name.contains("transformClassesAndResourcesWithSyncLibJarsForDebug")){
+            task.doFirst {
+                println "  ******* doFirst "
+            }
+            task.doLast {
+                println "  ******* doLast "
+            }
+        }
+
+        println "  ----  view task of ---- " + task
+        println "input  :"+task.inputs.getFiles().getFiles()
+        println "out  :"+task.outputs.getFiles().getFiles()
+        task.dependsOn.forEach { dep ->
+            println "  ---- " + dep
+        }
+        println "  --------------- "
+        println ""
+        println ""
+        println ""
+    }
+}
+
+
+//  transformClassesAndResourcesWithSyncLibJarsForDebug
+//  transformClassesAndResourcesWithSyncLibJarsForDebug

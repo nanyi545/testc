@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.hehe.gplugin1'
 
+
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.1"
@@ -41,6 +43,15 @@ android {
         sourceCompatibility 1.8
         targetCompatibility 1.8
     }
+
+    sourceSets {
+        main {
+            java {
+//                exclude '**/uncompilable/**'
+            }
+        }
+    }
+
 }
 repositories {
     flatDir {
@@ -73,11 +84,15 @@ dependencies {
 
     // use local aar file  ----> as specified in  repositories/flatDir....
     implementation(name: 'app-debug', ext: 'aar')
+//    implementation(name: 'lib1modifier-debug', ext: 'aar')
+
 
     // use local aar ... method 1
 //    implementation(name: 'lib1-debug', ext: 'aar')
     // method2 -----> publish .. then use ....
-    implementation 'com.example.lib1:exampleLib1:1.0.0@aar'
+    implementation ('com.example.lib1:exampleLib1:1.0.0@aar'){
+    }
+
 
     implementation "androidx.camera:camera-core:1.0.0-alpha05"
     implementation "androidx.camera:camera-camera2:1.0.0-alpha05"
@@ -87,6 +102,8 @@ dependencies {
 
 
 }
+
+
 
 
 
@@ -156,39 +173,111 @@ task printExt {
 }
 
 
-task printDependencyUrl() {
-    doFirst {
-        project.configurations.implementation.dependencies.each {
-            item -> println(item)
+task printRepos() {
+    doLast {
+        for (ArtifactRepository repository : project.repositories.asList()) {
+            println("reponame:" + repository.getName() + "  url:" + repository.properties.get('url')+"   repo type:"+repository.getClass().getName())
+            if(repository instanceof org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository ) {
+                org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository mavenRepo = (org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository)repository;
+                println("artifactUrls:"+mavenRepo.artifactUrls)
+                println("url:"+mavenRepo.url)
+            }
         }
     }
 }
 
+
+/**
+ * https://toutiao.io/posts/9s60s9/preview
+ *
+ * 对于release版本的依赖，其实很简单，拼接依赖的path路径即可，路径格式为
+ *
+ * /$groupId[0]/../${groupId[n]/$artifactId/$version/$artifactId-$version.$extension
+ *
+ *
+ *
+ *
+ *
+ * build.gradle里dependencies标签页的实现原理
+ *
+ * https://cloud.tencent.com/developer/article/1651233
+ *
+ *
+ */
+task printDependencyUrl() {
+    doFirst {
+        project.configurations.implementation.dependencies.each {
+            dependency ->
+//                println(dependency)
+                /**
+                 * dependency = null ---> local jar file
+                 */
+
+                def found = false
+                def targetUrl = ""
+
+                if(dependency.group){
+                    for (ArtifactRepository repository : project.repositories.asList()) {
+                        def url = repository.properties.get('url')
+                        /**
+                         * pick out remote repo
+                         */
+                        if(url && url.toString().contains("http")){
+
+                            /**
+                             *  this rule might not applicable for certain dependencies  (for example android sdk dependencies)
+                             */
+                            def jarUrl = String.format("%s%s/%s/%s/%s-%s.jar", url.toString(),
+                                    dependency.group.replace('.', '/'), dependency.name, dependency.version,
+                                    dependency.name, dependency.version)
+//                            println jarUrl
+                            try {
+                                def jarfile = new URL(jarUrl)
+                                def inStream = jarfile.openStream()
+                                if (inStream != null) {
+                                    found = true
+                                    targetUrl = jarUrl
+                                }
+                            } catch (Exception ignored) {
+                            }
+                        }
+                    }
+                }
+
+                if(found) {
+                    println(String.format("%s:%s:%s", dependency.group, dependency.name, dependency.version)
+                            + " -> " + targetUrl)
+                } else {
+                    println(String.format("%s:%s:%s", dependency.group, dependency.name, dependency.version)
+                            + " -> not found " )
+                }
+        }
+    }
+}
+
+
+//project.getGradle().addListener(new DependencyResolutionListener() {
+//    @Override
+//    void beforeResolve(ResolvableDependencies dependencies) {
+//        //此回调会多次进入，我们只需要解析一次，因此只要进入，就remove，然后执行我们的解析操作
+//        project.gradle.removeListener(this)
+//        project.getRepositories().each {def repository ->
+//            //repository.url就是maven服务的前缀路径，可能是文件协议，也可能是http协议，或是其他协议，如ftp
+//            println "beforeResolve -------——>   reponame:" + repository.getName() + "  url:" + repository.properties.get('url')
+//        }
+//    }
+//    @Override
+//    void afterResolve(ResolvableDependencies resolvableDependencies) {
+//    }
+//})
+
+
+
+
 task getAllConfigs() {
     doFirst {
-
         project.configurations.each {
             config -> println(config.name+"  dep:"+config.dependencies)
         }
-
-//        project.configurations.implementation.dependencies.each { dependency ->
-//            for (ArtifactRepository repository : project.repositories.asList()) {
-//                def url = repository.properties.get('url')
-//                //https://repo.maven.apache.org/maven2/com/google/code/gson/gson/2.8.6/gson-2.8.6.jar
-//                def jarUrl = String.format("%s%s/%s/%s/%s-%s.jar", url.toString(),
-//                        dependency.group.replace('.', '/'), dependency.name, dependency.version,
-//                        dependency.name, dependency.version)
-//                try {
-//                    def jarfile = new URL(jarUrl)
-//                    def inStream = jarfile.openStream();
-//                    if (inStream != null) {
-//                        println(String.format("%s:%s:%s", dependency.group, dependency.name, dependency.version)
-//                                + " -> " + jarUrl)
-//                        return
-//                    }
-//                } catch (Exception ignored) {
-//                }
-//            }
-//        }
     }
 }
