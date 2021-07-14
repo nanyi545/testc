@@ -155,6 +155,10 @@ dependencies {
  ./gradlew :lib1:assemble taskTree >tasks-tree.txt
  ./gradlew :lib1:assemble taskTree --no-repeat >tasks-tree.txt
 
+
+ ubuntu: java home : /media/ww/diskd/linux_as3d6/android-studio-ide-192.6200805-linux/android-studio/jre
+
+
  **/
 
 

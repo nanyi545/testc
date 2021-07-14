@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.dorongold.task-tree'
 
 android {
     compileSdkVersion 30
@@ -22,9 +23,34 @@ android {
         }
     }
 
+    flavorDimensions "type1"
+
+    productFlavors {
+        p1 {
+
+        }
+        p2 {
+
+        }
+    }
+
+//    variantFilter { variant ->
+//        def names = variant.flavors*.name
+//        project.ext{
+//            println "-----------:"+variant.flavors.name
+//            type = variant.flavors
+//        }
+//    }
+
 }
 
 dependencies {
+
+    Gradle gradle = getGradle()
+    String  tskReqStr = gradle.getStartParameter().getTaskRequests().toString()
+    println "----tskReqStr:"+tskReqStr
+
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.3.0'
@@ -36,3 +62,11 @@ dependencies {
     implementation rootProject.ext.dependencies.constraintLayout
 
 }
+
+
+/**
+ * view tasks
+ *
+ *  ./gradlew :pluginapk1:assemble taskTree --no-repeat >tasks-tree.txt
+ *
+ **/
