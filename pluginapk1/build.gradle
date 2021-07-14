@@ -1,6 +1,12 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.dorongold.task-tree'
 
+
+Gradle gradle = getGradle()
+String  tskReqStr = gradle.getStartParameter().getTaskRequests().toString()
+println "----tskReqStr:"+tskReqStr
+
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -46,9 +52,6 @@ android {
 
 dependencies {
 
-    Gradle gradle = getGradle()
-    String  tskReqStr = gradle.getStartParameter().getTaskRequests().toString()
-    println "----tskReqStr:"+tskReqStr
 
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
