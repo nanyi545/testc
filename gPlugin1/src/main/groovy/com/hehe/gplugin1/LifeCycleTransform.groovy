@@ -24,7 +24,7 @@ class LifeCycleTransform extends Transform {
     @Override
     Set<QualifiedContent.Scope> getScopes() {
         return TransformManager.PROJECT_ONLY
-        // if use this ... you need to output jars ....  
+        // if use this ... you need to output jars ....
 //        return TransformManager.SCOPE_FULL_PROJECT_WITH_LOCAL_JARS
     }
 
