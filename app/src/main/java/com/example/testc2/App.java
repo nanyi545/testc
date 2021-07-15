@@ -3,7 +3,11 @@ package com.example.testc2;
 import android.app.Application;
 import android.util.Log;
 
+import org.apache.commons.collections4.set.UnmodifiableSet;
+
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 import xcrash.XCrash;
 
@@ -135,6 +139,7 @@ import xcrash.XCrash;
  *
  */
 
+//  androidx.camera.camera2.impl.Camera2Initializer  ??
 
 public class  App extends Application {
 
@@ -178,6 +183,9 @@ public class  App extends Application {
                 .setPlaceholderSizeKb(512)
                 .setLogDir(f.getAbsolutePath())
                 .setLogFileMaintainDelayMs(1000));
+
+
+        Set set =  UnmodifiableSet.unmodifiableSet( new HashSet<>());
 
     }
 

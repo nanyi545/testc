@@ -100,6 +100,11 @@ dependencies {
 
 //    implementation 'com.hehe.gplugin1:myGradlePlugin1:1.0.0'
 
+    implementation 'org.apache.commons:commons-collections4:4.0'
+
+    // open in ubuntu terminal
+    // gio open /home/ww/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.0/da217367fd25e88df52ba79e47658d4cf928b0d1/
+    // gio open /media/ww/diskd/as_projects/demo/app/build/intermediates/transforms/LifeCycleTransform/release/0
 
 }
 

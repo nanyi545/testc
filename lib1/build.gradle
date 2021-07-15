@@ -250,36 +250,36 @@ ubuntu:
  *  demo of replacing DummyMainActivity.class ....
  */
 
-gradle.taskGraph.whenReady {taskGraph ->
-    taskGraph.allTasks.forEach { task ->
-
-        if(task.name.contains("transformClassesAndResourcesWithSyncLibJarsForDebug")
-                ||task.name.contains("transformClassesAndResourcesWithSyncLibJarsForRelease")
-        ){
-            task.doFirst {
-                println "  ******* doFirst *********  build path:" + project.getBuildDir().getAbsolutePath()
-                File toReplaceClass = new File(project.getBuildDir().getAbsolutePath(),"DummyMainActivity.class")
-
-                /**
-                 * replace DummyMainActivity.class
-                 */
-                if ( toReplaceClass.exists() ){
-                    inputs.getFiles().getFiles().each {
-                        f ->
-                            if(f.getName().contains("DummyMainActivity")){
-                                String fpath = f.getAbsolutePath()
-
-                                // delete the original class file
-                                f.delete()
-
-                                // copy the class file to replace the original file
-                                new File(fpath).bytes = toReplaceClass.bytes
-                            }
-                    }
-                }
-            }
-        }
-
-    }
-}
+//gradle.taskGraph.whenReady {taskGraph ->
+//    taskGraph.allTasks.forEach { task ->
+//
+//        if(task.name.contains("transformClassesAndResourcesWithSyncLibJarsForDebug")
+//                ||task.name.contains("transformClassesAndResourcesWithSyncLibJarsForRelease")
+//        ){
+//            task.doFirst {
+//                println "  ******* doFirst *********  build path:" + project.getBuildDir().getAbsolutePath()
+//                File toReplaceClass = new File(project.getBuildDir().getAbsolutePath(),"DummyMainActivity.class")
+//
+//                /**
+//                 * replace DummyMainActivity.class
+//                 */
+//                if ( toReplaceClass.exists() ){
+//                    inputs.getFiles().getFiles().each {
+//                        f ->
+//                            if(f.getName().contains("DummyMainActivity")){
+//                                String fpath = f.getAbsolutePath()
+//
+//                                // delete the original class file
+//                                f.delete()
+//
+//                                // copy the class file to replace the original file
+//                                new File(fpath).bytes = toReplaceClass.bytes
+//                            }
+//                    }
+//                }
+//            }
+//        }
+//
+//    }
+//}
 
