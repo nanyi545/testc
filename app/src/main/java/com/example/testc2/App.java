@@ -3,6 +3,8 @@ package com.example.testc2;
 import android.app.Application;
 import android.util.Log;
 
+import com.tvtb.jlib.MyClass;
+
 import org.apache.commons.collections4.set.UnmodifiableSet;
 
 import java.io.File;

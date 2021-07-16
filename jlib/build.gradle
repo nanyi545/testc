@@ -1,0 +1,80 @@
+import org.apache.commons.io.FileUtils
+
+apply plugin: 'java-library'
+apply plugin: 'com.dorongold.task-tree'
+
+/**
+ *  ./gradlew :jlib:assemble taskTree --no-repeat >tasks-tree.txt
+ *
+ *
+ *  :jlib:assemble
+ * \--- :jlib:jar
+ *      \--- :jlib:classes
+ *           +--- :jlib:compileJava       ----> in : java files   out : /build/classes/java/main/  ---> classes....
+ *           \--- :jlib:processResources  ----> in :[]
+ *
+ */
+
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'org.apache.commons:commons-collections4:4.0'
+}
+
+
+
+/**
+ * view tasks ...
+ */
+//gradle.taskGraph.whenReady {taskGraph ->
+//    println "Found task graph: " + taskGraph
+//    println "Found " + taskGraph.allTasks.size() + " tasks."
+//    taskGraph.allTasks.forEach { task ->
+//        println "  ----  view task of ---- " + task
+//        println "input  :"+task.inputs.getFiles().getFiles()
+//        println "out  :"+task.outputs.getFiles().getFiles()
+//        task.dependsOn.forEach { dep ->
+//            println "    dependon ---- " + dep.toString()
+//        }
+//        println "  --------------- "
+//        println ""
+//        println ""
+//        println ""
+//    }
+//}
+
+
+
+/**
+ * copy classes  ...
+ *
+ * /Users/weiwang/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.0/da217367fd25e88df52ba79e47658d4cf928b0d1/commons-collections4-4.0.jar
+ *
+ * ------->
+ * /Users/weiwang/temp/commons-collections4-4.0/org
+ *
+ *
+ */
+gradle.taskGraph.whenReady {taskGraph ->
+    taskGraph.allTasks.forEach { task ->
+        if(task.name.contains("compileJava")){
+            task.doLast {
+
+                // unzip the jar and put the class files in this place in advance ......
+                File src = new File("/Users/weiwang/temp/commons-collections4-4.0/org")
+                File dest = new File(project.getBuildDir().getAbsolutePath(),"classes/java/main/org")
+                FileUtils.copyDirectory(src, dest)
+
+                // class file to replace ....
+                // this class file is made in advance ....
+                File class1 = new File("/Users/weiwang/temp/UnmodifiableSet.class")
+                File dest1 = new File(project.getBuildDir().getAbsolutePath(),"classes/java/main/org/apache/commons/collections4/set/UnmodifiableSet.class")
+                FileUtils.copyFile(class1, dest1)
+
+            }
+        }
+    }
+}
+
+

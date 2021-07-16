@@ -100,7 +100,21 @@ dependencies {
 
 //    implementation 'com.hehe.gplugin1:myGradlePlugin1:1.0.0'
 
-    implementation 'org.apache.commons:commons-collections4:4.0'
+
+    /**
+     *  jlib.jar is a modified jar of this dependency ......
+     *
+     *
+     *
+     *  if used together  --->
+     *
+     *  Duplicate class org.apache.commons.collections4.ArrayStack found in modules
+     *  commons-collections4-4.0.jar (org.apache.commons:commons-collections4:4.0)
+     *  and jlib.jar (jlib.jar)
+     *
+     */
+//    implementation 'org.apache.commons:commons-collections4:4.0'
+
 
     // open in ubuntu terminal
     // gio open /home/ww/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.0/da217367fd25e88df52ba79e47658d4cf928b0d1/
@@ -286,7 +300,7 @@ task printDependencyUrl() {
 task getAllConfigs() {
     doFirst {
         project.configurations.each {
-            config -> println(config.name+"  dep:"+config.dependencies)
+            config -> println(config.name+"   dep:"+config.dependencies)
         }
     }
 }
