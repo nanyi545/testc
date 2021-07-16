@@ -111,6 +111,20 @@ dependencies {
      */
     implementation 'com.android.support:recyclerview-v7:24.2.1'
 
+
+//    implementation 'com.iqiyi.xcrash:xcrash-android-lib:3.0.0'
+    /**
+     *
+     * 故意输错 ---> build ---> 可看下载url
+     *
+     *      Searched in the following locations:
+     *        - https://dl.google.com/dl/android/maven2/com/iqiyi/xcrash/xcrash-android-lib/3.0.0/xcrash-android-lib-3.0.0.pom
+     *        - https://dl.google.com/dl/android/maven2/com/iqiyi/xcrash/xcrash-android-lib/3.0.0/xcrash-android-lib-3.0.0.jar
+     *        - https://jcenter.bintray.com/com/iqiyi/xcrash/xcrash-android-lib/3.0.0/xcrash-android-lib-3.0.0.pom
+     *        - https://jcenter.bintray.com/com/iqiyi/xcrash/xcrash-android-lib/3.0.0/xcrash-android-lib-3.0.0.jar
+     *
+     */
+
 }
 
 

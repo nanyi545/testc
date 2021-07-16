@@ -198,10 +198,14 @@ task printRepos() {
  *
  *
  *
+ *
+ * ******************************
+ *
  * build.gradle里dependencies标签页的实现原理
  *
  * https://cloud.tencent.com/developer/article/1651233
  *
+ * ******************************
  *
  */
 task printDependencyUrl() {
