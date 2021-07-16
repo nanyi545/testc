@@ -59,7 +59,7 @@ import java.lang.reflect.Modifier;
 public class MainActivity extends AppCompatActivity {
 
 
-    private boolean gotoOtherPage = true;
+    private boolean gotoOtherPage = false;
 
     private void toOtherPage() {
         if (!gotoOtherPage) {
@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
 //        startActivity(i);
 //        Intent i =new Intent(MainActivity.this, PlayerGLActivity.class);
 //        startActivity(i);
-
 
 
         Intent i = new Intent(MainActivity.this, DummyMainActivity.class);

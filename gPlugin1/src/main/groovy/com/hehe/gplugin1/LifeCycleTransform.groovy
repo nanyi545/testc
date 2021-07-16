@@ -24,6 +24,8 @@ class LifeCycleTransform extends Transform {
     @Override
     Set<QualifiedContent.Scope> getScopes() {
         return TransformManager.PROJECT_ONLY
+        // if use this ... you need to output jars ....
+//        return TransformManager.SCOPE_FULL_PROJECT_WITH_LOCAL_JARS
     }
 
     @Override
@@ -89,7 +91,23 @@ class LifeCycleTransform extends Transform {
                 def dest = outputProvider.getContentLocation(directoryInput.name, directoryInput.contentTypes,
                         directoryInput.scopes, Format.DIRECTORY)
                 FileUtils.copyDirectory(directoryInput.file, dest)
+
+                System.out.println("----dest: " + dest.getAbsolutePath())
+                //  dest:  /media/ww/diskd/as_projects/demo/app/build/intermediates/transforms/LifeCycleTransform/debug/0
+                //         /media/ww/diskd/as_projects/demo/app/build/intermediates/transforms/LifeCycleTransform/release/0
+
             }
+
+
+
+            //  https://github.com/zawn/android-jarjar-plugin/blob/master/buildSrc/src/main/groovy/com/tonicsystems/jarjar/JarJarTransform.groovy  ??
+
+            transformInput.jarInputs.each {
+                JarInput jarInput ->
+                    println "jar:"+jarInput.file.getAbsolutePath()
+            }
+
+
         }
     }
 
