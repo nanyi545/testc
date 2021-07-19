@@ -1,10 +1,50 @@
-apply plugin: 'com.android.application'
+if (rootProject.ext.apkMode) {
+    apply plugin: 'com.android.application'
+} else {
+    apply plugin: 'com.android.library'
+}
 apply plugin: 'com.dorongold.task-tree'
 
+// maven publish 插件
+apply plugin: 'maven-publish'
 
-Gradle gradle = getGradle()
-String  tskReqStr = gradle.getStartParameter().getTaskRequests().toString()
-println "----tskReqStr:"+tskReqStr
+
+/**
+ * make jar from a directory .....
+ */
+//task sourceJar(type: Jar) {
+//    from android.sourceSets.main.java.srcDirs
+//    classifier "sources"
+//}
+
+publishing {
+    publications {
+        bar(MavenPublication) {
+            groupId 'com.foo'
+            artifactId 'bar'
+            version '0.1'
+//            artifact(sourceJar)
+
+            /**
+             * https://docs.gradle.org/current/userguide/dependency_management_terminology.html
+             *
+             * Artifact
+             *
+             * A file or directory produced by a build, such as a JAR, a ZIP distribution, or a native executable.
+             *
+             */
+            artifact("$buildDir/outputs/aar/pluginapk1-p1-release.aar")
+        }
+    }
+//    repositories {
+//        maven {
+//            url "$buildDir/repo1"
+//        }
+//    }
+}
+
+//   Publish with ./gradlew clean build publish
+
 
 
 android {
@@ -13,7 +53,11 @@ android {
 
 
     defaultConfig {
-        applicationId "com.hehe.pluginapk1"
+        if (rootProject.ext.apkMode) {
+            applicationId "com.hehe.pluginapk1"
+        } else {
+        }
+
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 1

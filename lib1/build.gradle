@@ -7,12 +7,15 @@ if (rootProject.ext.apkMode) {
 apply plugin: 'maven'  //使用 Maven 插件发布
 apply plugin: 'com.dorongold.task-tree'
 
+// maven publish 插件
+apply plugin: 'maven-publish'
+
 
 
 
 def group = 'com.example.lib1' //组
 def vers = '1.2.0' //版本
-def artifactId = 'exampleLib1' //唯一标示
+def artId = 'exampleLib1' //唯一标示
 
 
 //使用 Maven 插件发布    ------  将插件打包上传到本地maven仓库
@@ -20,7 +23,7 @@ uploadArchives {
     repositories {
         mavenDeployer {
             pom.groupId = group
-            pom.artifactId = artifactId
+            pom.artifactId = artId
             pom.version = vers
             //指定本地maven的路径，在项目根目录下
             //  ....../TestC2/repos/com/hehe/gplugin1/myGradlePlugin1/1.0.0
@@ -29,10 +32,17 @@ uploadArchives {
     }
 }
 
+/**
+ * https://www.baeldung.com/maven-dependency-scopes
+ *
+ * 3.1. Compile : This is the default scope when no other scope is provided
+ *
+ * 3.2. Provided : This scope is used to mark dependencies that should be provided at runtime by JDK or a container, hence the name.
+ *
+ *
+ */
 
 
-// maven publish 插件
-apply plugin: 'maven-publish'
 
 /**
  * For integration with a local Maven installation, it is sometimes useful to publish the module into the Maven local repository
@@ -54,8 +64,9 @@ publishing {
     publications {
         maven(MavenPublication) {
             groupId = group
-            artifactId = artifactId
+            artifactId = artId
             version = vers
+            artifact("$buildDir/outputs/aar/lib1-release.aar")
 
 //            configurations.compile.resolvedConfiguration.firstLevelModuleDependencies.each {
 //                ResolvedDependency dep ->
