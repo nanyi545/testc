@@ -4,27 +4,65 @@ if (rootProject.ext.apkMode) {
     apply plugin: 'com.android.library'
 }
 
-apply plugin: 'maven'  //要想发布到Maven，此插件必须使用
+apply plugin: 'maven'  //使用 Maven 插件发布
 apply plugin: 'com.dorongold.task-tree'
 
 
 
 
 def group = 'com.example.lib1' //组
-def version = '1.0.0' //版本
+def vers = '1.2.0' //版本
 def artifactId = 'exampleLib1' //唯一标示
 
 
-//将插件打包上传到本地maven仓库
+//使用 Maven 插件发布    ------  将插件打包上传到本地maven仓库
 uploadArchives {
     repositories {
         mavenDeployer {
             pom.groupId = group
             pom.artifactId = artifactId
-            pom.version = version
+            pom.version = vers
             //指定本地maven的路径，在项目根目录下
             //  ....../TestC2/repos/com/hehe/gplugin1/myGradlePlugin1/1.0.0
             repository(url: uri('../repos'))
+        }
+    }
+}
+
+
+
+// maven publish 插件
+apply plugin: 'maven-publish'
+
+/**
+ * For integration with a local Maven installation, it is sometimes useful to publish the module into the Maven local repository
+ * (typically at $USER_HOME/.m2/repository), along with its POM file and other metadata
+ *
+ *
+ * //Unix
+ * ~/.m2
+ * cd ~/.m2
+ *
+ * //Windows
+ * C:\Users\<username>\.m2
+ *
+ *
+ *
+ */
+// maven publish 发布
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = group
+            artifactId = artifactId
+            version = vers
+
+//            configurations.compile.resolvedConfiguration.firstLevelModuleDependencies.each {
+//                ResolvedDependency dep ->
+//                    def depName = String.format("%s:%s", dep.moduleGroup, dep.moduleName)
+//                    println "depName："+depName
+//            }
+
         }
     }
 }
@@ -171,6 +209,8 @@ dependencies {
  ./gradlew :app:assemble taskTree --no-repeat >tasks-tree.txt
 
 
+ ./gradlew :lib1:publishToMavenLocal --debug
+
  ubuntu: java home : /media/ww/diskd/linux_as3d6/android-studio-ide-192.6200805-linux/android-studio/jre
 
 
@@ -179,14 +219,40 @@ dependencies {
 
 
 
-task viewAllTAsks() {
-    doLast {
-        println "------list of tasks----"
-        tasks.all {
-            task-> println task
-        }
+//task viewAllTAsks() {
+//    doLast {
+//        println "------list of tasks----"
+//        tasks.all {
+//            task-> println task
+//        }
+//    }
+//}
+
+
+
+
+
+/**
+ * view tasks ...
+ *
+ * */
+
+gradle.taskGraph.whenReady {taskGraph ->
+    taskGraph.allTasks.forEach { task ->
+        println "  ----  view task of ---- " + task
+        println "input  :"+task.inputs.getFiles().getFiles()
+        println "out  :"+task.outputs.getFiles().getFiles()
+        println "  --------------- "
+        println ""
+        println ""
+        println ""
     }
 }
+
+
+
+
+
 
 
 / **
