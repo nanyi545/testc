@@ -11,6 +11,7 @@ apply plugin: 'com.dorongold.task-tree'
 apply plugin: 'maven-publish'
 
 
+println "---lib1 build start---"
 
 
 def group = 'com.example.lib1' //组
@@ -249,15 +250,21 @@ dependencies {
  * */
 
 gradle.taskGraph.whenReady {taskGraph ->
-    taskGraph.allTasks.forEach { task ->
-        println "  ----  view task of ---- " + task
-        println "input  :"+task.inputs.getFiles().getFiles()
-        println "out  :"+task.outputs.getFiles().getFiles()
-        println "  --------------- "
-        println ""
-        println ""
-        println ""
-    }
+
+    println "  lib1 -- graph ready  "
+//    taskGraph.allTasks.forEach { task ->
+//        println "  ----  view task of ---- " + task
+//        try {
+//            println "input  :"+task.inputs.getFiles().getFiles()
+//        } catch (Exception e){
+//            println "input  err:"+task
+//        }
+//        println "out  :"+task.outputs.getFiles().getFiles()
+//        println "  --------------- "
+//        println ""
+//        println ""
+//        println ""
+//    }
 }
 
 
@@ -375,3 +382,4 @@ ubuntu:
 //    }
 //}
 
+println "---lib1 build end---"

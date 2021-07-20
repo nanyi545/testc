@@ -4,6 +4,7 @@ apply plugin: 'com.android.application'
 
 //apply plugin: 'com.dorongold.task-tree'
 
+println "---app build start---"
 
 
 android {
@@ -134,6 +135,8 @@ dependencies {
 
 class MyTask extends DefaultTask {
 
+    String message = 'This is default str'
+
     @Input
     // optional 非必须，
     @Optional
@@ -145,6 +148,7 @@ class MyTask extends DefaultTask {
 
     @TaskAction
     void func1() {
+        println "Hello world. $message"
         println "MyTask func1"
         println from
         println out //  /Users/weiwang/AndroidStudioProjects/TestC2/app/test.txt
@@ -159,10 +163,15 @@ class MyTask extends DefaultTask {
 }
 
 task myTask(type:MyTask) {
+    // always re-run
+    outputs.upToDateWhen { false }
+
     // specify group
     group = "wwgroup"
-    from = "a/b/c"
+    from = "a/b/c1"
     out = file("test.txt")
+
+//    message ="I am an android developer"
 
     inputs.file file("build.gradle")
     outputs.file file("test2.txt")
@@ -181,7 +190,6 @@ task mzip(type:Zip){
 
 afterEvaluate {
     println "-------afterEvaluate------"
-    println tasks.getByName("packageDebug")
 }
 
 
@@ -209,6 +217,11 @@ task printRepos() {
     }
 }
 
+
+
+task myTask1 {
+    println "---config myTask1  ----   this is executed in config ---"
+}
 
 /**
  * https://toutiao.io/posts/9s60s9/preview
@@ -421,11 +434,13 @@ task getAllConfigs() {
  *
  */
 gradle.taskGraph.whenReady {taskGraph ->
+    println "  app -- graph ready  "
+
     println "Found task graph: " + taskGraph
     println "Found " + taskGraph.allTasks.size() + " tasks."
     taskGraph.allTasks.forEach { task ->
 
-        def group = task.group;
+        def group = task.group
         boolean hasInput = task.inputs.getHasInputs()
         boolean hasSource = task.inputs.getHasSourceFiles()
         def props = task.inputs.getProperties()
@@ -453,8 +468,6 @@ gradle.taskGraph.whenReady {taskGraph ->
         task.getTaskDependencies().getDependencies().forEach {
             t -> println "    task deps ----  task:" + t.getName()
         }
-
-
         /**
          * task.dependsOn what does it actually do  ??
          *
@@ -482,4 +495,10 @@ gradle.taskGraph.whenReady {taskGraph ->
         println ""
         println ""
     }
+
+
 }
+
+
+
+println "---app build end---"

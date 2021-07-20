@@ -1,3 +1,6 @@
+println "---config start---"
+
+
 ext {
 
     apkMode = false
@@ -8,3 +11,45 @@ ext {
     ]
 
 }
+
+
+println "---config end---"
+
+
+
+
+/**
+ *
+ *
+ * Gradle从入门到实战 - Groovy基础
+ *
+ * https://blog.csdn.net/singwhatiwanna/article/details/76084580
+ *
+ *
+ *
+ *
+ * 全面理解Gradle - 执行时序
+ *
+ * https://blog.csdn.net/singwhatiwanna/article/details/78797506
+ *
+ * 可以看到，Gradle执行的时候遵循如下顺序：
+ * 1. 首先解析settings.gradle来获取模块信息，这是初始化阶段；
+ * 2. 然后配置每个模块，配置的时候并不会执行task；
+ * 3. 配置完了以后，有一个重要的回调project.afterEvaluate，它表示所有的模块都已经配置完了，可以准备执行task了；
+ *
+ *
+ *
+ *
+ * 全面理解Gradle - 定义Task
+ *
+ * https://blog.csdn.net/singwhatiwanna/article/details/78898113
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ **/

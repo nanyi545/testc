@@ -17,33 +17,48 @@ apply plugin: 'maven-publish'
 //    classifier "sources"
 //}
 
-publishing {
-    publications {
-        bar(MavenPublication) {
-            groupId 'com.foo'
-            artifactId 'bar'
-            version '0.1'
-//            artifact(sourceJar)
-
-            /**
-             * https://docs.gradle.org/current/userguide/dependency_management_terminology.html
-             *
-             * Artifact
-             *
-             * A file or directory produced by a build, such as a JAR, a ZIP distribution, or a native executable.
-             *
-             */
-            artifact("$buildDir/outputs/aar/pluginapk1-p1-release.aar")
-        }
-    }
+//publishing {
+//    publications {
+//        /**
+//         * this will generate different task name ....
+//         **/
+//        bar(MavenPublication) {
+//            groupId 'com.foo'
+//            artifactId 'bar'
+//            version '0.1'
+////            artifact(sourceJar)
+//
+//            /**
+//             * https://docs.gradle.org/current/userguide/dependency_management_terminology.html
+//             *
+//             * Artifact
+//             *
+//             * A file or directory produced by a build, such as a JAR, a ZIP distribution, or a native executable.
+//             *
+//             */
+//            artifact("$buildDir/outputs/aar/pluginapk1-p1-release.aar")
+//
+//            println "-------+"
+//            configurations.each {
+//                config -> println(config.name+"   dep:"+config.dependencies)
+//            }
+//        }
+//    }
+//
 //    repositories {
 //        maven {
+//            /**
+//             * this will generate different tasks based on name ....
+//             **/
+//            name 'hehe'
 //            url "$buildDir/repo1"
 //        }
 //    }
-}
+//}
 
 //   Publish with ./gradlew clean build publish
+
+
 
 
 
@@ -117,3 +132,10 @@ dependencies {
  *  ./gradlew :pluginapk1:assemble taskTree --no-repeat >tasks-tree.txt
  *
  **/
+
+
+//task bundleReleaseAndrPublishToMaven {
+//    group 'publishing'
+//    dependsOn 'build'
+//    dependsOn 'publishBarPublicationToHeheRepository'
+//}
