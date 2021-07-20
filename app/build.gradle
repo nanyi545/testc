@@ -175,8 +175,9 @@ task myTask(type:MyTask) {
 
     inputs.file file("build.gradle")
     outputs.file file("test2.txt")
-
 }
+// add custom tasks to graph
+tasks.getByName('preBuild').dependsOn(myTask)
 
 
 // 自定义任务，zip打包
