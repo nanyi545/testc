@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         // nested scroll
-//        Intent i =new Intent(MainActivity.this, NestedScrollActivity.class);
-//        startActivity(i);
+        Intent i =new Intent(MainActivity.this, NestedScrollActivity.class);
+        startActivity(i);
 
 
         // selector
@@ -88,8 +88,8 @@ public class MainActivity extends AppCompatActivity {
 //        startActivity(i);
 
 
-        Intent i = new Intent(MainActivity.this, DummyMainActivity.class);
-        startActivity(i);
+//        Intent i = new Intent(MainActivity.this, DummyMainActivity.class);
+//        startActivity(i);
     }
 
 

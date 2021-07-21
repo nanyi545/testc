@@ -1,7 +1,14 @@
 package com.example.testc2;
 
 import android.app.Application;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.util.Log;
+import android.util.Printer;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.tvtb.jlib.MyClass;
 
@@ -10,6 +17,8 @@ import org.apache.commons.collections4.set.UnmodifiableSet;
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Stack;
+import java.util.concurrent.atomic.AtomicLong;
 
 import xcrash.XCrash;
 
@@ -151,11 +160,91 @@ public class  App extends Application {
 
     static App instance;
 
+    HandlerThread t;
+    class CheckHandler extends Handler {
+        public CheckHandler(@NonNull Looper looper) {
+            super(looper);
+        }
+        public CheckHandler(@NonNull Looper looper, @Nullable Callback callback) {
+            super(looper, callback);
+        }
+        public void restPeriod(){
+            float workLoad = (work.get()+0.0f)/3000l;
+            Log.d("watcher","workload:"+workLoad);
+            work.set(0);
+            postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    restPeriod();
+                }
+            },3000);
+        }
+        AtomicLong work = new AtomicLong(0);
+        public void addWorkTime(long workTime){
+            work.addAndGet(workTime);
+        }
+    }
+    CheckHandler checkHandler;
+
+
+
+    class WorkHandler extends Handler {
+        public WorkHandler(@NonNull Looper looper) {
+            super(looper);
+        }
+
+        public WorkHandler(@NonNull Looper looper, @Nullable Callback callback) {
+            super(looper, callback);
+        }
+
+        public void startPeriodWork(){
+            long start = System.currentTimeMillis();
+            int j = 0;
+            for (int i=0;i<200000000;i++){
+                j+=i;
+            }
+            long end = System.currentTimeMillis();
+            Log.d("watcher","heavy work:"+(end-start));
+            postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    startPeriodWork();
+                }
+            },4000);
+        }
+    }
+
+
+
     @Override
     public void onCreate() {
         super.onCreate();
 
         instance = this;
+
+        t = new HandlerThread("checker");
+        t.start();
+        checkHandler = new CheckHandler(t.getLooper());
+        checkHandler.restPeriod();
+
+        Looper.getMainLooper().setMessageLogging(new Printer() {
+            Stack<Long> s = new Stack();
+            @Override
+            public void println(String x) {
+                if(x.startsWith(">>>")){
+                    s.push(System.currentTimeMillis());
+                } else {
+                    long preTime = s.pop();
+                    long diff = System.currentTimeMillis() - preTime;
+                    checkHandler.addWorkTime(diff);
+                }
+            }
+        });
+
+//        WorkHandler workHandler = new WorkHandler(Looper.getMainLooper());
+//        workHandler.startPeriodWork();
+
+
 
 
 //        File f = new File("/sdcard/Download/textc_x");
