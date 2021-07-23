@@ -9,5 +9,4 @@
 void test1::order(Point* p, int size, Compare comparator) {
     bool b1 = comparator(p, p+1);
     __android_log_print(ANDROID_LOG_VERBOSE, "test1", "result:%d", b1);
-
 }

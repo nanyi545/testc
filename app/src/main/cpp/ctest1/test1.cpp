@@ -26,7 +26,9 @@ test1::~test1() {
  *
  */
 
-int foo(){ return 5;}
+int foo(){
+    return 5;
+}
 const int foo1(){ return 5;}
 
 
@@ -60,7 +62,15 @@ void test1::action1() {
     Point p;
     p.x = 100;
     p.y = 200;
+    p.context = this;
     __android_log_print(ANDROID_LOG_VERBOSE, "test1","p:[%d,%d]",p.x, p.y);
+
+    /**
+     *   use of this ....  refers to class instance ....
+     *
+     */
+    reinterpret_cast<test1*>(p.context)->action2();
+
 
     // struct with initialization
     Point p1 = { 99 };
