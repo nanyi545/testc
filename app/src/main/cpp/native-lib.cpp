@@ -19,13 +19,52 @@ struct Person{
 
 JavaVM *javaVM;
 
+bool compare1(Point* p1,Point* p2){
+    return p1->x > p2->x;
+}
+
+int add(int a, int b){
+    return a+b;
+}
+int min(int a, int b){
+    return a-b;
+}
+int times(int a, int b){
+    return a*b;
+}
+
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
     test1 obj1;
     obj1.action1();
 
+
+    Point p1;
+    p1.x = 100;
+    p1.y = 200;
+
+    Point p2;
+    p2.x = 20;
+    p2.y = 200;
+
+    Point arr[2] = {} ;
+    arr[0] = p1;
+    arr[1] = p2;
+
+    obj1.order(arr,2,compare1);
+
+
+
+    int i1 = obj1.doOp(9,5,add);
+    int i2 = obj1.doOp(9,5,min);
+    int i3 = obj1.doOp(9,5,times);
+
+    __android_log_print(ANDROID_LOG_VERBOSE, "test1", "i1:%d, i2:%d, i3:%d",i1,i2,i3);
+
+
     javaVM = vm;
     __android_log_print(ANDROID_LOG_VERBOSE, "jni_onload","jni onload");
     return JNI_VERSION_1_4;
+    
 }
 
 

@@ -26,7 +26,17 @@ typedef struct {
  * https://www.learncpp.com/cpp-tutorial/function-pointers/
  *
  */
+
+
+/**
+ *  Compare  --> a function pointer that takes 2 points, and returns a bool
+ */
 typedef bool (*Compare)(Point* p1,Point* p2);
+
+/**
+ * OperatorFun --> a function pointer that take 2 int, and return a int
+ */
+using OperatorFun = int(*)(int, int);
 
 
 class test1 {
@@ -39,6 +49,8 @@ public:
     void action1();
     void action2();
     void order(Point* p, int size, Compare comparator );
+    int doOp(int i1, int i2, OperatorFun op );
+
 };
 
 #endif //TESTC2_TEST1_H
