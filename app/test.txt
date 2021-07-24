@@ -1,4 +1,11 @@
+
 apply plugin: 'com.android.application'
+//apply plugin: 'com.hehe.gplugin1'
+
+//apply plugin: 'com.dorongold.task-tree'
+
+println "---app build start---"
+
 
 android {
     compileSdkVersion 30
@@ -40,6 +47,15 @@ android {
         sourceCompatibility 1.8
         targetCompatibility 1.8
     }
+
+    sourceSets {
+        main {
+            java {
+//                exclude '**/uncompilable/**'
+            }
+        }
+    }
+
 }
 repositories {
     flatDir {
@@ -53,30 +69,73 @@ repositories {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+//    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+
+//    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation rootProject.ext.dependencies.constraintLayout
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 
     implementation 'com.iqiyi.xcrash:xcrash-android-lib:3.0.0'
 
-    implementation "androidx.recyclerview:recyclerview:1.1.0"
+//    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation rootProject.ext.dependencies.recyclerview
+
     implementation "org.java-websocket:Java-WebSocket:1.4.0"
 
     // use local aar file  ----> as specified in  repositories/flatDir....
-    implementation(name: 'lib1-debug', ext: 'aar')
     implementation(name: 'app-debug', ext: 'aar')
+//    implementation(name: 'lib1modifier-debug', ext: 'aar')
+
+
+    // use local aar ... method 1
+//    implementation(name: 'lib1-debug', ext: 'aar')
+    // method2 -----> publish .. then use ....
+    implementation ('com.example.lib1:exampleLib1:1.0.0@aar'){
+    }
 
 
     implementation "androidx.camera:camera-core:1.0.0-alpha05"
     implementation "androidx.camera:camera-camera2:1.0.0-alpha05"
 
+
+//    implementation 'com.hehe.gplugin1:myGradlePlugin1:1.0.0'
+
+
+    /**
+     *  jlib.jar is a modified jar of this dependency ......
+     *
+     *
+     *
+     *  if used together  --->
+     *
+     *  Duplicate class org.apache.commons.collections4.ArrayStack found in modules
+     *  commons-collections4-4.0.jar (org.apache.commons:commons-collections4:4.0)
+     *  and jlib.jar (jlib.jar)
+     *
+     */
+//    implementation 'org.apache.commons:commons-collections4:4.0'
+    implementation files('libs/jlib.jar')
+
+
+    // open in ubuntu terminal
+    // gio open /home/ww/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-collections4/4.0/da217367fd25e88df52ba79e47658d4cf928b0d1/
+    // gio open /media/ww/diskd/as_projects/demo/app/build/intermediates/transforms/LifeCycleTransform/release/0
+
 }
 
 
+
+
+
+// ---------- gradle tests  ----------
+
 class MyTask extends DefaultTask {
+
+    String message = 'This is default str'
 
     @Input
     // optional 非必须，
@@ -89,11 +148,14 @@ class MyTask extends DefaultTask {
 
     @TaskAction
     void func1() {
+        println "Hello world. $message"
         println "MyTask func1"
         println from
-        println out
-        println inputs.files.singleFile
+        println out //  /Users/weiwang/AndroidStudioProjects/TestC2/app/test.txt
+        println inputs.files.singleFile  //   /Users/weiwang/AndroidStudioProjects/TestC2/app/build.gradle
 
+
+        // copy file to an output file ....
         def file = out
         file.createNewFile()
         file.text = inputs.files.singleFile.text
@@ -101,12 +163,343 @@ class MyTask extends DefaultTask {
 }
 
 task myTask(type:MyTask) {
+    // always re-run
+    outputs.upToDateWhen { false }
+
     // specify group
     group = "wwgroup"
-    from = "a/b/c"
+    from = "a/b/c1"
     out = file("test.txt")
+
+//    message ="I am an android developer"
 
     inputs.file file("build.gradle")
     outputs.file file("test2.txt")
+}
+// add custom tasks to graph
+tasks.getByName('preBuild').dependsOn(myTask)
+
+
+// 自定义任务，zip打包
+task mzip(type:Zip){
+    group = "wwgroup"
+    archiveName "outputs.zip"
+    destinationDir file("${buildDir}/costum")
+    from "${buildDir}/outputs"   // build/outputs folder  ---> zip this folder
+}
+
+
+afterEvaluate {
+    println "-------afterEvaluate------"
+}
+
+
+task printExt {
+    group 'wwgroup'
+    doLast {
+        println 'ext.dependencies:'+rootProject.ext.dependencies
+        rootProject.ext.dependencies.each {
+            key, val -> println key+" - "+val
+        }
+    }
+}
+
+
+task printRepos() {
+    doLast {
+        for (ArtifactRepository repository : project.repositories.asList()) {
+            println("reponame:" + repository.getName() + "  url:" + repository.properties.get('url')+"   repo type:"+repository.getClass().getName())
+            if(repository instanceof org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository ) {
+                org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository mavenRepo = (org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository)repository;
+                println("artifactUrls:"+mavenRepo.artifactUrls)
+                println("url:"+mavenRepo.url)
+            }
+        }
+    }
+}
+
+
+
+task myTask1 {
+    println "---config myTask1  ----   this is executed in config ---"
+}
+
+/**
+ * https://toutiao.io/posts/9s60s9/preview
+ *
+ * 对于release版本的依赖，其实很简单，拼接依赖的path路径即可，路径格式为
+ *
+ * /$groupId[0]/../${groupId[n]/$artifactId/$version/$artifactId-$version.$extension
+ *
+ *
+ *
+ *
+ *
+ *
+ * ******************************
+ *
+ * build.gradle里dependencies标签页的实现原理
+ *
+ * https://cloud.tencent.com/developer/article/1651233
+ *
+ * ******************************
+ *
+ */
+//task printDependencyUrl() {
+//    doFirst {
+//        project.configurations.implementation.dependencies.each {
+//            dependency ->
+////                println(dependency)
+//                /**
+//                 * dependency = null ---> local jar file
+//                 */
+//
+//                def found = false
+//                def targetUrl = ""
+//
+//                if(dependency.group){
+//                    for (ArtifactRepository repository : project.repositories.asList()) {
+//                        def url = repository.properties.get('url')
+//                        /**
+//                         * pick out remote repo
+//                         */
+//                        if(url && url.toString().contains("http")){
+//
+//                            /**
+//                             *  this rule might not applicable for certain dependencies  (for example android sdk dependencies)
+//                             */
+//                            def jarUrl = String.format("%s%s/%s/%s/%s-%s.jar", url.toString(),
+//                                    dependency.group.replace('.', '/'), dependency.name, dependency.version,
+//                                    dependency.name, dependency.version)
+////                            println jarUrl
+//                            try {
+//                                def jarfile = new URL(jarUrl)
+//                                def inStream = jarfile.openStream()
+//                                if (inStream != null) {
+//                                    found = true
+//                                    targetUrl = jarUrl
+//                                }
+//                            } catch (Exception ignored) {
+//                            }
+//                        }
+//                    }
+//                }
+//
+//                if(found) {
+//                    println(String.format("%s:%s:%s", dependency.group, dependency.name, dependency.version)
+//                            + " -> " + targetUrl)
+//                } else {
+//                    println(String.format("%s:%s:%s", dependency.group, dependency.name, dependency.version)
+//                            + " -> not found " )
+//                }
+//        }
+//    }
+//}
+
+
+//project.getGradle().addListener(new DependencyResolutionListener() {
+//    @Override
+//    void beforeResolve(ResolvableDependencies dependencies) {
+//        //此回调会多次进入，我们只需要解析一次，因此只要进入，就remove，然后执行我们的解析操作
+//        project.gradle.removeListener(this)
+//        project.getRepositories().each {def repository ->
+//            //repository.url就是maven服务的前缀路径，可能是文件协议，也可能是http协议，或是其他协议，如ftp
+//            println "beforeResolve -------——>   reponame:" + repository.getName() + "  url:" + repository.properties.get('url')
+//        }
+//    }
+//    @Override
+//    void afterResolve(ResolvableDependencies resolvableDependencies) {
+//    }
+//})
+
+
+/**
+ *
+ *  get all configs and their dependencies ...
+ *
+ */
+task getAllConfigs() {
+    doFirst {
+        project.configurations.each {
+            config -> println(config.name+"   dep:"+config.dependencies)
+        }
+    }
+}
+
+
+
+
+
+/**
+ * view tasks ...
+ *
+ *
+ *
+ *
+ *   ----------------- aidl ------------------
+ *   task ':app:compileDebugAidl'  --->
+ *
+ *   input  :[
+ *   /Users/weiwang/Library/Android/sdk/build-tools/30.0.1/aidl,
+ *   /Users/weiwang/Library/Android/sdk/platforms/android-30/framework.aidl,
+ *   /Users/weiwang/.gradle/caches/transforms-2/files-2.1/e0a9bcb945447481f3a31d29d45608ac/core-1.3.1/aidl,
+ *   /Users/weiwang/.gradle/caches/transforms-2/files-2.1/8c23f85bdf3c594d5e208da303211ae9/versionedparcelable-1.1.0/aidl
+ *   ]
+ *   out:   build/generated/aidl_source_output_dir/debug/compileDebugAidl/out
+ *
+ *
+ *
+ *   ----------------- buildConfigClass ------------------
+ *    task ':app:generateDebugBuildConfig'  -->
+ *
+ *    props:[flavorName:, flavorNamesWithDimensionNames:[], library:false, buildTypeName:debug, debuggable:true, appPackageName:com.example.testc2,
+ *   buildConfigPackageName:com.example.testc2, versionName:1.0, versionCode:1, itemValues:[]]
+ *
+ *    out:  build/generated/source/buildConfig/debug/com/example/testc2/BuildConfig.java
+ *    --->
+ *    com.example.testc2.BuildConfig
+ *
+ *
+ *
+ *
+ *
+ *    ------------annotation--------
+ *    task ':app:javaPreCompileDebug'
+ *
+ *    out  :[/Users/weiwang/AndroidStudioProjects/TestC2/app/build/intermediates/annotation_processor_list/debug/annotationProcessors.json]
+ *
+ *
+ *
+ *
+ *
+ *
+ * ----------process resource---------
+ *    task ':app:processDebugResources'
+ *
+ *
+ *    props:[aaptOptionsInput.noCompress:null, multiOutputPolicy:MULTI_APK, originalApplicationId:com.example.testc2, buildTargetDensity:null, aapt2Version:3.5.2-5435860, .... ,
+ *
+ *    out  : R.java files ....
+ *    build/generated/not_namespaced_r_class_sources/debug/r
+ *
+ *
+ *
+ *
+ *
+ * ----------merge resource---------
+ *    task ':app:mergeDebugResources'
+ *
+ *
+ *    input  :[/Users/weiwang/AndroidStudioProjects/TestC2/app/src/main/res, /Users/weiwang/AndroidStudioProjects/TestC2/app/src/debug/res,
+ *           ... resource folders
+ *
+ *    out: .flat files
+ *          build/intermediates/incremental/mergeDebugResources/  merged resource ....
+ *
+ *
+ *
+ * ----------generate class---------
+ *   task ':app:compileDebugJavaWithJavac'
+ *
+ *  input  : .java files , R.java files , jar files,
+ *  out:  build/generated/ap_generated_sources/debug/out
+ *        build/intermediates/javac/debug/classes  ---> class files ( classes in app module )
+ *
+ *
+ *
+ *
+ *
+ * ------------------------create dex file for external jar files -------------------------
+ *
+ * task ':app:desugarDebugFileDependencies'
+ *
+ * input  : jar files ...
+ *
+ * out  :[/Users/weiwang/AndroidStudioProjects/TestC2/app/build/intermediates/external_file_lib_dex_archives/debug/out]  ---> classes.dex file
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *-----------------------------------------
+ *  task ':app:transformClassesWithDexBuilderForDebug'
+ *
+ *    props:[inputTypes:[CLASSES], otherInputs:[min-sdk-version:21, , dex-builder-tool:D8, optimize:true, enable-dexing-artifact-transform:true], referencedScopes:[SUB_PROJECTS, TESTED_CODE, PROVIDED_ONLY, MAIN_SPLIT, EXTERNAL_LIBRARIES], scopes:[PROJECT]]
+ *
+ *
+ *    input: classes, jar files,
+ *    output:  build/intermediates/transforms/dexBuilder/debug   ---> dex files
+ *
+ */
+gradle.taskGraph.whenReady {taskGraph ->
+    println "  app -- graph ready  "
+
+    println "Found task graph: " + taskGraph
+    println "Found " + taskGraph.allTasks.size() + " tasks."
+    taskGraph.allTasks.forEach { task ->
+
+        def group = task.group
+        boolean hasInput = task.inputs.getHasInputs()
+        boolean hasSource = task.inputs.getHasSourceFiles()
+        def props = task.inputs.getProperties()
+
+        println "  ----  view task of ---- " + task +"  group:"+ group+"   hasInput:"+hasInput+"   hasSource:"+hasSource
+        println "  ----  props:"+props
+        println "  ----  task class:"+task.getClass().getName()
+
+        try{
+            println "input  :"+task.inputs.getFiles().getFiles()
+        }catch(Exception e){
+            println "input  err :"+task.getName()
+        }
+
+        task.getMustRunAfter().getDependencies().forEach {
+            t -> println "    must run after ----  task:" + t.getName()
+        }
+        task.getShouldRunAfter().getDependencies().forEach {
+            t -> println "    should run after ----  task:" + t.getName()
+        }
+        task.getFinalizedBy().getDependencies().forEach {
+            t -> println "    final by ----  task:" + t.getName()
+        }
+        println "out  :"+task.outputs.getFiles().getFiles()
+        task.getTaskDependencies().getDependencies().forEach {
+            t -> println "    task deps ----  task:" + t.getName()
+        }
+        /**
+         * task.dependsOn what does it actually do  ??
+         *
+         */
+//        task.dependsOn.forEach { dep ->
+//            if(dep instanceof Task){
+//                Task task1 = (Task)dep
+//                println "    dependon ----  task:" + task1.getName()
+//            } else if(dep instanceof String){
+//                String str1 = (String)dep
+//                println "    dependon ----  string: " + str1
+//            } else if(dep instanceof TaskProvider){
+//                TaskProvider task2 = (TaskProvider)dep
+//                println "    dependon ----  TaskProvider " + task2.getName()
+//            } else if(dep instanceof org.gradle.api.internal.file.AbstractFileCollection) {
+//                org.gradle.api.internal.file.AbstractFileCollection cfc = (org.gradle.api.internal.file.AbstractFileCollection)dep
+//                println "    dependon ----  cfc: " + cfc.toString()
+//            } else {
+//                println "    dependon ----  class: " + dep.getClass().getName()
+//            }
+//        }
+
+        println "  --------------- "
+        println ""
+        println ""
+        println ""
+    }
+
 
 }
+
+
+
+println "---app build end---"

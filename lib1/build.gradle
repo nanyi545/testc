@@ -15,7 +15,7 @@ println "---lib1 build start---"
 
 
 def group = 'com.example.lib1' //组
-def vers = '1.2.0' //版本
+def vers = '1.0.0' //版本
 def artId = 'exampleLib1' //唯一标示
 
 
