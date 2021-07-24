@@ -85,7 +85,7 @@ Java_com_example_testc2_MainActivity_stringFromJNI(
     Person *p1 = static_cast<Person *>(malloc(sizeof(Person)));
 //    Person *p1;
     p1->age=10;
-    __android_log_print(ANDROID_LOG_VERBOSE, "hehe", "age:%d",p1->age);
+    __android_log_print(ANDROID_LOG_VERBOSE, "hehe", " age:%d",p1->age);
 
 
     std::string hello = "Hello -- from C++";
