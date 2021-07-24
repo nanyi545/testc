@@ -37,7 +37,7 @@ int times(int a, int b){
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
 
 
-    // how to print ?? 
+    // how to print ??
     std::thread::id threadID = std::this_thread::get_id();
     __android_log_print(ANDROID_LOG_VERBOSE, "JNI_OnLoad", "Inside Thread :: Thread ID : %d",threadID);
 
