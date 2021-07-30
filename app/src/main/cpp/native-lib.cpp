@@ -68,7 +68,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
 
     obj1.order(arr,2,compare1);
 
-    
+
     int i1 = obj1.doOp(9,5,add);
     int i2 = obj1.doOp(9,5,min);
     int i3 = obj1.doOp(9,5,times);
