@@ -147,14 +147,15 @@ public:
     }
 
     bool IsSameRatio(DisplayDimension &other) {
-        if(w_ * other.h_ == h_ * other.w_) {
-            return true;
-        }
-        int diff = (w_ * other.h_ - h_ * other.w_);
-        if(diff<0){
-            diff = 0-diff;
-        }
-        return (diff * 100 < (other.h_ * other.w_) );
+//        if(w_ * other.h_ == h_ * other.w_) {
+//            return true;
+//        }
+        return false;
+//        int diff = (w_ * other.h_ - h_ * other.w_);
+//        if(diff<0){
+//            diff = 0-diff;
+//        }
+//        return (diff * 100 < (other.h_ * other.w_) );
     }
 
     bool operator>(DisplayDimension &other) {
@@ -330,7 +331,14 @@ void NDKCamera::CreateSession(ANativeWindow *previewWindow,
                               ANativeWindow *jpgWindow, int32_t imageRotation) {
     // Create output from this app's ANativeWindow, and add into output container
     requests_[PREVIEW_REQUEST_IDX].outputNativeWindow_ = previewWindow;
-    requests_[PREVIEW_REQUEST_IDX].template_ = TEMPLATE_PREVIEW;
+
+    /**
+     *  preview or record ??
+     */
+//    requests_[PREVIEW_REQUEST_IDX].template_ = TEMPLATE_PREVIEW;
+    requests_[PREVIEW_REQUEST_IDX].template_ = TEMPLATE_RECORD;
+
+
     requests_[JPG_CAPTURE_REQUEST_IDX].outputNativeWindow_ = jpgWindow;
     requests_[JPG_CAPTURE_REQUEST_IDX].template_ = TEMPLATE_STILL_CAPTURE;
 
@@ -582,6 +590,7 @@ bool NDKCamera::GetSensorOrientation(int32_t *facing, int32_t *angle) {
                                       &metadataObj));
     CALL_METADATA(getConstEntry(metadataObj, ACAMERA_LENS_FACING, &face));
     cameraFacing_ = static_cast<int32_t>(face.data.u8[0]);
+    LOGI("====Current cameraFacing_: %d", cameraFacing_);
 
     CALL_METADATA(
             getConstEntry(metadataObj, ACAMERA_SENSOR_ORIENTATION, &orientation));

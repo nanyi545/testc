@@ -73,8 +73,9 @@ void CameraEngine::CreateCamera(void) {
       imageRotation = (angle - rotation_ + 360) % 360;
     }
   }
-  LOGI("Phone Rotation: %d, Present Rotation Angle: %d", rotation_,
-       imageRotation);
+  LOGI("Phone Rotation: %d, Present Rotation Angle: %d", rotation_,imageRotation);
+
+
   ImageFormat view{0, 0, 0}, capture{0, 0, 0};
   camera_->MatchCaptureSizeRequest(app_->window, &view, &capture);
 
@@ -107,6 +108,8 @@ void CameraEngine::CreateCamera(void) {
   } else {
     LOGI("window12 not equal");
   };
+
+
 
   /**
    *  print address of a pointer ....
@@ -220,6 +223,7 @@ void CameraEngine::DrawFrame(void) {
   }
 
   yuvReader_->DisplayImage(&buf, image);
+
   ANativeWindow_unlockAndPost(app_->window);
   ANativeWindow_release(app_->window);
 

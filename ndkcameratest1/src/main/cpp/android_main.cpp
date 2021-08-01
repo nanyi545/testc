@@ -105,6 +105,9 @@ static void ProcessAndroidCmd(struct android_app* app, int32_t cmd) {
 
 extern "C" void android_main(struct android_app* state) {
 
+    /**
+     *  init global engine instance ..
+     */
     CameraEngine engine(state);
     pEngineObj = &engine;
 
@@ -147,6 +150,11 @@ extern "C" void android_main(struct android_app* state) {
  * Handle Android System APP_CMD_INIT_WINDOW message
  *   Request camera persmission from Java side
  *   Create camera object if camera has been granted
+ *
+ *   ------------------------------
+ *
+ *   preview entry point !!!!
+ *
  */
 void CameraEngine::OnAppInitWindow(void) {
     if (!cameraGranted_) {
@@ -159,6 +167,7 @@ void CameraEngine::OnAppInitWindow(void) {
     LOGI(" granted");
 
     rotation_ = GetDisplayRotation();
+    LOGI(" rotation_  %d",rotation_);
 
     CreateCamera();
     ASSERT(camera_, "CameraCreation Failed");

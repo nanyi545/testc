@@ -94,6 +94,7 @@ void ImageReader::ImageCallback(AImageReader *reader) {
   int32_t format;
   media_status_t status = AImageReader_getFormat(reader, &format);
   ASSERT(status == AMEDIA_OK, "Failed to get the media format");
+  LOGI("ImageCallback  format:%d   status:%d",format,status);
   if (format == AIMAGE_FORMAT_JPEG) {
     AImage *image = nullptr;
     media_status_t status = AImageReader_acquireNextImage(reader, &image);
@@ -229,6 +230,8 @@ bool ImageReader::DisplayImage(ANativeWindow_Buffer *buf, AImage *image) {
   AImage_getNumberOfPlanes(image, &srcPlanes);
   ASSERT(srcPlanes == 3, "Is not 3 planes");
 
+  LOGI("DisplayImage  srcPlanes:%d  srcFormat:%d   presentRotation_:%d",srcPlanes,srcFormat, presentRotation_ );
+
   switch (presentRotation_) {
     case 0:
       PresentImage(buf, image);
@@ -270,6 +273,7 @@ void ImageReader::PresentImage(ANativeWindow_Buffer *buf, AImage *image) {
   AImage_getPlaneData(image, 0, &yPixel, &yLen);
   AImage_getPlaneData(image, 1, &vPixel, &vLen);
   AImage_getPlaneData(image, 2, &uPixel, &uLen);
+
   int32_t uvPixelStride;
   AImage_getPlanePixelStride(image, 1, &uvPixelStride);
 
@@ -311,6 +315,7 @@ void ImageReader::PresentImage90(ANativeWindow_Buffer *buf, AImage *image) {
   AImage_getPlaneData(image, 2, &uPixel, &uLen);
   int32_t uvPixelStride;
   AImage_getPlanePixelStride(image, 1, &uvPixelStride);
+  LOGI("yLen:%d  uLen:%d,  vLen:%d" ,yLen ,uLen ,vLen );
 
   int32_t height = MIN(buf->width, (srcRect.bottom - srcRect.top));
   int32_t width = MIN(buf->height, (srcRect.right - srcRect.left));

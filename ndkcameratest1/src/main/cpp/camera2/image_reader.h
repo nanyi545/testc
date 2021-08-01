@@ -96,7 +96,9 @@ class ImageReader {
    * @param callback is the actual callback function
    */
   void RegisterCallback(void* ctx, std::function<void(void* ctx, const char* fileName)>);
- private:
+
+
+private:
   int32_t presentRotation_;
   AImageReader* reader_;
 
@@ -108,7 +110,13 @@ class ImageReader {
   void PresentImage180(ANativeWindow_Buffer* buf, AImage* image);
   void PresentImage270(ANativeWindow_Buffer* buf, AImage* image);
 
-  void WriteFile(AImage* image);
+    /**
+     *  this is private api !!!
+     * @param image
+     */
+    void WriteFile(AImage* image);
+
+
 };
 
 #endif  // CAMERA_IMAGE_READER_H
