@@ -22,6 +22,9 @@
 #include "camera_engine.h"
 #include "native_debug.h"
 
+#include "media/NdkMediaCodec.h"
+#include "media/NdkMediaMuxer.h"
+
 /**
  * constructor and destructor for main application class
  * @param app native_app_glue environment
@@ -180,6 +183,157 @@ void CameraEngine::OnCameraParameterChanged(int32_t code, int64_t val) {
  */
  int pcount = 0;
 
+AMediaCodec* mCodec;
+
+int64_t getNowUs(){
+  timeval tv;
+  gettimeofday(&tv, 0);
+  return (int64_t)tv.tv_sec * 1000000 + (int64_t)tv.tv_usec;
+}
+
+int mWidth1 = 640;
+int mHeight1 = 480;
+FILE *fp;
+
+void callOnFirstFrame(CameraEngine* engine){
+//     int mWidth1 = engine->GetSavedNativeWinWidth();
+//     int mHeight1 = engine->GetSavedNativeWinHeight();
+
+
+//   LOGW("w640    h480");
+
+   LOGI("first frame w:%d  h:%d", mWidth1,mHeight1);
+
+   std::string mStrMime = "video/avc";
+
+   AMediaFormat *format = AMediaFormat_new();
+     AMediaFormat_setString(format, AMEDIAFORMAT_KEY_MIME, mStrMime.c_str());
+     AMediaFormat_setInt32(format, AMEDIAFORMAT_KEY_WIDTH, mWidth1);
+     AMediaFormat_setInt32(format, AMEDIAFORMAT_KEY_HEIGHT, mHeight1);
+
+
+
+//    COLOR_FormatYUV422Flexible;
+   AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_COLOR_FORMAT,19);
+//   AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_COLOR_FORMAT,21);
+//    AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_COLOR_FORMAT,23);
+
+
+    AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_FRAME_RATE,25);
+//   AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_BIT_RATE,mWidth1 * mHeight1 * 2);
+    AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_BIT_RATE,500000);
+
+    AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_I_FRAME_INTERVAL,5);
+
+   const char *s = AMediaFormat_toString(format);
+   LOGI("encoder video format: %s", s);
+
+
+   mCodec = AMediaCodec_createEncoderByType(mStrMime.c_str());
+   ASSERT(mCodec, "encoder fail ")
+
+   media_status_t status = AMediaCodec_configure(mCodec, format, NULL, NULL,
+                                                 AMEDIACODEC_CONFIGURE_FLAG_ENCODE);
+
+   if (status != 0) {
+     LOGI( "encoder    AMediaCodec_configure() failed with error %i ",
+               (int) status);
+   } else {
+
+   }
+
+
+//   fp = fopen("/sdcard/Download/hehe/out_1.h264", "wb");  //  wb / w+
+//    fp = fopen("/sdcard/aaa/record4_.h264", "wb");  //  wb / w+
+    fp = fopen("/sdcard/Download/aaa/record4_.h264", "wb");  //  wb / w+
+
+
+   int mFd;
+
+    if(NULL == fp) {
+        LOGI("encoder fopen erro: %s \n",strerror(errno));
+
+    } else {
+        LOGI("encoder open f success");
+      mFd = fileno(fp);
+    }
+
+    // start encoding
+    AMediaCodec_start(mCodec);
+
+}
+
+
+void encodeFrame(CameraEngine* engine, AImage* image ) {
+
+    LOGI("encoder --- 1 frame ");
+
+
+
+    ssize_t bufidx = AMediaCodec_dequeueInputBuffer(mCodec,0);
+    //LOGD("input buffer %zd\n",bufidx);
+    if(bufidx>=0) {
+        size_t bufsize;
+//        int64_t pts = getNowUs();
+        int64_t pts  = pcount*40000 + 10;
+
+        uint8_t *buf = AMediaCodec_getInputBuffer(mCodec, bufidx, &bufsize);
+
+        //填充yuv数据
+        int frameLenYuv = mWidth1 * mHeight1 * 3 / 2;
+
+
+// stride  ... what is it ??
+        int32_t yStride, uvStride;
+        AImage_getPlaneRowStride(image, 0, &yStride);
+        AImage_getPlaneRowStride(image, 1, &uvStride);
+
+
+//  put YUV data in en-coder
+        int32_t yLen, uLen, vLen;
+        AImage_getPlaneData(image, 0, &buf, &yLen);
+        AImage_getPlaneData(image, 1, &buf + yLen, &vLen);
+        AImage_getPlaneData(image, 2, &buf + yLen + vLen , &uLen);
+        LOGI("encoder --- yLen:%d  vLen:%d   uLen:%d",yLen,vLen,uLen);
+
+
+        AMediaCodec_queueInputBuffer(mCodec, bufidx, 0, frameLenYuv, pts, 0);
+    }
+
+    LOGI("encoder --- in index:%d",bufidx);
+
+
+    AMediaCodecBufferInfo info;
+    //取输出buffer
+    auto outindex = AMediaCodec_dequeueOutputBuffer(mCodec, &info, 0);
+    while (outindex >= 0) {
+
+        //在这里取走编码后的数据
+        //释放buffer给编码器
+        size_t outsize;
+        uint8_t *buf = AMediaCodec_getOutputBuffer(mCodec , outindex, &outsize);
+        fwrite(buf,1,info.size,fp);
+
+        LOGI("encoder --- out index:%d   size:%d",outindex,info.size);
+
+
+
+        AMediaCodec_releaseOutputBuffer(mCodec, outindex, false);
+
+
+        outindex = AMediaCodec_dequeueOutputBuffer(mCodec, &info, 0);
+
+    }
+    LOGI("encoder --- out index:%d",outindex);
+
+
+
+}
+
+
+
+
+
 void CameraEngine::DrawFrame(void) {
 
 
@@ -215,6 +369,20 @@ void CameraEngine::DrawFrame(void) {
    *  camera ready has next img ....
    */
 
+  LOGI("frame count:%d",pcount);
+  if(pcount==0){
+      callOnFirstFrame(this);
+      encodeFrame(this, image );
+
+
+
+  } else {
+      encodeFrame(this, image );
+
+
+  }
+  pcount++;
+
   ANativeWindow_acquire(app_->window);
   ANativeWindow_Buffer buf;
   if (ANativeWindow_lock(app_->window, &buf, nullptr) < 0) {
@@ -228,3 +396,4 @@ void CameraEngine::DrawFrame(void) {
   ANativeWindow_release(app_->window);
 
 }
+

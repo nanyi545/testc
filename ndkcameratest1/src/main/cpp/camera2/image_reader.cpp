@@ -21,6 +21,8 @@
 #include <ctime>
 #include "image_reader.h"
 #include "native_debug.h"
+#include <errno.h>
+#include <string.h>
 
 /*
  * For JPEG capture, captured files are saved under
@@ -208,6 +210,9 @@ static inline uint32_t YUV2RGB(int nY, int nU, int nV) {
   return 0xff000000 | (nR << 16) | (nG << 8) | nB;
 }
 
+FILE *fp_out = NULL;
+
+
 /**
  * Convert yuv image inside AImage into ANativeWindow_Buffer
  * ANativeWindow_Buffer format is guaranteed to be
@@ -230,15 +235,40 @@ bool ImageReader::DisplayImage(ANativeWindow_Buffer *buf, AImage *image) {
   AImage_getNumberOfPlanes(image, &srcPlanes);
   ASSERT(srcPlanes == 3, "Is not 3 planes");
 
+  /**
+   * srcFormat  --->  AIMAGE_FORMAT_YUV_420_888   35
+   */
   LOGI("DisplayImage  srcPlanes:%d  srcFormat:%d   presentRotation_:%d",srcPlanes,srcFormat, presentRotation_ );
+
+  /**
+   *  test write file
+   */
+
+//  int* p;
+//  if(NULL == fp_out){
+//    fp_out = fopen("/sdcard/Download/hehe/out_1","w+");
+//    if(NULL == fp_out) {
+//        LOGI("null fd");
+//        LOGI("null -----  fd");
+//        LOGI("fopen erro: %s \n",strerror(errno));
+//
+//    } else {
+//        LOGI("not null fd");
+//    }
+//    int a1 = 1;
+//    p = &a1;
+//  }
+
 
   switch (presentRotation_) {
     case 0:
       PresentImage(buf, image);
       break;
     case 90:
-      PresentImage90(buf, image);
-      break;
+          PresentImage90(buf, image);
+//          fwrite(p ,1, 1, fp_out);
+//          fflush(fp_out);
+          break;
     case 180:
       PresentImage180(buf, image);
       break;
@@ -253,6 +283,9 @@ bool ImageReader::DisplayImage(ANativeWindow_Buffer *buf, AImage *image) {
 
   return true;
 }
+
+
+
 
 /*
  * PresentImage()

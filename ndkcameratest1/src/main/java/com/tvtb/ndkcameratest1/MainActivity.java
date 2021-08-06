@@ -8,11 +8,18 @@ import android.Manifest;
 import android.app.NativeActivity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
+import android.view.Surface;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.WindowManager;
 
 import static android.hardware.camera2.CameraMetadata.LENS_FACING_BACK;
@@ -74,13 +81,49 @@ import static android.hardware.camera2.CameraMetadata.LENS_FACING_BACK;
  */
 public class MainActivity extends NativeActivity {
 
+
+    static boolean play = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
+        if(play) {
+            setContentView(R.layout.activity_main);
+            SurfaceView s = findViewById(R.id.surfaceview1);
+            s.getHolder().addCallback(new SurfaceHolder.Callback() {
+                @Override
+                public void surfaceCreated(@NonNull SurfaceHolder holder) {
+                    setSurface(holder.getSurface());
+                    String fileName = "clips/testfile.mp4";
+                    createStreamingMediaPlayer(getResources().getAssets(),fileName);
+                }
+
+                @Override
+                public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
+                }
+
+                @Override
+                public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
+
+                }
+            });
+        }
+
+
 //        Log.d("fff",""+Thread.currentThread().getName()+"    "+Thread.currentThread().getId());
+
+
+
+        handler.sendEmptyMessageDelayed(1,3000);
+
     }
 
+
+    @Override
+    protected void onDestroy() {
+        handler.removeCallbacksAndMessages(null);
+        super.onDestroy();
+    }
 
     int getRotationDegree() {
         int val = 90 * ((WindowManager)(getSystemService(WINDOW_SERVICE)))
@@ -178,10 +221,39 @@ public class MainActivity extends NativeActivity {
 
 
     native static void notifyCameraPermission(boolean granted);
+    native static void setCamera(boolean useCamera);
+
+
+    native void test1();
+
+    Handler handler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            handler.sendEmptyMessageDelayed(1,3000);
+//            test1();
+        }
+    };
+
+
+
 
     static {
         System.loadLibrary("native-lib1");
+        boolean useCamera = true;
+        setCamera(useCamera);
+        play = !useCamera;
     }
+
+
+
+    private void setupPlayer(){
+
+    }
+
+
+    public static native boolean createStreamingMediaPlayer(AssetManager assetMgr, String filename);
+    public static native void setSurface(Surface surface);
 
 
 }

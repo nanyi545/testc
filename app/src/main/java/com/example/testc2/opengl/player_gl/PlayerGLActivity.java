@@ -66,6 +66,7 @@ public class PlayerGLActivity extends Activity {
 
                 MediaPlayer player = new MediaPlayer();
                 final File vivo = new File(folder,"vivo720p.mp4");
+                Log.d("aaa",""+vivo.getAbsolutePath());
                 player.play(vivo.getAbsolutePath(), s);
 
             }

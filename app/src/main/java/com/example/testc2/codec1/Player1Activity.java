@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.ImageView;
@@ -26,13 +27,37 @@ import java.io.File;
  */
 public class Player1Activity extends AppCompatActivity {
     public boolean checkPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-            }, 1);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int p00 = checkSelfPermission(Manifest.permission.MANAGE_EXTERNAL_STORAGE);
+            Log.d("ffff","p00:"+p00);
+            if(p00!=PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.MANAGE_EXTERNAL_STORAGE
+                }, 1);
+            }
+        }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int p0 = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            Log.d("ffff","p0:"+p0);
+            if(p0!=PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                }, 1);
+            }
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int p = checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
+            Log.d("ffff","p:"+p);
+            if(p!=PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                }, 1);
+            }
         }
         return false;
     }
@@ -62,7 +87,11 @@ public class Player1Activity extends AppCompatActivity {
             folder.mkdirs();
         }
         String fileName = H264Player.getFileName();
-        final File f = new File(folder,fileName);
+
+//        final File f = new File(folder,fileName);
+        final File f= new File("/sdcard/Download/aaa/record4_.h264");
+        Log.d("dddd","f:"+f.exists());
+
 
         SurfaceView surface = (SurfaceView) findViewById(R.id.preview);
         final SurfaceHolder surfaceHolder = surface.getHolder();

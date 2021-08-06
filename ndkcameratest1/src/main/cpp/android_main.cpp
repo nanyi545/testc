@@ -7,6 +7,43 @@
 #include <thread>
 #include "camera2/native_debug.h"
 #include "camera2/camera_engine.h"
+//#include "camera2/looper.h"
+#include "camera2/decoder.cpp"
+
+
+
+//class mylooper: public looper {
+//    virtual void handle(int what, void* obj);
+//};
+//
+//void mylooper::handle(int what, void* obj) {
+//    LOGI("mylooper handle %d",what);
+//    switch (what) {
+//        case 1:
+//            break;
+//    }
+//}
+//
+//mylooper* mlooper;
+
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_tvtb_ndkcameratest1_MainActivity_test1(JNIEnv *env, jobject thiz) {
+//    mlooper->post(3, NULL, false );
+}
+
+bool showCameraPreview = true;
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_tvtb_ndkcameratest1_MainActivity_setCamera(JNIEnv *env, jclass jclass1,jboolean useCamera) {
+    showCameraPreview = useCamera;
+}
+
+
+
+
 
 /*
  * SampleEngine global object
@@ -103,6 +140,9 @@ static void ProcessAndroidCmd(struct android_app* app, int32_t cmd) {
 }
 
 
+
+
+
 extern "C" void android_main(struct android_app* state) {
 
     /**
@@ -113,6 +153,12 @@ extern "C" void android_main(struct android_app* state) {
 
     state->userData = reinterpret_cast<void*>(&engine);
     state->onAppCmd = ProcessAndroidCmd;
+
+    /**
+     *
+     */
+//    mlooper = new mylooper();
+
 
     // loop waiting for stuff to do.
     while (1) {
@@ -145,7 +191,6 @@ extern "C" void android_main(struct android_app* state) {
 
 
 
-
 /**
  * Handle Android System APP_CMD_INIT_WINDOW message
  *   Request camera persmission from Java side
@@ -157,6 +202,9 @@ extern "C" void android_main(struct android_app* state) {
  *
  */
 void CameraEngine::OnAppInitWindow(void) {
+    if(!showCameraPreview){
+        return;
+    }
     if (!cameraGranted_) {
         LOGI("not granted");
 

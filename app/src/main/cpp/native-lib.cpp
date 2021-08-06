@@ -40,6 +40,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
     // how to print ??
     std::thread::id threadID = std::this_thread::get_id();
     __android_log_print(ANDROID_LOG_VERBOSE, "JNI_OnLoad", "Inside Thread :: Thread ID : %d",threadID);
+    __android_log_print(ANDROID_LOG_VERBOSE, "JNI_OnLoad", "abi:%s ",ABI);
 
 
     test1 obj1;

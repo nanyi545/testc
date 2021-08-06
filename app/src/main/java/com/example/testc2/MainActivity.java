@@ -59,7 +59,7 @@ import java.lang.reflect.Modifier;
 public class MainActivity extends AppCompatActivity {
 
 
-    private boolean gotoOtherPage = false;
+    private boolean gotoOtherPage = true;
 
     private void toOtherPage() {
         if (!gotoOtherPage) {
@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         // nested scroll
-        Intent i =new Intent(MainActivity.this, NestedScrollActivity.class);
-        startActivity(i);
+//        Intent i =new Intent(MainActivity.this, NestedScrollActivity.class);
+//        startActivity(i);
 
 
         // selector
