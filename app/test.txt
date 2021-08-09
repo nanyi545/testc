@@ -1,4 +1,3 @@
-
 apply plugin: 'com.android.application'
 //apply plugin: 'com.hehe.gplugin1'
 
@@ -75,6 +74,7 @@ dependencies {
 //    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation rootProject.ext.dependencies.constraintLayout
 
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
@@ -94,7 +94,7 @@ dependencies {
     // use local aar ... method 1
 //    implementation(name: 'lib1-debug', ext: 'aar')
     // method2 -----> publish .. then use ....
-    implementation ('com.example.lib1:exampleLib1:1.0.0@aar'){
+    implementation('com.example.lib1:exampleLib1:1.0.0@aar') {
     }
 
 
@@ -128,9 +128,6 @@ dependencies {
 }
 
 
-
-
-
 // ---------- gradle tests  ----------
 
 class MyTask extends DefaultTask {
@@ -152,7 +149,8 @@ class MyTask extends DefaultTask {
         println "MyTask func1"
         println from
         println out //  /Users/weiwang/AndroidStudioProjects/TestC2/app/test.txt
-        println inputs.files.singleFile  //   /Users/weiwang/AndroidStudioProjects/TestC2/app/build.gradle
+        println inputs.files.singleFile
+        //   /Users/weiwang/AndroidStudioProjects/TestC2/app/build.gradle
 
 
         // copy file to an output file ....
@@ -162,7 +160,7 @@ class MyTask extends DefaultTask {
     }
 }
 
-task myTask(type:MyTask) {
+task myTask(type: MyTask) {
     // always re-run
     outputs.upToDateWhen { false }
 
@@ -181,7 +179,7 @@ tasks.getByName('preBuild').dependsOn(myTask)
 
 
 // 自定义任务，zip打包
-task mzip(type:Zip){
+task mzip(type: Zip) {
     group = "wwgroup"
     archiveName "outputs.zip"
     destinationDir file("${buildDir}/costum")
@@ -197,9 +195,9 @@ afterEvaluate {
 task printExt {
     group 'wwgroup'
     doLast {
-        println 'ext.dependencies:'+rootProject.ext.dependencies
+        println 'ext.dependencies:' + rootProject.ext.dependencies
         rootProject.ext.dependencies.each {
-            key, val -> println key+" - "+val
+            key, val -> println key + " - " + val
         }
     }
 }
@@ -208,16 +206,15 @@ task printExt {
 task printRepos() {
     doLast {
         for (ArtifactRepository repository : project.repositories.asList()) {
-            println("reponame:" + repository.getName() + "  url:" + repository.properties.get('url')+"   repo type:"+repository.getClass().getName())
-            if(repository instanceof org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository ) {
-                org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository mavenRepo = (org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository)repository;
-                println("artifactUrls:"+mavenRepo.artifactUrls)
-                println("url:"+mavenRepo.url)
+            println("reponame:" + repository.getName() + "  url:" + repository.properties.get('url') + "   repo type:" + repository.getClass().getName())
+            if (repository instanceof org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository) {
+                org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository mavenRepo = (org.gradle.api.internal.artifacts.repositories.DefaultMavenArtifactRepository) repository;
+                println("artifactUrls:" + mavenRepo.artifactUrls)
+                println("url:" + mavenRepo.url)
             }
         }
     }
 }
-
 
 
 task myTask1 {
@@ -321,13 +318,10 @@ task myTask1 {
 task getAllConfigs() {
     doFirst {
         project.configurations.each {
-            config -> println(config.name+"   dep:"+config.dependencies)
+            config -> println(config.name + "   dep:" + config.dependencies)
         }
     }
 }
-
-
-
 
 
 /**
@@ -424,7 +418,7 @@ task getAllConfigs() {
  *
  *
  *
- *-----------------------------------------
+ * -----------------------------------------
  *  task ':app:transformClassesWithDexBuilderForDebug'
  *
  *    props:[inputTypes:[CLASSES], otherInputs:[min-sdk-version:21, , dex-builder-tool:D8, optimize:true, enable-dexing-artifact-transform:true], referencedScopes:[SUB_PROJECTS, TESTED_CODE, PROVIDED_ONLY, MAIN_SPLIT, EXTERNAL_LIBRARIES], scopes:[PROJECT]]
@@ -434,7 +428,7 @@ task getAllConfigs() {
  *    output:  build/intermediates/transforms/dexBuilder/debug   ---> dex files
  *
  */
-gradle.taskGraph.whenReady {taskGraph ->
+gradle.taskGraph.whenReady { taskGraph ->
     println "  app -- graph ready  "
 
     println "Found task graph: " + taskGraph
@@ -446,14 +440,14 @@ gradle.taskGraph.whenReady {taskGraph ->
         boolean hasSource = task.inputs.getHasSourceFiles()
         def props = task.inputs.getProperties()
 
-        println "  ----  view task of ---- " + task +"  group:"+ group+"   hasInput:"+hasInput+"   hasSource:"+hasSource
-        println "  ----  props:"+props
-        println "  ----  task class:"+task.getClass().getName()
+        println "  ----  view task of ---- " + task + "  group:" + group + "   hasInput:" + hasInput + "   hasSource:" + hasSource
+        println "  ----  props:" + props
+        println "  ----  task class:" + task.getClass().getName()
 
-        try{
-            println "input  :"+task.inputs.getFiles().getFiles()
-        }catch(Exception e){
-            println "input  err :"+task.getName()
+        try {
+            println "input  :" + task.inputs.getFiles().getFiles()
+        } catch (Exception e) {
+            println "input  err :" + task.getName()
         }
 
         task.getMustRunAfter().getDependencies().forEach {
@@ -465,7 +459,7 @@ gradle.taskGraph.whenReady {taskGraph ->
         task.getFinalizedBy().getDependencies().forEach {
             t -> println "    final by ----  task:" + t.getName()
         }
-        println "out  :"+task.outputs.getFiles().getFiles()
+        println "out  :" + task.outputs.getFiles().getFiles()
         task.getTaskDependencies().getDependencies().forEach {
             t -> println "    task deps ----  task:" + t.getName()
         }
@@ -499,7 +493,6 @@ gradle.taskGraph.whenReady {taskGraph ->
 
 
 }
-
 
 
 println "---app build end---"

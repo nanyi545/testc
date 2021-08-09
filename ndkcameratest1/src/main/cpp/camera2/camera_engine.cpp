@@ -182,6 +182,8 @@ void CameraEngine::OnCameraParameterChanged(int32_t code, int64_t val) {
  * converter
  */
  int pcount = 0;
+int64_t cout2 = 0;
+int cout3 = 0;
 
 AMediaCodec* mCodec;
 
@@ -199,31 +201,33 @@ void callOnFirstFrame(CameraEngine* engine){
 //     int mWidth1 = engine->GetSavedNativeWinWidth();
 //     int mHeight1 = engine->GetSavedNativeWinHeight();
 
-
-//   LOGW("w640    h480");
-
+//   LOGW("w640  h480");
    LOGI("first frame w:%d  h:%d", mWidth1,mHeight1);
 
    std::string mStrMime = "video/avc";
 
    AMediaFormat *format = AMediaFormat_new();
-     AMediaFormat_setString(format, AMEDIAFORMAT_KEY_MIME, mStrMime.c_str());
-     AMediaFormat_setInt32(format, AMEDIAFORMAT_KEY_WIDTH, mWidth1);
-     AMediaFormat_setInt32(format, AMEDIAFORMAT_KEY_HEIGHT, mHeight1);
+   AMediaFormat_setString(format, AMEDIAFORMAT_KEY_MIME, mStrMime.c_str());
+   AMediaFormat_setInt32(format, AMEDIAFORMAT_KEY_WIDTH, mWidth1);
+   AMediaFormat_setInt32(format, AMEDIAFORMAT_KEY_HEIGHT, mHeight1);
 
+//    AMediaFormat_setInt32(format, AMEDIAFORMAT_KEY_BITRATE_MODE, 2);
 
+//    android.media.MediaCodecInfo
+//    public static final int COLOR_FormatYUV420Flexible = 0x7F420888;
 
-//    COLOR_FormatYUV422Flexible;
-   AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_COLOR_FORMAT,19);
-//   AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_COLOR_FORMAT,21);
+//    AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_COLOR_FORMAT,0x7F420888);
+
+//   AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_COLOR_FORMAT,19);
+   AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_COLOR_FORMAT,21);
 //    AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_COLOR_FORMAT,23);
 
 
-    AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_FRAME_RATE,25);
-//   AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_BIT_RATE,mWidth1 * mHeight1 * 2);
-    AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_BIT_RATE,500000);
+    AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_FRAME_RATE,30);
+   AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_BIT_RATE,mWidth1 * mHeight1 * 2);
+//    AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_BIT_RATE,50000);
 
-    AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_I_FRAME_INTERVAL,5);
+    AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_I_FRAME_INTERVAL,4);
 
    const char *s = AMediaFormat_toString(format);
    LOGI("encoder video format: %s", s);
@@ -234,6 +238,10 @@ void callOnFirstFrame(CameraEngine* engine){
 
    media_status_t status = AMediaCodec_configure(mCodec, format, NULL, NULL,
                                                  AMEDIACODEC_CONFIGURE_FLAG_ENCODE);
+
+
+
+
 
    if (status != 0) {
      LOGI( "encoder    AMediaCodec_configure() failed with error %i ",
@@ -263,6 +271,52 @@ void callOnFirstFrame(CameraEngine* engine){
 
 }
 
+void writeYuv(CameraEngine* engine, AImage* image ) {
+
+
+    FILE *yuv;
+    yuv = fopen("/sdcard/Download/aaa/t1.yuv", "wb");  //  wb / w+
+
+    uint8_t *yPixel, *uPixel, *vPixel;
+    int32_t yLen, uLen, vLen;
+    AImage_getPlaneData(image, 0, &yPixel, &yLen);
+    AImage_getPlaneData(image, 1, &vPixel, &vLen);
+    AImage_getPlaneData(image, 2, &uPixel, &uLen);
+
+    LOGI("ffff --- yLen:%d",yLen);  // 307200
+    LOGI("ffff --- vLen:%d",vLen);  // 153599
+    LOGI("ffff --- uLen:%d",uLen);  // 153599
+
+
+    // write YUV img to   t1.yuv
+    fwrite(yPixel,1,yLen,yuv);
+    fwrite(uPixel,1,uLen,yuv);
+    fwrite(vPixel,1,vLen,yuv);
+
+
+
+//    uint8_t const1[1]   = { '|' };
+//    uint8_t *buf[5];
+//    int32_t yLen = 5;
+//    uint8_t arrayOne[12]   = { 'a','b','c','d','e','b',0x01, 0xC1, 0x00, 0x01 };
+//    for (int i=0;i<yLen;i++){
+////        fwrite(arrayOne+i,1,1,yuv);
+//        // write as int ...
+//        int cast = arrayOne[i];
+//        fwrite(&cast,sizeof(int),1,yuv);
+//        LOGI("ffff --- %d",cast);
+//        fwrite(const1,1,1,yuv);
+//    }
+//    LOGI("ffff --- 1 frame ");
+
+
+    fflush(yuv);
+    fclose(yuv);
+
+
+}
+
+
 
 void encodeFrame(CameraEngine* engine, AImage* image ) {
 
@@ -273,36 +327,59 @@ void encodeFrame(CameraEngine* engine, AImage* image ) {
     ssize_t bufidx = AMediaCodec_dequeueInputBuffer(mCodec,0);
     //LOGD("input buffer %zd\n",bufidx);
     if(bufidx>=0) {
+
+        LOGI("encoder --- in pts1:%" PRId64,cout2);
+
+
         size_t bufsize;
 //        int64_t pts = getNowUs();
-        int64_t pts  = pcount*40000 + 10;
+        int64_t pts = cout2*133333+10;
+        cout2=cout2+1;
+//        int64_t pts  = pcount*13333 + 10;
+
+        LOGI("encoder --- in pts:%" PRId64 ,pts);
+
+
 
         uint8_t *buf = AMediaCodec_getInputBuffer(mCodec, bufidx, &bufsize);
 
         //填充yuv数据
         int frameLenYuv = mWidth1 * mHeight1 * 3 / 2;
+//        int frameLenYuv = mWidth1 * mHeight1;
 
 
 // stride  ... what is it ??
-        int32_t yStride, uvStride;
-        AImage_getPlaneRowStride(image, 0, &yStride);
-        AImage_getPlaneRowStride(image, 1, &uvStride);
+//        int32_t yStride, uvStride;
+//        AImage_getPlaneRowStride(image, 0, &yStride);
+//        AImage_getPlaneRowStride(image, 1, &uvStride);
+
+        memset (buf, 66 ,frameLenYuv);
 
 
 //  put YUV data in en-coder
+
+
+        uint8_t *yPixel, *uPixel, *vPixel;
         int32_t yLen, uLen, vLen;
-        AImage_getPlaneData(image, 0, &buf, &yLen);
-        AImage_getPlaneData(image, 1, &buf + yLen, &vLen);
-        AImage_getPlaneData(image, 2, &buf + yLen + vLen , &uLen);
-        LOGI("encoder --- yLen:%d  vLen:%d   uLen:%d",yLen,vLen,uLen);
+        AImage_getPlaneData(image, 0, &yPixel, &yLen);
+        memcpy(buf, yPixel, yLen);
 
 
+//        LOGI("encoder --- yLen:%d  vLen:%d   uLen:%d",yLen,vLen,uLen );
         AMediaCodec_queueInputBuffer(mCodec, bufidx, 0, frameLenYuv, pts, 0);
     }
 
     LOGI("encoder --- in index:%d",bufidx);
 
+    /**
 
+     其中有个字段是flags，它有几种常量情况。
+flags = 4；End of Stream。
+flags = 2；首帧信息帧。
+flags = 1；关键帧。
+flags = 0；普通帧。
+
+     */
     AMediaCodecBufferInfo info;
     //取输出buffer
     auto outindex = AMediaCodec_dequeueOutputBuffer(mCodec, &info, 0);
@@ -312,21 +389,19 @@ void encodeFrame(CameraEngine* engine, AImage* image ) {
         //释放buffer给编码器
         size_t outsize;
         uint8_t *buf = AMediaCodec_getOutputBuffer(mCodec , outindex, &outsize);
+
+
         fwrite(buf,1,info.size,fp);
+        fflush(fp);
 
-        LOGI("encoder --- out index:%d   size:%d",outindex,info.size);
-
+        LOGI("encoder --- out index:%d   size:%d   frame:%d   flag:%d",outindex,info.size,pcount ,info.flags);
 
 
         AMediaCodec_releaseOutputBuffer(mCodec, outindex, false);
-
-
         outindex = AMediaCodec_dequeueOutputBuffer(mCodec, &info, 0);
 
     }
     LOGI("encoder --- out index:%d",outindex);
-
-
 
 }
 
@@ -335,7 +410,6 @@ void encodeFrame(CameraEngine* engine, AImage* image ) {
 
 
 void CameraEngine::DrawFrame(void) {
-
 
   if (!cameraReady_ || !yuvReader_) {
     /**
@@ -373,15 +447,14 @@ void CameraEngine::DrawFrame(void) {
   if(pcount==0){
       callOnFirstFrame(this);
       encodeFrame(this, image );
-
-
+      writeYuv(this, image);
 
   } else {
       encodeFrame(this, image );
-
-
   }
+
   pcount++;
+
 
   ANativeWindow_acquire(app_->window);
   ANativeWindow_Buffer buf;

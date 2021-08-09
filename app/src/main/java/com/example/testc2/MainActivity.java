@@ -35,6 +35,7 @@ import com.example.testc2.selector.Selector2Activity;
 import com.example.testc2.videochat1.VideoChatPush;
 import com.example.testc2.videochat2.VideoChatReceiver;
 import com.example.testc2.x264.X264Activity;
+import com.example.testc2.yuv.YuvActivity;
 
 /**
  *
@@ -90,6 +91,12 @@ public class MainActivity extends AppCompatActivity {
 
 //        Intent i = new Intent(MainActivity.this, DummyMainActivity.class);
 //        startActivity(i);
+
+
+        // YUV ... test
+//        Intent i = new Intent(MainActivity.this, YuvActivity.class);
+//        startActivity(i);
+
     }
 
 

@@ -79,4 +79,5 @@ target_link_libraries( # Specifies the target library.
         app_glue
         camera2ndk
         mediandk
+        OpenMAXAL
         )
