@@ -24,8 +24,8 @@
 #include <thread>
 
 #include "camera_manager.h"
-//#include "../../../../../../../../../../home/ww/Android/Sdk/ndk/21.0.6113669/sources/android/native_app_glue/android_native_app_glue.h"
-#include "../../../../../../../Library/Android/sdk/ndk/22.0.7026061/sources/android/native_app_glue/android_native_app_glue.h"
+#include "../../../../../../../../../../home/ww/Android/Sdk/ndk/21.0.6113669/sources/android/native_app_glue/android_native_app_glue.h"
+//#include "../../../../../../../Library/Android/sdk/ndk/22.0.7026061/sources/android/native_app_glue/android_native_app_glue.h"
 
 /**
  * basic CameraAppEngine

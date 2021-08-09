@@ -52,7 +52,7 @@ public class H264Player implements Runnable {
 //                不支持硬编
             }
 
-            MediaFormat mediaformat = MediaFormat.createVideoFormat("video/avc", 480, 640);
+            MediaFormat mediaformat = MediaFormat.createVideoFormat("video/avc", 640, 480);
 //            MediaFormat mediaformat = MediaFormat.createVideoFormat(type, screen.getWidth(), screen.getHeight());
 
             mediaformat.setInteger(MediaFormat.KEY_FRAME_RATE, 30);
@@ -75,7 +75,7 @@ public class H264Player implements Runnable {
      * @return
      */
     boolean printOnSurface(){
-        return true;
+        return false;
     }
 
 

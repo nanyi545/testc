@@ -330,15 +330,13 @@ void encodeFrame(CameraEngine* engine, AImage* image ) {
 
         LOGI("encoder --- in pts1:%" PRId64,cout2);
 
-
         size_t bufsize;
-//        int64_t pts = getNowUs();
-        int64_t pts = cout2*133333+10;
-        cout2=cout2+1;
+        int64_t pts = getNowUs();
+//        int64_t pts = cout2*13333+10;
+//        cout2=cout2+1;
 //        int64_t pts  = pcount*13333 + 10;
 
         LOGI("encoder --- in pts:%" PRId64 ,pts);
-
 
 
         uint8_t *buf = AMediaCodec_getInputBuffer(mCodec, bufidx, &bufsize);
@@ -353,7 +351,7 @@ void encodeFrame(CameraEngine* engine, AImage* image ) {
 //        AImage_getPlaneRowStride(image, 0, &yStride);
 //        AImage_getPlaneRowStride(image, 1, &uvStride);
 
-        memset (buf, 66 ,frameLenYuv);
+        memset (buf, 1 ,frameLenYuv);
 
 
 //  put YUV data in en-coder
@@ -362,7 +360,22 @@ void encodeFrame(CameraEngine* engine, AImage* image ) {
         uint8_t *yPixel, *uPixel, *vPixel;
         int32_t yLen, uLen, vLen;
         AImage_getPlaneData(image, 0, &yPixel, &yLen);
+        AImage_getPlaneData(image, 1, &vPixel, &vLen);
+        AImage_getPlaneData(image, 2, &uPixel, &uLen);
+
+
         memcpy(buf, yPixel, yLen);
+        int uIndex = 0, vIndex = 0;
+
+        /**
+         *  is it optimal ???
+         */
+        for( int i=yLen ; i<frameLenYuv-2; i+=2 ){
+            buf[i+1] = vPixel[vIndex];
+            buf[i+2] = uPixel[uIndex];
+            vIndex+=2;
+            uIndex+=2;
+        }
 
 
 //        LOGI("encoder --- yLen:%d  vLen:%d   uLen:%d",yLen,vLen,uLen );
