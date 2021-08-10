@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Size;
@@ -22,6 +24,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class TestUtil {
+
+    /**
+     *  how to  reproduce : noClassDef found error ?
+     */
+//    private static Handler h1 = new Handler((Looper)null);
 
     public static void LogToFile(String name,String content){
         FileWriter writer = null;

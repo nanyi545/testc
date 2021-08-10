@@ -32,6 +32,7 @@ import com.example.testc2.opengl.camera_gl.CameraOpenGlActivity;
 import com.example.testc2.opengl.player_gl.PlayerGLActivity;
 import com.example.testc2.rtmp.RtmpBilibiliActivity;
 import com.example.testc2.selector.Selector2Activity;
+import com.example.testc2.util.TestUtil;
 import com.example.testc2.videochat1.VideoChatPush;
 import com.example.testc2.videochat2.VideoChatReceiver;
 import com.example.testc2.x264.X264Activity;
@@ -94,8 +95,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         // YUV ... test
-        Intent i = new Intent(MainActivity.this, YuvActivity.class);
-        startActivity(i);
+//        Intent i = new Intent(MainActivity.this, YuvActivity.class);
+//        startActivity(i);
 
     }
 
@@ -112,6 +113,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        getWindow().getDecorView().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                TestUtil.LogToFile("aaa","1231231");
+            }
+        },4000);
+
+
 
         Log.d("TAG","-------test----call-----");
 

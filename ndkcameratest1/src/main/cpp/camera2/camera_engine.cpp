@@ -196,8 +196,11 @@ int64_t getNowUs(){
 int mWidth1 = 640;
 int mHeight1 = 480;
 FILE *fp;
+AMediaMuxer* mMuxer;
+bool mMuxerStarted = false;
+ssize_t mTrackIndex;
 
-void callOnFirstFrame(CameraEngine* engine){
+void callOnFirstFrame(CameraEngine* engine , bool mp4 ){
 //     int mWidth1 = engine->GetSavedNativeWinWidth();
 //     int mHeight1 = engine->GetSavedNativeWinHeight();
 
@@ -219,8 +222,7 @@ void callOnFirstFrame(CameraEngine* engine){
 //    AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_COLOR_FORMAT,0x7F420888);
 
 //   AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_COLOR_FORMAT,19);
-   AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_COLOR_FORMAT,21);
-//    AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_COLOR_FORMAT,23);
+   AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_COLOR_FORMAT,21); // this works
 
 
     AMediaFormat_setInt32(format,AMEDIAFORMAT_KEY_FRAME_RATE,30);
@@ -253,7 +255,12 @@ void callOnFirstFrame(CameraEngine* engine){
 
 //   fp = fopen("/sdcard/Download/hehe/out_1.h264", "wb");  //  wb / w+
 //    fp = fopen("/sdcard/aaa/record4_.h264", "wb");  //  wb / w+
-    fp = fopen("/sdcard/Download/aaa/record4_.h264", "wb");  //  wb / w+
+
+    if(mp4){
+        fp = fopen("/sdcard/Download/aaa/a1.mp4", "wb");
+    } else {
+        fp = fopen("/sdcard/Download/aaa/record4_.h264", "wb");
+    }
 
 
    int mFd;
@@ -264,6 +271,18 @@ void callOnFirstFrame(CameraEngine* engine){
     } else {
         LOGI("encoder open f success");
       mFd = fileno(fp);
+    }
+
+
+    if(mp4){
+        if (fp != NULL) {
+            mFd = fileno(fp);
+        } else {
+            mFd = -1;
+        }
+        if(mMuxer == NULL)
+            mMuxer = AMediaMuxer_new(mFd, AMEDIAMUXER_OUTPUT_FORMAT_MPEG_4);
+        mMuxerStarted = false;
     }
 
     // start encoding
@@ -313,32 +332,175 @@ void writeYuv(CameraEngine* engine, AImage* image ) {
     fflush(yuv);
     fclose(yuv);
 
+}
+
+
+void encodeFrame2mp4(CameraEngine* engine, AImage* image ) {
+
+    bool eos = false;
+    if(pcount>900){
+        LOGI("encoder mp4 --- stop ");
+        eos = true;
+    }
+
+    if(!eos){
+        LOGI("encoder mp4 --- 1 frame ");
+        ssize_t bufidx = AMediaCodec_dequeueInputBuffer(mCodec,0);
+        if(bufidx>=0) {
+            size_t bufsize;
+            int64_t pts = getNowUs();
+            uint8_t *buf = AMediaCodec_getInputBuffer(mCodec, bufidx, &bufsize);
+
+            //填充yuv数据
+            int frameLenYuv = mWidth1 * mHeight1 * 3 / 2;
+            memset (buf, 1 ,frameLenYuv);
+
+//  put YUV data in en-coder
+            uint8_t *yPixel, *uPixel, *vPixel;
+            int32_t yLen, uLen, vLen;
+            AImage_getPlaneData(image, 0, &yPixel, &yLen);
+            AImage_getPlaneData(image, 1, &vPixel, &vLen);
+            AImage_getPlaneData(image, 2, &uPixel, &uLen);
+
+
+            memcpy(buf, yPixel, yLen);
+            int uIndex = 0, vIndex = 0;
+            for( int i=yLen ; i<frameLenYuv-2; i+=2 ){
+                buf[i+1] = uPixel[vIndex];
+                buf[i+2] = vPixel[uIndex];
+                vIndex+=2;
+                uIndex+=2;
+            }
+//        LOGI("encoder --- yLen:%d  vLen:%d   uLen:%d",yLen,vLen,uLen );
+            AMediaCodec_queueInputBuffer(mCodec, bufidx, 0, frameLenYuv, pts, 0);
+        }
+        LOGI("encoder  mp4 --- in index:%d",bufidx);
+    }
+
+
+    if(eos){
+        media_status_t eosRet = AMediaCodec_signalEndOfInputStream(mCodec);
+        LOGI("encoder  mp4 ---  eosRet:%d",eosRet);
+        media_status_t muxStopRet = AMediaMuxer_stop(mMuxer);
+        LOGI("encoder  mp4 ---  muxStopRet:%d",muxStopRet);
+
+    }
+
+
+    AMediaCodecBufferInfo info;
+
+
+    while (true){
+        //取输出buffer
+        auto outindex = AMediaCodec_dequeueOutputBuffer(mCodec, &info, 0);
+        LOGI("encoder  mp4 --- out index:%d",outindex);
+
+        if (outindex == AMEDIACODEC_INFO_TRY_AGAIN_LATER) {
+            if (!eos) {
+                break;
+            } else {
+                LOGI("encoder  mp4     video no output available, spinning to await EOS");
+            }
+        }  else if(outindex == AMEDIACODEC_INFO_OUTPUT_BUFFERS_CHANGED ){
+
+        } else if (outindex == AMEDIACODEC_INFO_OUTPUT_FORMAT_CHANGED) {
+            LOGI("encoder  mp4 --- out index AMEDIACODEC_INFO_OUTPUT_FORMAT_CHANGED");
+
+            AMediaFormat *fmt = AMediaCodec_getOutputFormat(mCodec);
+            const char *s = AMediaFormat_toString(fmt);
+
+            mTrackIndex = AMediaMuxer_addTrack(mMuxer, fmt);
+
+            if(  mTrackIndex != -1 ) {
+                LOGI("encoder  mp4    AMediaMuxer_start");
+                AMediaMuxer_start(mMuxer);
+                mMuxerStarted = true;
+            }
+
+        } else {
+            size_t outsize;
+            uint8_t *buf = AMediaCodec_getOutputBuffer(mCodec , outindex, &outsize);
+
+            size_t dataSize = info.size;
+            if (dataSize != 0) {
+                if (!mMuxerStarted) {
+                    LOGI("encoder  mp4   muxer has't started");
+                }
+                AMediaMuxer_writeSampleData(mMuxer, mTrackIndex, buf, &info);
+            }
+
+            LOGI("encoder  mp4 --- out info.flags :%d",info.flags);
+
+
+
+            AMediaCodec_releaseOutputBuffer(mCodec, outindex, false);
+
+
+            if ((info.flags & AMEDIACODEC_BUFFER_FLAG_END_OF_STREAM) != 0) {
+                if (!eos) {
+                    LOGI("encoder  mp4   reached end of stream unexpectly");
+                } else {
+                    LOGI("encoder  mp4    video end of stream reached");
+                }
+                break;
+            }
+        }
+
+
+    }
+
+    //取输出buffer
+//    auto outindex = AMediaCodec_dequeueOutputBuffer(mCodec, &info, 0);
+//    while (outindex != AMEDIACODEC_INFO_TRY_AGAIN_LATER) {
+//        if (outindex == AMEDIACODEC_INFO_OUTPUT_FORMAT_CHANGED) {
+//            LOGI("encoder  mp4 --- out index AMEDIACODEC_INFO_OUTPUT_FORMAT_CHANGED");
+//            AMediaFormat *fmt = AMediaCodec_getOutputFormat(mCodec);
+//            const char *s = AMediaFormat_toString(fmt);
+//            mTrackIndex = AMediaMuxer_addTrack(mMuxer, fmt);
+//            if(  mTrackIndex != -1 ) {
+//                LOGI("encoder  mp4    AMediaMuxer_start");
+//                AMediaMuxer_start(mMuxer);
+//                mMuxerStarted = true;
+//            }
+//        }
+//        if (outindex == AMEDIACODEC_INFO_OUTPUT_BUFFERS_CHANGED) {
+//        }
+//        if(outindex>=0){
+//            //在这里取走编码后的数据
+//            //释放buffer给编码器
+//            size_t outsize;
+//            uint8_t *buf = AMediaCodec_getOutputBuffer(mCodec , outindex, &outsize);
+//            size_t dataSize = info.size;
+//            if (dataSize != 0) {
+//                if (!mMuxerStarted) {
+//                    LOGI("encoder  mp4   muxer has't started");
+//                }
+//                AMediaMuxer_writeSampleData(mMuxer, mTrackIndex, buf, &info);
+//            }
+//        }
+//        LOGI("encoder mp4 --- out index:%d   size:%d   frame:%d   flag:%d",outindex,info.size,pcount ,info.flags);
+//        AMediaCodec_releaseOutputBuffer(mCodec, outindex, false);
+//        outindex = AMediaCodec_dequeueOutputBuffer(mCodec, &info, 0);
+//    }
+
 
 }
 
 
 
-void encodeFrame(CameraEngine* engine, AImage* image ) {
-
+void encodeFrame2H264(CameraEngine* engine, AImage* image ) {
     LOGI("encoder --- 1 frame ");
-
-
-
     ssize_t bufidx = AMediaCodec_dequeueInputBuffer(mCodec,0);
     //LOGD("input buffer %zd\n",bufidx);
     if(bufidx>=0) {
 
         LOGI("encoder --- in pts1:%" PRId64,cout2);
-
         size_t bufsize;
         int64_t pts = getNowUs();
 //        int64_t pts = cout2*13333+10;
 //        cout2=cout2+1;
 //        int64_t pts  = pcount*13333 + 10;
-
         LOGI("encoder --- in pts:%" PRId64 ,pts);
-
-
         uint8_t *buf = AMediaCodec_getInputBuffer(mCodec, bufidx, &bufsize);
 
         //填充yuv数据
@@ -350,13 +512,10 @@ void encodeFrame(CameraEngine* engine, AImage* image ) {
 //        int32_t yStride, uvStride;
 //        AImage_getPlaneRowStride(image, 0, &yStride);
 //        AImage_getPlaneRowStride(image, 1, &uvStride);
-
         memset (buf, 1 ,frameLenYuv);
 
 
 //  put YUV data in en-coder
-
-
         uint8_t *yPixel, *uPixel, *vPixel;
         int32_t yLen, uLen, vLen;
         AImage_getPlaneData(image, 0, &yPixel, &yLen);
@@ -366,18 +525,15 @@ void encodeFrame(CameraEngine* engine, AImage* image ) {
 
         memcpy(buf, yPixel, yLen);
         int uIndex = 0, vIndex = 0;
-
         /**
          *  is it optimal ???
          */
         for( int i=yLen ; i<frameLenYuv-2; i+=2 ){
-            buf[i+1] = vPixel[vIndex];
-            buf[i+2] = uPixel[uIndex];
+            buf[i+1] = uPixel[vIndex];
+            buf[i+2] = vPixel[uIndex];
             vIndex+=2;
             uIndex+=2;
         }
-
-
 //        LOGI("encoder --- yLen:%d  vLen:%d   uLen:%d",yLen,vLen,uLen );
         AMediaCodec_queueInputBuffer(mCodec, bufidx, 0, frameLenYuv, pts, 0);
     }
@@ -458,12 +614,15 @@ void CameraEngine::DrawFrame(void) {
 
   LOGI("frame count:%d",pcount);
   if(pcount==0){
-      callOnFirstFrame(this);
-      encodeFrame(this, image );
+      callOnFirstFrame(this , true);
+      encodeFrame2mp4(this, image );
+//      encodeFrame2H264(this, image );
+
       writeYuv(this, image);
 
   } else {
-      encodeFrame(this, image );
+      encodeFrame2mp4(this, image );
+//      encodeFrame2H264(this, image );
   }
 
   pcount++;
