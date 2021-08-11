@@ -19,6 +19,7 @@
  */
 
 #include <cstdio>
+#include <sstream>
 #include "camera_engine.h"
 #include "native_debug.h"
 
@@ -259,8 +260,23 @@ void callOnFirstFrame(CameraEngine* engine , bool mp4 ){
 //   fp = fopen("/sdcard/Download/hehe/out_1.h264", "wb");  //  wb / w+
 //    fp = fopen("/sdcard/aaa/record4_.h264", "wb");  //  wb / w+
 
+
+// time issue
+//                https://en.cppreference.com/w/cpp/chrono/time_point/time_since_epoch
+
+//
+    time_t currentTime;
+    time( &currentTime );
+    std::stringstream ss1;
+    ss1 << currentTime;
+    std::string ts = ss1.str();
+    std::string s1 = "/sdcard/Download/aaa/";
+    std::string s2 = ".mp4";
+
+    LOGI( "encoder time:%s ",ts.c_str());
+
     if(mp4){
-        fp = fopen("/sdcard/Download/aaa/a1.mp4", "wb");
+        fp = fopen( (s1+ts+s2).c_str(), "wb");
     } else {
         fp = fopen("/sdcard/Download/aaa/record4_.h264", "wb");
     }
@@ -398,47 +414,51 @@ void encodeFrame2mp4(CameraEngine* engine, AImage* image ) {
 
     LOGI("encode track    encodeFrame2mp4  %d",eos);
 
-    if(!eos){
-        LOGI("encoder mp4 --- 1 frame ");
-        ssize_t bufidx = AMediaCodec_dequeueInputBuffer(mCodec,0);
-        if(bufidx>=0) {
-            size_t bufsize;
-            int64_t pts = getNowUs();
-            uint8_t *buf = AMediaCodec_getInputBuffer(mCodec, bufidx, &bufsize);
 
-            //填充yuv数据
-            int frameLenYuv = mWidth1 * mHeight1 * 3 / 2;
-            memset (buf, 1 ,frameLenYuv);
+
+
+    LOGI("encoder mp4 --- 1 frame ");
+    ssize_t bufidx = AMediaCodec_dequeueInputBuffer(mCodec,0);
+    if(bufidx>=0) {
+        size_t bufsize;
+        int64_t pts = getNowUs();
+        uint8_t *buf = AMediaCodec_getInputBuffer(mCodec, bufidx, &bufsize);
+
+        //填充yuv数据
+        int frameLenYuv = mWidth1 * mHeight1 * 3 / 2;
+        memset (buf, 1 ,frameLenYuv);
 
 //  put YUV data in en-coder
-            uint8_t *yPixel, *uPixel, *vPixel;
-            int32_t yLen, uLen, vLen;
-            AImage_getPlaneData(image, 0, &yPixel, &yLen);
-            AImage_getPlaneData(image, 1, &vPixel, &vLen);
-            AImage_getPlaneData(image, 2, &uPixel, &uLen);
+        uint8_t *yPixel, *uPixel, *vPixel;
+        int32_t yLen, uLen, vLen;
+        AImage_getPlaneData(image, 0, &yPixel, &yLen);
+        AImage_getPlaneData(image, 1, &vPixel, &vLen);
+        AImage_getPlaneData(image, 2, &uPixel, &uLen);
 
 
-            memcpy(buf, yPixel, yLen);
-            int uIndex = 0, vIndex = 0;
-            for( int i=yLen ; i<frameLenYuv-2; i+=2 ){
-                buf[i+1] = uPixel[vIndex];
-                buf[i+2] = vPixel[uIndex];
-                vIndex+=2;
-                uIndex+=2;
-            }
-//        LOGI("encoder --- yLen:%d  vLen:%d   uLen:%d",yLen,vLen,uLen );
-            AMediaCodec_queueInputBuffer(mCodec, bufidx, 0, frameLenYuv, pts, 0);
-
-
-            // ???
-            //  https://github.com/kueblert/AndroidMediaCodec/blob/master/nativecodecvideo.cpp
-            
-//            AMediaCodec_queueInputBuffer(mCodec, bufidx, 0, frameLenYuv, pts, AMEDIACODEC_BUFFER_FLAG_END_OF_STREAM);
-
-
+        memcpy(buf, yPixel, yLen);
+        int uIndex = 0, vIndex = 0;
+        for( int i=yLen ; i<frameLenYuv-2; i+=2 ){
+            buf[i+1] = uPixel[vIndex];
+            buf[i+2] = vPixel[uIndex];
+            vIndex+=2;
+            uIndex+=2;
         }
-        LOGI("encoder  mp4 --- in index:%d",bufidx);
+//        LOGI("encoder --- yLen:%d  vLen:%d   uLen:%d",yLen,vLen,uLen );
+
+
+        if(!eos){
+            AMediaCodec_queueInputBuffer(mCodec, bufidx, 0, frameLenYuv, pts, 0);
+        } else {
+            AMediaCodec_queueInputBuffer(mCodec, bufidx, 0, frameLenYuv, pts, AMEDIACODEC_BUFFER_FLAG_END_OF_STREAM);
+        }
+        // ???
+        //  https://github.com/kueblert/AndroidMediaCodec/blob/master/nativecodecvideo.cpp
+
+
+
     }
+    LOGI("encoder  mp4 --- in index:%d",bufidx);
 
 
     if(eos){
@@ -512,6 +532,22 @@ void encodeFrame2mp4(CameraEngine* engine, AImage* image ) {
         }
 
 
+    }
+
+    if(eos) {
+        LOGI("encode track  RELEASE encoder/muxer");
+
+        if (mCodec != nullptr) {
+            AMediaCodec_stop(mCodec);
+        }
+        if (mCodec != nullptr) {
+            AMediaCodec_delete(mCodec);
+            mCodec = nullptr;
+        }
+        if (mMuxer != nullptr) {
+            AMediaMuxer_delete(mMuxer);
+            mMuxer = nullptr;
+        }
     }
 
 
