@@ -8,3 +8,4 @@
 .externalNativeBuild
 .cxx
 /repos
+gradle.xml
