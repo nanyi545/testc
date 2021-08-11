@@ -167,6 +167,22 @@ public class MainActivity extends NativeActivity {
                     popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM | Gravity.START, 0, 0);
                     popupWindow.update();
 
+
+                    popupView.findViewById(R.id.start_btn).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int p[]= {1};
+                            callJni(p);
+                        }
+                    });
+                    popupView.findViewById(R.id.stop_btn).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            int p[]= {0};
+                            callJni(p);
+                        }
+                    });
+
                 }
             });
         }
@@ -260,6 +276,8 @@ public class MainActivity extends NativeActivity {
 
 
     native void test1();
+    native void callJni(int[] in);
+
 
     Handler handler = new Handler(Looper.getMainLooper()) {
         @Override

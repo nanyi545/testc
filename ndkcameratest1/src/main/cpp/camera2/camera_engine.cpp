@@ -208,7 +208,7 @@ void callOnFirstFrame(CameraEngine* engine , bool mp4 ){
 //     int mHeight1 = engine->GetSavedNativeWinHeight();
 
 //   LOGW("w640  h480");
-   LOGI("first frame w:%d  h:%d", mWidth1,mHeight1);
+   LOGI("encode track  first frame w:%d  h:%d", mWidth1,mHeight1);
 
    std::string mStrMime = "video/avc";
 
@@ -337,14 +337,66 @@ void writeYuv(CameraEngine* engine, AImage* image ) {
 
 }
 
+/**
+ * 1 nothing
+ * 2 recording - first frame
+ * 3 recording
+ * 4 record--finish
+ */
+int RECORD_IDLE = 1;
+int RECORD_INIT = 2;
+int RECORD_ING = 3;
+int RECORD_FINISH = 4;
+
+volatile int RECORD_STATE = RECORD_IDLE;
+
+bool callOnFirstFrame(){
+    bool ret = ( RECORD_STATE == RECORD_INIT );
+    if(ret){
+        RECORD_STATE = RECORD_ING;
+    }
+    return ret;
+}
+
+bool recording(){
+    return  ( RECORD_STATE == RECORD_ING );
+}
+
+bool endOfStream(bool stateAdvance){
+    bool ret = ( RECORD_STATE == RECORD_FINISH );
+    if( ret && stateAdvance ){
+        RECORD_STATE = RECORD_IDLE;
+    }
+    return ret;
+}
+
+
+void CameraEngine::record(bool start) {
+    if(start){
+        LOGI("start-record---");
+        RECORD_STATE = RECORD_INIT;
+    } else {
+        LOGI("stop-record---");
+        RECORD_STATE = RECORD_FINISH;
+    };
+}
+
+
 
 void encodeFrame2mp4(CameraEngine* engine, AImage* image ) {
 
     bool eos = false;
-    if(pcount>900){
-        LOGI("encoder mp4 --- stop ");
+    if(endOfStream(true)){
         eos = true;
+        LOGI("encoder mp4 --- stop ");
     }
+
+//    if(pcount>300){
+//        eos = true;
+//        LOGI("encoder mp4 --- stop ");
+//    }
+
+    LOGI("encode track    encodeFrame2mp4  %d",eos);
 
     if(!eos){
         LOGI("encoder mp4 --- 1 frame ");
@@ -376,6 +428,14 @@ void encodeFrame2mp4(CameraEngine* engine, AImage* image ) {
             }
 //        LOGI("encoder --- yLen:%d  vLen:%d   uLen:%d",yLen,vLen,uLen );
             AMediaCodec_queueInputBuffer(mCodec, bufidx, 0, frameLenYuv, pts, 0);
+
+
+            // ???
+            //  https://github.com/kueblert/AndroidMediaCodec/blob/master/nativecodecvideo.cpp
+            
+//            AMediaCodec_queueInputBuffer(mCodec, bufidx, 0, frameLenYuv, pts, AMEDIACODEC_BUFFER_FLAG_END_OF_STREAM);
+
+
         }
         LOGI("encoder  mp4 --- in index:%d",bufidx);
     }
@@ -383,9 +443,9 @@ void encodeFrame2mp4(CameraEngine* engine, AImage* image ) {
 
     if(eos){
         media_status_t eosRet = AMediaCodec_signalEndOfInputStream(mCodec);
-        LOGI("encoder  mp4 ---  eosRet:%d",eosRet);
+        LOGI("encode track  mp4 ---  eosRet:%d",eosRet);
         media_status_t muxStopRet = AMediaMuxer_stop(mMuxer);
-        LOGI("encoder  mp4 ---  muxStopRet:%d",muxStopRet);
+        LOGI("encode track  mp4 ---  muxStopRet:%d",muxStopRet);
 
     }
 
@@ -396,12 +456,14 @@ void encodeFrame2mp4(CameraEngine* engine, AImage* image ) {
     while (true){
         //取输出buffer
         auto outindex = AMediaCodec_dequeueOutputBuffer(mCodec, &info, 0);
-        LOGI("encoder  mp4 --- out index:%d",outindex);
+        LOGI("encode track  mp4 --- out index:%d",outindex);
 
         if (outindex == AMEDIACODEC_INFO_TRY_AGAIN_LATER) {
             if (!eos) {
                 break;
             } else {
+                break;
+
                 LOGI("encoder  mp4     video no output available, spinning to await EOS");
             }
         }  else if(outindex == AMEDIACODEC_INFO_OUTPUT_BUFFERS_CHANGED ){
@@ -432,7 +494,7 @@ void encodeFrame2mp4(CameraEngine* engine, AImage* image ) {
                 AMediaMuxer_writeSampleData(mMuxer, mTrackIndex, buf, &info);
             }
 
-            LOGI("encoder  mp4 --- out info.flags :%d",info.flags);
+            LOGI("encode track  mp4 --- out info.flags :%d",info.flags);
 
 
 
@@ -441,9 +503,9 @@ void encodeFrame2mp4(CameraEngine* engine, AImage* image ) {
 
             if ((info.flags & AMEDIACODEC_BUFFER_FLAG_END_OF_STREAM) != 0) {
                 if (!eos) {
-                    LOGI("encoder  mp4   reached end of stream unexpectly");
+                    LOGI("encode track  mp4   reached end of stream unexpectly");
                 } else {
-                    LOGI("encoder  mp4    video end of stream reached");
+                    LOGI("encode track  mp4    video end of stream reached");
                 }
                 break;
             }
@@ -451,40 +513,6 @@ void encodeFrame2mp4(CameraEngine* engine, AImage* image ) {
 
 
     }
-
-    //取输出buffer
-//    auto outindex = AMediaCodec_dequeueOutputBuffer(mCodec, &info, 0);
-//    while (outindex != AMEDIACODEC_INFO_TRY_AGAIN_LATER) {
-//        if (outindex == AMEDIACODEC_INFO_OUTPUT_FORMAT_CHANGED) {
-//            LOGI("encoder  mp4 --- out index AMEDIACODEC_INFO_OUTPUT_FORMAT_CHANGED");
-//            AMediaFormat *fmt = AMediaCodec_getOutputFormat(mCodec);
-//            const char *s = AMediaFormat_toString(fmt);
-//            mTrackIndex = AMediaMuxer_addTrack(mMuxer, fmt);
-//            if(  mTrackIndex != -1 ) {
-//                LOGI("encoder  mp4    AMediaMuxer_start");
-//                AMediaMuxer_start(mMuxer);
-//                mMuxerStarted = true;
-//            }
-//        }
-//        if (outindex == AMEDIACODEC_INFO_OUTPUT_BUFFERS_CHANGED) {
-//        }
-//        if(outindex>=0){
-//            //在这里取走编码后的数据
-//            //释放buffer给编码器
-//            size_t outsize;
-//            uint8_t *buf = AMediaCodec_getOutputBuffer(mCodec , outindex, &outsize);
-//            size_t dataSize = info.size;
-//            if (dataSize != 0) {
-//                if (!mMuxerStarted) {
-//                    LOGI("encoder  mp4   muxer has't started");
-//                }
-//                AMediaMuxer_writeSampleData(mMuxer, mTrackIndex, buf, &info);
-//            }
-//        }
-//        LOGI("encoder mp4 --- out index:%d   size:%d   frame:%d   flag:%d",outindex,info.size,pcount ,info.flags);
-//        AMediaCodec_releaseOutputBuffer(mCodec, outindex, false);
-//        outindex = AMediaCodec_dequeueOutputBuffer(mCodec, &info, 0);
-//    }
 
 
 }
@@ -546,6 +574,7 @@ void encodeFrame2H264(CameraEngine* engine, AImage* image ) {
     /**
 
      其中有个字段是flags，它有几种常量情况。
+
 flags = 4；End of Stream。
 flags = 2；首帧信息帧。
 flags = 1；关键帧。
@@ -568,7 +597,6 @@ flags = 0；普通帧。
 
         LOGI("encoder --- out index:%d   size:%d   frame:%d   flag:%d",outindex,info.size,pcount ,info.flags);
 
-
         AMediaCodec_releaseOutputBuffer(mCodec, outindex, false);
         outindex = AMediaCodec_dequeueOutputBuffer(mCodec, &info, 0);
 
@@ -576,8 +604,6 @@ flags = 0；普通帧。
     LOGI("encoder --- out index:%d",outindex);
 
 }
-
-
 
 
 
@@ -625,6 +651,14 @@ void CameraEngine::DrawFrame(void) {
 //      encodeFrame2mp4(this, image );
 //      encodeFrame2H264(this, image );
   }
+
+  if(callOnFirstFrame()){
+      callOnFirstFrame(this , true);
+  }
+  if(recording() || endOfStream(false) ){
+      encodeFrame2mp4(this, image );
+  }
+
 
   pcount++;
 

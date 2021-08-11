@@ -187,6 +187,30 @@ Java_com_tvtb_ndkcameratest1_MainActivity_notifyCameraPermission(JNIEnv *env, jc
 }
 
 
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_tvtb_ndkcameratest1_MainActivity_callJni(JNIEnv *env, jobject iobj,
+                                                  jintArray in) {
+  jsize len = env->GetArrayLength(in);
+  jint *body = env->GetIntArrayElements( in, 0);
+  LOGI("callJni  %d",body[0]);
+
+  // start record
+  if(body[0]==1){
+    GetAppEngine()->record(true);
+  }
+  // stop record
+  if(body[0]==0){
+    GetAppEngine()->record(false);
+  }
+
+  env->ReleaseIntArrayElements(in,body,0);
+
+}
+
+
+
+
 extern "C" JNIEXPORT void JNICALL
 Java_com_sample_camera_basic_CameraActivity_TakePhoto(JNIEnv *env,
                                                       jclass type) {

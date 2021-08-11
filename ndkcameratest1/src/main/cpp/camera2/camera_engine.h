@@ -60,6 +60,7 @@ class CameraEngine {
   void CreateCamera(void);
   void DeleteCamera(void);
 
+  void record(bool start);
 
  private:
   void OnPhotoTaken(const char* fileName);
