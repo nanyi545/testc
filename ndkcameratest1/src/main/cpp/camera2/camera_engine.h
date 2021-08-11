@@ -55,9 +55,11 @@ class CameraEngine {
   void OnTakePhoto(void);
   void OnCameraParameterChanged(int32_t code, int64_t val);
 
-  // Manage NDKCamera Object
+
+    // Manage NDKCamera Object
   void CreateCamera(void);
   void DeleteCamera(void);
+
 
  private:
   void OnPhotoTaken(const char* fileName);
@@ -71,6 +73,7 @@ class CameraEngine {
   NDKCamera* camera_;
   ImageReader* yuvReader_;
   ImageReader* jpgReader_;
+
 };
 
 /**

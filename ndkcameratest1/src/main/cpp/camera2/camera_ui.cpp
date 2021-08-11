@@ -19,6 +19,7 @@
 #include "native_debug.h"
 #include <string>
 #include <sstream>
+#include <android/native_window_jni.h>
 
 
 
@@ -76,27 +77,47 @@ int CameraEngine::GetDisplayRotation() {
  */
 const int kInitDataLen = 6;
 void CameraEngine::EnableUI(void) {
+
+  //
+//  JNIEnv *jni;
+//  app_->activity->vm->AttachCurrentThread(&jni, NULL);
+//  int64_t range[3];
+//
+//  // Default class retrieval
+//  jclass clazz = jni->GetObjectClass(app_->activity->clazz);
+//  jmethodID methodID = jni->GetMethodID(clazz, "EnableUI", "([J)V");
+//  jlongArray initData = jni->NewLongArray(kInitDataLen);
+//
+//  ASSERT(initData && methodID, "JavaUI interface Object failed(%p, %p)",
+//         methodID, initData);
+//
+//  if (!camera_->GetExposureRange(&range[0], &range[1], &range[2])) {
+//    memset(range, 0, sizeof(int64_t) * 3);
+//  }
+//
+//  jni->SetLongArrayRegion(initData, 0, 3, range);
+//
+//  if (!camera_->GetSensitivityRange(&range[0], &range[1], &range[2])) {
+//    memset(range, 0, sizeof(int64_t) * 3);
+//  }
+//  jni->SetLongArrayRegion(initData, 3, 3, range);
+//  jni->CallVoidMethod(app_->activity->clazz, methodID, initData);
+//  app_->activity->vm->DetachCurrentThread();
+  LOGI("-------- EnableUI cpp");
+
+
   JNIEnv *jni;
   app_->activity->vm->AttachCurrentThread(&jni, NULL);
   int64_t range[3];
 
-  // Default class retrieval
   jclass clazz = jni->GetObjectClass(app_->activity->clazz);
   jmethodID methodID = jni->GetMethodID(clazz, "EnableUI", "([J)V");
   jlongArray initData = jni->NewLongArray(kInitDataLen);
 
-  ASSERT(initData && methodID, "JavaUI interface Object failed(%p, %p)",
-         methodID, initData);
+  range[0] = 0;
+  range[1] = 1;
+  range[2] = 2;
 
-  if (!camera_->GetExposureRange(&range[0], &range[1], &range[2])) {
-    memset(range, 0, sizeof(int64_t) * 3);
-  }
-
-  jni->SetLongArrayRegion(initData, 0, 3, range);
-
-  if (!camera_->GetSensitivityRange(&range[0], &range[1], &range[2])) {
-    memset(range, 0, sizeof(int64_t) * 3);
-  }
   jni->SetLongArrayRegion(initData, 3, 3, range);
   jni->CallVoidMethod(app_->activity->clazz, methodID, initData);
   app_->activity->vm->DetachCurrentThread();
@@ -186,3 +207,5 @@ Java_com_sample_camera_basic_CameraActivity_OnSensitivityChanged(
   GetAppEngine()->OnCameraParameterChanged(ACAMERA_SENSOR_SENSITIVITY,
                                            sensitivity);
 }
+
+

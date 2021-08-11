@@ -353,8 +353,22 @@ void ImageReader::PresentImage90(ANativeWindow_Buffer *buf, AImage *image) {
   int32_t height = MIN(buf->width, (srcRect.bottom - srcRect.top));
   int32_t width = MIN(buf->height, (srcRect.right - srcRect.left));
 
+  // width:1560  height:702,  buf->width:1080 ,  buf->height:2400,    crop: l:0  t:0  r:1560  b:702
+
+  LOGI("-------- width:%d  height:%d,  buf->width:%d ,  buf->height:%d,    crop: l:%d  t:%d  r:%d  b:%d "
+          ,width ,height     ,buf->width     ,buf->height ,srcRect.left,srcRect.top,srcRect.right,srcRect.bottom);
+
+
   uint32_t *out = static_cast<uint32_t *>(buf->bits);
   out += height - 1;
+
+  // offset display to center ....
+//  int32_t deltaX= (buf->height - height)/2 ;
+//  int32_t deltaY= (buf->width - width)/2 ;
+    int32_t deltaX= (buf->height - width)/2 ;
+    int32_t deltaY= (buf->width - height)/2 ;
+
+
   for (int32_t y = 0; y < height; y++) {
     const uint8_t *pY = yPixel + yStride * (y + srcRect.top) + srcRect.left;
 
@@ -365,7 +379,7 @@ void ImageReader::PresentImage90(ANativeWindow_Buffer *buf, AImage *image) {
     for (int32_t x = 0; x < width; x++) {
       const int32_t uv_offset = (x >> 1) * uvPixelStride;
       // [x, y]--> [-y, x]
-      out[x * buf->stride] = YUV2RGB(pY[x], pU[uv_offset], pV[uv_offset]);
+      out[ (x+deltaX) * buf->stride + deltaY ] = YUV2RGB(pY[x], pU[uv_offset], pV[uv_offset]);
     }
     out -= 1;  // move to the next column
   }

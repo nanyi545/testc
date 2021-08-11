@@ -200,6 +200,10 @@ bool NDKCamera::MatchCaptureSizeRequest(ANativeWindow *display,
                                         ImageFormat *resCap) {
     DisplayDimension disp(ANativeWindow_getWidth(display),
                           ANativeWindow_getHeight(display));
+
+    LOGI(" -------- disp width:%d   disp height:%d ",ANativeWindow_getWidth(display),ANativeWindow_getHeight(display));
+
+
     if (cameraOrientation_ == 90 || cameraOrientation_ == 270) {
         disp.Flip();
     }

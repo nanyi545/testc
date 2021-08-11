@@ -87,9 +87,12 @@ void CameraEngine::CreateCamera(void) {
   // Request the necessary nativeWindow to OS
   bool portraitNativeWindow =
       (savedNativeWinRes_.width < savedNativeWinRes_.height);
-  ANativeWindow_setBuffersGeometry(
-      app_->window, portraitNativeWindow ? view.height : view.width,
-      portraitNativeWindow ? view.width : view.height, WINDOW_FORMAT_RGBA_8888);
+
+
+  // set native window buffer geometry  !!!!
+//  ANativeWindow_setBuffersGeometry(
+//      app_->window, portraitNativeWindow ? view.height : view.width,
+//      portraitNativeWindow ? view.width : view.height, WINDOW_FORMAT_RGBA_8888);
 
   yuvReader_ = new ImageReader(&view, AIMAGE_FORMAT_YUV_420_888);
   yuvReader_->SetPresentRotation(imageRotation);

@@ -17,10 +17,15 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import static android.hardware.camera2.CameraMetadata.LENS_FACING_BACK;
 
@@ -133,9 +138,38 @@ public class MainActivity extends NativeActivity {
         return val;
     }
 
+
+
+    PopupWindow popupWindow;
+
+    public static final long OPER_INIT = 0;
     public void EnableUI(final long[] params)
     {
 
+        Log.d("ffff","EnableUI:"+params[0]);
+        if(params[0]==OPER_INIT){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (popupWindow != null) {
+                        popupWindow.dismiss();
+                    }
+                    LayoutInflater layoutInflater
+                            = (LayoutInflater) getBaseContext()
+                            .getSystemService(LAYOUT_INFLATER_SERVICE);
+                    View popupView = layoutInflater.inflate(R.layout.widgets, null);
+                    popupWindow = new PopupWindow(
+                            popupView,
+                            WindowManager.LayoutParams.MATCH_PARENT,
+                            WindowManager.LayoutParams.WRAP_CONTENT);
+
+                    // Show our UI over NativeActivity window
+                    popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM | Gravity.START, 0, 0);
+                    popupWindow.update();
+
+                }
+            });
+        }
     }
 
 
