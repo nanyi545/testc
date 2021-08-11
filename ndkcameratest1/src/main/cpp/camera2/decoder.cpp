@@ -346,6 +346,7 @@ void Java_com_tvtb_ndkcameratest1_MainActivity_setSurface(JNIEnv *env, jclass cl
         ANativeWindow_release(data.window);
         data.window = NULL;
     }
+    // get NativeWindow from java surface object
     data.window = ANativeWindow_fromSurface(env, surface);
     LOGI("@@@ setsurface %p", data.window);
 }

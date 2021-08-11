@@ -614,14 +614,12 @@ void CameraEngine::DrawFrame(void) {
 
   LOGI("frame count:%d",pcount);
   if(pcount==0){
-      callOnFirstFrame(this , true);
-      encodeFrame2mp4(this, image );
+//      callOnFirstFrame(this , true);
+//      encodeFrame2mp4(this, image );
 //      encodeFrame2H264(this, image );
-
-      writeYuv(this, image);
-
+//      writeYuv(this, image);
   } else {
-      encodeFrame2mp4(this, image );
+//      encodeFrame2mp4(this, image );
 //      encodeFrame2H264(this, image );
   }
 

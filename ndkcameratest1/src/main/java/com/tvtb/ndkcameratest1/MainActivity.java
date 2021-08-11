@@ -110,6 +110,7 @@ public class MainActivity extends NativeActivity {
         }
 
 
+
 //        Log.d("fff",""+Thread.currentThread().getName()+"    "+Thread.currentThread().getId());
 
 
