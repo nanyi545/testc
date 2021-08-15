@@ -7,7 +7,7 @@ includedir=${prefix}/include
 SYS_ARCH=ARM
 SYS=LINUX
 CC=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/bin/armv7a-linux-androideabi21-clang
-CFLAGS=-Wshadow -O3 -ffast-math  -Wall -I. -I$(SRCPATH) --sysroot=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -std=gnu99 -D_GNU_SOURCE -mcpu=cortex-a8 -mfpu=neon -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden
+CFLAGS=-Wshadow -O3 -ffast-math  -Wall -I. -I$(SRCPATH) --sysroot=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -std=gnu99 -D_GNU_SOURCE -mcpu=cortex-a8 -mfpu=neon -fPIC -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden
 CFLAGSSO=
 CFLAGSCLI=
 COMPILER=GNU
@@ -24,7 +24,7 @@ RANLIB=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebu
 STRIP=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-strip
 INSTALL=install
 AS=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/bin/armv7a-linux-androideabi21-clang
-ASFLAGS= -I. -I$(SRCPATH) -c -DSTACK_ALIGNMENT=4
+ASFLAGS= -I. -I$(SRCPATH) -c -DSTACK_ALIGNMENT=4 -DPIC
 RC=
 RCFLAGS=
 EXE=

@@ -77,7 +77,15 @@ void CameraEngine::CreateCamera(void) {
       imageRotation = (angle - rotation_ + 360) % 360;
     }
   }
-  LOGI("Phone Rotation: %d, Present Rotation Angle: %d", rotation_,imageRotation);
+  LOGI("Phone Rotation: %d, imageRotation Angle: %d", rotation_,imageRotation);
+  /**
+   *
+   * ACAMERA_LENS_FACING_FRONT:
+   * Phone Rotation: 0,   imageRotation Angle: 90
+   * Phone Rotation: 90,  imageRotation Angle: 0
+   * Phone Rotation: 270, imageRotation Angle: 180
+   *
+   */
 
 
   ImageFormat view{0, 0, 0}, capture{0, 0, 0};

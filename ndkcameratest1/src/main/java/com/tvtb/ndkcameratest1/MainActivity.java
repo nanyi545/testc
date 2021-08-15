@@ -114,14 +114,8 @@ public class MainActivity extends NativeActivity {
             });
         }
 
-
-
 //        Log.d("fff",""+Thread.currentThread().getName()+"    "+Thread.currentThread().getId());
-
-
-
         handler.sendEmptyMessageDelayed(1,3000);
-
     }
 
 
@@ -131,10 +125,20 @@ public class MainActivity extends NativeActivity {
         super.onDestroy();
     }
 
+
+    /**
+     * 0  : normal hand hold
+     * 90 : 0 -> 90 degrees turn left side
+     * 180: upside-down
+     * 270: 0 -> 90 degrees turn right side
+     *
+     * @return
+     */
     int getRotationDegree() {
         int val = 90 * ((WindowManager)(getSystemService(WINDOW_SERVICE)))
                 .getDefaultDisplay()
                 .getRotation();
+        Log.d("ffff","getRotationDegree:"+val);
         return val;
     }
 

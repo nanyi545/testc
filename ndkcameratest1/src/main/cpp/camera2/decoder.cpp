@@ -97,7 +97,7 @@ void doCodecWork(workerdata *d) {
                 d->sawOutputEOS = true;
             }
             int64_t presentationNano = info.presentationTimeUs * 1000;
-            LOGI("doCodecWork  presentationTimeUs :%d", info.presentationTimeUs); // 1s =  1000*1000 us
+            LOGI("doCodecWork  presentationTimeUs :%" PRId64" |--", info.presentationTimeUs); // 1s =  1000*1000 us
 
             if (d->renderstart < 0) {
                 d->renderstart = systemnanotime() - presentationNano;
@@ -225,7 +225,7 @@ jboolean Java_com_tvtb_ndkcameratest1_MainActivity_createStreamingMediaPlayer(JN
 
 //    // start ???
 //    // outLen --> 930185 : file size in bytes
-    LOGI("outStart:%d  outLen:%d", outStart, outLen);
+//    LOGI("outStart:%d  outLen:%d", outStart, outLen);
 
 
     /**

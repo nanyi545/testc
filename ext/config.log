@@ -3,7 +3,7 @@ checking for -Werror=unknown-attributes... yes
 checking for -Werror=attributes... yes
 checking for -Werror=ignored-attributes... yes
 x264 configure script
-Command line options: "--prefix=/Users/weiwang/AndroidStudioProjects/TestC2/ext/android/armeabi-v7a" "--disable-cli" "--enable-static" "--enable-pic=no" "--host=arm-linux" "--cross-prefix=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-" "--sysroot=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/sysroot" "--extra-cflags="
+Command line options: "--prefix=/Users/weiwang/AndroidStudioProjects/TestC2/ext/android/armeabi-v7a" "--disable-cli" "--enable-static" "--enable-pic" "--host=arm-linux" "--cross-prefix=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-" "--sysroot=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/sysroot" "--extra-cflags="
 
 checking whether /Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/bin/armv7a-linux-androideabi21-clang works... yes
 checking whether /Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/bin/armv7a-linux-androideabi21-clang supports for( int i = 0; i < 9; i++ ); with -std=gnu99... yes
@@ -61,13 +61,14 @@ checking for strtok_r(0, 0, 0); in string.h... yes
 checking for clock_gettime(CLOCK_MONOTONIC, 0); in time.h... yes
 checking whether defined(MAP_PRIVATE) is true... yes
 checking for uint32_t test_vec __attribute__ ((vector_size (16))) = {0,1,2,3}; in stdint.h... yes
+checking for stdio.h... yes
 checking for -fno-tree-vectorize... yes
 checking for fseeko(stdin,0,0); in stdio.h... yes
 checking for -Wshadow... yes
 checking for -Wmaybe-uninitialized... no
 Failed commandline was:
 --------------------------------------------------
-/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/bin/armv7a-linux-androideabi21-clang conftest.c -Wshadow -O3 -ffast-math  -Wall -I. -I$(SRCPATH) --sysroot=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -std=gnu99 -D_GNU_SOURCE -mcpu=cortex-a8 -mfpu=neon -fomit-frame-pointer -fno-tree-vectorize   -Werror=unknown-warning-option -Werror=unknown-attributes -Werror=attributes -Werror=ignored-attributes -Wmaybe-uninitialized   --sysroot=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -lm  -o conftest
+/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/bin/armv7a-linux-androideabi21-clang conftest.c -Wshadow -O3 -ffast-math  -Wall -I. -I$(SRCPATH) --sysroot=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -std=gnu99 -D_GNU_SOURCE -mcpu=cortex-a8 -mfpu=neon -fPIC -fomit-frame-pointer -fno-tree-vectorize   -Werror=unknown-warning-option -Werror=unknown-attributes -Werror=attributes -Werror=ignored-attributes -Wmaybe-uninitialized   --sysroot=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -lm  -o conftest
 error: unknown warning option '-Wmaybe-uninitialized'; did you mean '-Wuninitialized'? [-Werror,-Wunknown-warning-option]
 --------------------------------------------------
 Failed program was:
@@ -98,6 +99,6 @@ lto:            no
 debug:          no
 gprof:          no
 strip:          no
-PIC:            no
+PIC:            yes
 bit depth:      all
 chroma format:  all

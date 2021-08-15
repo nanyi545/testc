@@ -1,12 +1,12 @@
 #!/bin/bash
 # NDK目录
-NDK_ROOT=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061
+export NDK_ROOT=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061
 #编译后安装位置 pwd表示当前目录
-PREFIX=`pwd`/android/armeabi-v7a
+export PREFIX=`pwd`/android/armeabi-v7a
 #目标平台版本,我们将兼容到android-21
-API=21
+export API=21
 #编译工具链目录
-TOOLCHAIN=$NDK_ROOT/toolchains/llvm/prebuilt/darwin-x86_64
+export TOOLCHAIN=$NDK_ROOT/toolchains/llvm/prebuilt/darwin-x86_64
 
 #小技巧，创建一个AS的NDK工程，执行编译，
 #然后在 app/.cxx/cmake/debug(release)/自己要编译的平台/ 目录下自己观察 build.ninja与 rules.ninja
@@ -31,7 +31,7 @@ FLAGS="--target=armv7-none-linux-androideabi21 --gcc-toolchain=${TOOLCHAIN}  -g 
 ./x264/configure --prefix=${PREFIX} \
 --disable-cli \
 --enable-static \
---enable-pic=no \
+--enable-pic \
 --host=arm-linux \
 --cross-prefix=${TOOLCHAIN}/bin/arm-linux-androideabi- \
 --sysroot=${TOOLCHAIN}/sysroot \

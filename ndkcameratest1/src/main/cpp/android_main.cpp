@@ -9,6 +9,7 @@
 #include "camera2/camera_engine.h"
 //#include "camera2/looper.h"
 #include "camera2/decoder.cpp"
+#include "camera2/util.cpp"
 
 
 
@@ -184,6 +185,17 @@ extern "C" void android_main(struct android_app* state) {
             }
         }
         pEngineObj->DrawFrame();
+
+
+/**
+ *   test timer ....
+ */
+//        timeStart();
+//        usleep(8000);   // sleep in us
+//        sleep(1);     // sleep in s
+//        double elapse = timeEnd();
+//        LOGI("elapse----:%f",elapse); // ??? accurate ???
+
 
     }
 

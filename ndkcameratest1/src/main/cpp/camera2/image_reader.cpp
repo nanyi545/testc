@@ -23,6 +23,8 @@
 #include "native_debug.h"
 #include <errno.h>
 #include <string.h>
+#include "util.cpp"
+#include <unistd.h>
 
 /*
  * For JPEG capture, captured files are saved under
@@ -260,24 +262,30 @@ bool ImageReader::DisplayImage(ANativeWindow_Buffer *buf, AImage *image) {
 //  }
 
 
-  switch (presentRotation_) {
-    case 0:
-      PresentImage(buf, image);
-      break;
-    case 90:
-          PresentImage90(buf, image);
-//          fwrite(p ,1, 1, fp_out);
-//          fflush(fp_out);
-          break;
-    case 180:
-      PresentImage180(buf, image);
-      break;
-    case 270:
-      PresentImage270(buf, image);
-      break;
-    default:
-      ASSERT(0, "NOT recognized display rotation: %d", presentRotation_);
-  }
+// 前置摄像头
+// 0 -----> 需要PresentImage270，正常显示 ...
+//  PresentImage270(buf, image);
+
+
+  PresentImage(buf, image);
+
+
+//  switch (presentRotation_) {
+//    case 0:
+//      PresentImage(buf, image);
+//      break;
+//    case 90:
+//          PresentImage90(buf, image);
+//          break;
+//    case 180:
+//      PresentImage180(buf, image);
+//      break;
+//    case 270:
+//      PresentImage270(buf, image);
+//      break;
+//    default:
+//      ASSERT(0, "NOT recognized display rotation: %d", presentRotation_);
+//  }
 
   AImage_delete(image);
 
@@ -298,6 +306,8 @@ void ImageReader::PresentImage(ANativeWindow_Buffer *buf, AImage *image) {
   AImageCropRect srcRect;
   AImage_getCropRect(image, &srcRect);
 
+
+
   int32_t yStride, uvStride;
   uint8_t *yPixel, *uPixel, *vPixel;
   int32_t yLen, uLen, vLen;
@@ -307,13 +317,31 @@ void ImageReader::PresentImage(ANativeWindow_Buffer *buf, AImage *image) {
   AImage_getPlaneData(image, 1, &vPixel, &vLen);
   AImage_getPlaneData(image, 2, &uPixel, &uLen);
 
-  int32_t uvPixelStride;
-  AImage_getPlanePixelStride(image, 1, &uvPixelStride);
+  // https://docs.microsoft.com/en-us/windows/win32/medfound/image-stride
+  // stride : width + padding ...
 
-  int32_t height = MIN(buf->height, (srcRect.bottom - srcRect.top));
+
+  int32_t uvPixelStride,yPixStride;
+    AImage_getPlanePixelStride(image, 0, &yPixStride);
+    AImage_getPlanePixelStride(image, 1, &uvPixelStride);
+
+    LOGI("yLen:%d  uLen:%d,  vLen:%d  yStride:%d  uvStride:%d  yPixStride:%d   uvPixelStride:%d   buf->stride:%d  buf->width:%d"
+            ,yLen ,uLen ,vLen ,yStride , uvStride, yPixStride, uvPixelStride, buf->stride, buf->width);
+    //  yLen:307200  uLen:153599,  vLen:153599  yStride:640  uvStride:640  yPixStride:1   uvPixelStride:2   buf->stride:1088  buf->width:1080
+
+
+    LOGI("srcRect.top:%d , srcRect.right:%d, srcRect.bottom%d, srcRect.left%d ",srcRect.top,srcRect.right,srcRect.bottom,srcRect.left);
+    // srcRect.top:0 , srcRect.right:640, srcRect.bottom480, srcRect.left0
+
+
+    int32_t height = MIN(buf->height, (srcRect.bottom - srcRect.top));
   int32_t width = MIN(buf->width, (srcRect.right - srcRect.left));
 
+  //  The actual bits
   uint32_t *out = static_cast<uint32_t *>(buf->bits);
+
+
+  timeStart();
   for (int32_t y = 0; y < height; y++) {
     const uint8_t *pY = yPixel + yStride * (y + srcRect.top) + srcRect.left;
 
@@ -327,6 +355,24 @@ void ImageReader::PresentImage(ANativeWindow_Buffer *buf, AImage *image) {
     }
     out += buf->stride;
   }
+  double elapse = timeEnd();
+  LOGI("elapse:%f",elapse); // ??? accurate ???
+
+
+
+// custom rgb framing....
+//    for (int32_t y = 0; y < height; y++) {
+//        for (int32_t x = 0; x < width; x++) {
+//          int b = 0;
+//          int g = 255;
+//          int r = 0;
+//          int a = 255;
+//          out[x] = (a<<24) | (b << 16) | (g << 8) | r;
+//        }
+//      out += buf->stride;
+//    }
+
+
 }
 
 /*
