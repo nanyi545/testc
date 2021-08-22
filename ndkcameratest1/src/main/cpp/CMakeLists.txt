@@ -33,9 +33,10 @@ set(COMMON_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../../common)
 
 
 
-#（1）引入native_app_glue框架头文件所在目录
+#（1）引入native_app_glue框架头文件所在目录  +  libyuv
 include_directories(${ANDROID_NDK}/sources/android/native_app_glue
-${COMMON_SOURCE_DIR})
+${COMMON_SOURCE_DIR}
+        )
 
 #（2）将android_native_app_glue.c封装成app_glue静态库，否则在创建activity时，会crash
 add_library(app_glue STATIC
@@ -50,7 +51,21 @@ set(CMAKE_SHARED_LINKER_FLAGS
 message("-----------camera2 project----------")
 message(${COMMON_SOURCE_DIR})
 message(${ANDROID_NDK})
+message(${ANDROID_ABI})
 
+
+
+# include libyuv
+#头文件成功引入
+include_directories(${CMAKE_SOURCE_DIR}/libyuv/${ANDROID_ABI}/include)
+#静态库 FFmpeg   ---> 把-L参数添加到现有的CMAKE_CXX_FLAGS之上
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${CMAKE_SOURCE_DIR}/libyuv/${ANDROID_ABI}/lib")
+
+# include x264
+#头文件成功引入
+include_directories(${CMAKE_SOURCE_DIR}/x264/${ANDROID_ABI}/include)
+#静态库 FFmpeg   ---> 把-L参数添加到现有的CMAKE_CXX_FLAGS之上
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${CMAKE_SOURCE_DIR}/x264/${ANDROID_ABI}/lib")
 
 
 
@@ -80,4 +95,6 @@ target_link_libraries( # Specifies the target library.
         camera2ndk
         mediandk
         OpenMAXAL
+#        libyuv
+        x264
         )

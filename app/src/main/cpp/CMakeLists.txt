@@ -24,9 +24,19 @@ message("-----------ee----------")
 
 # include x264
 #头文件成功引入
-include_directories(${CMAKE_SOURCE_DIR}/x264/${ANDROID_ABI}/include)
+include_directories(${CMAKE_SOURCE_DIR}/x264/${ANDROID_ABI}/include
+#        ${CMAKE_SOURCE_DIR}/libyuv/${ANDROID_ABI}/include
+#        ${CMAKE_SOURCE_DIR}/libyuv/${ANDROID_ABI}/include/libyuv
+        )
 #静态库 FFmpeg   ---> 把-L参数添加到现有的CMAKE_CXX_FLAGS之上
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${CMAKE_SOURCE_DIR}/x264/${ANDROID_ABI}/lib")
+
+
+#头文件成功引入
+include_directories(${CMAKE_SOURCE_DIR}/libyuv/${ANDROID_ABI}/include)
+#静态库 FFmpeg   ---> 把-L参数添加到现有的CMAKE_CXX_FLAGS之上
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${CMAKE_SOURCE_DIR}/libyuv/${ANDROID_ABI}/lib")
+
 
 
 
@@ -88,4 +98,5 @@ target_link_libraries( # Specifies the target library.
         rtmp
         x264
         ctest1
+        libyuv
         )

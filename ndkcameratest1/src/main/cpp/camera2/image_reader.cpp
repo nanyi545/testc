@@ -24,7 +24,9 @@
 #include <errno.h>
 #include <string.h>
 #include "util.cpp"
+#include "fileWriter.h"
 #include <unistd.h>
+#include <libyuv.h>
 
 /*
  * For JPEG capture, captured files are saved under
@@ -214,7 +216,6 @@ static inline uint32_t YUV2RGB(int nY, int nU, int nV) {
 
 FILE *fp_out = NULL;
 
-
 /**
  * Convert yuv image inside AImage into ANativeWindow_Buffer
  * ANativeWindow_Buffer format is guaranteed to be
@@ -245,7 +246,6 @@ bool ImageReader::DisplayImage(ANativeWindow_Buffer *buf, AImage *image) {
   /**
    *  test write file
    */
-
 //  int* p;
 //  if(NULL == fp_out){
 //    fp_out = fopen("/sdcard/Download/hehe/out_1","w+");
@@ -302,33 +302,53 @@ bool ImageReader::DisplayImage(ANativeWindow_Buffer *buf, AImage *image) {
  *   Refer to:
  * https://mathbits.com/MathBits/TISection/Geometry/Transformations2.htm
  */
+
+fileWriter* yuvWriter;
+int32_t width2 = 0;
+int32_t height2;
+uint8_t* yPixe2,*uPixel2, *vPixel2;
+int32_t ylen2,ulen2,vlen2;
+
 void ImageReader::PresentImage(ANativeWindow_Buffer *buf, AImage *image) {  
   AImageCropRect srcRect;
   AImage_getCropRect(image, &srcRect);
 
 
+//    int32_t format;
+//    AImage_getFormat(image, &format);
+//    // no format ???
+//    LOGI("  ----- format:%" PRId32  , (format) );
 
-  int32_t yStride, uvStride;
+
+  int32_t yStride, uvStride , stride3 = 100;
   uint8_t *yPixel, *uPixel, *vPixel;
   int32_t yLen, uLen, vLen;
   AImage_getPlaneRowStride(image, 0, &yStride);
   AImage_getPlaneRowStride(image, 1, &uvStride);
+  AImage_getPlaneRowStride(image, 2, &stride3);
+
   AImage_getPlaneData(image, 0, &yPixel, &yLen);
   AImage_getPlaneData(image, 1, &vPixel, &vLen);
   AImage_getPlaneData(image, 2, &uPixel, &uLen);
+    LOGI("stride1:%d   stride2:%d   stride3:%d",yStride,uvStride,stride3);
 
   // https://docs.microsoft.com/en-us/windows/win32/medfound/image-stride
   // stride : width + padding ...
 
 
-  int32_t uvPixelStride,yPixStride;
+  int32_t uvPixelStride,yPixStride , pixStride3 = 100;
     AImage_getPlanePixelStride(image, 0, &yPixStride);
     AImage_getPlanePixelStride(image, 1, &uvPixelStride);
+    AImage_getPlanePixelStride(image, 2, &pixStride3);
+    LOGI("pstride1:%d   pstride2:%d   pstride3:%d",yPixStride,uvPixelStride,pixStride3);
 
-    LOGI("yLen:%d  uLen:%d,  vLen:%d  yStride:%d  uvStride:%d  yPixStride:%d   uvPixelStride:%d   buf->stride:%d  buf->width:%d"
-            ,yLen ,uLen ,vLen ,yStride , uvStride, yPixStride, uvPixelStride, buf->stride, buf->width);
-    //  yLen:307200  uLen:153599,  vLen:153599  yStride:640  uvStride:640  yPixStride:1   uvPixelStride:2   buf->stride:1088  buf->width:1080
 
+    LOGI("yLen:%d  uLen:%d,  vLen:%d  yStride:%d  uvStride:%d  yPixStride:%d   uvPixelStride:%d   buf->stride:%d  buf->width:%d buf->height:%d"
+            ,yLen ,uLen ,vLen ,yStride , uvStride, yPixStride, uvPixelStride, buf->stride, buf->width,buf->height);
+    //  yLen:307200  uLen:153599,  vLen:153599  yStride:640  uvStride:640  yPixStride:1   uvPixelStride:2   buf->stride:1088  buf->width:1080  buf->height:2400
+
+
+    LOGI("v0:%d  v1:%d,  v2:%d,  v3:%d,  4:%d,  v5:%d",vPixel[0],vPixel[1],vPixel[2],vPixel[3],vPixel[4],vPixel[5]);
 
     LOGI("srcRect.top:%d , srcRect.right:%d, srcRect.bottom%d, srcRect.left%d ",srcRect.top,srcRect.right,srcRect.bottom,srcRect.left);
     // srcRect.top:0 , srcRect.right:640, srcRect.bottom480, srcRect.left0
@@ -337,26 +357,120 @@ void ImageReader::PresentImage(ANativeWindow_Buffer *buf, AImage *image) {
     int32_t height = MIN(buf->height, (srcRect.bottom - srcRect.top));
   int32_t width = MIN(buf->width, (srcRect.right - srcRect.left));
 
-  //  The actual bits
-  uint32_t *out = static_cast<uint32_t *>(buf->bits);
+  bool first = false;
 
 
-  timeStart();
-  for (int32_t y = 0; y < height; y++) {
-    const uint8_t *pY = yPixel + yStride * (y + srcRect.top) + srcRect.left;
+    if(yuvWriter == NULL){
 
-    int32_t uv_row_start = uvStride * ((y + srcRect.top) >> 1);
-    const uint8_t *pU = uPixel + uv_row_start + (srcRect.left >> 1);
-    const uint8_t *pV = vPixel + uv_row_start + (srcRect.left >> 1);
+        first = true;
 
-    for (int32_t x = 0; x < width; x++) {
-      const int32_t uv_offset = (x >> 1) * uvPixelStride;
-      out[x] = YUV2RGB(pY[x], pU[uv_offset], pV[uv_offset]);
+      // write to file
+//        yuvWriter = new fileWriter("/sdcard/Download/aaa/t3.yuv", true);
+//        yuvWriter->writeYuv((srcRect.right - srcRect.left), (srcRect.bottom - srcRect.top) , yPixel,yLen,vPixel,vLen,uPixel,uLen);
+
+// read from file ....
+//      yuvWriter = new fileWriter("/sdcard/Download/aaa/t2.yuv", false);
+//      yuvWriter->readYuv(&width2,&height2,&yPixe2,&ylen2,&uPixel2,&ulen2,&vPixel2,&vlen2);
+//      LOGI("width2:%d  height2:%d  ylen2:%d ", width2 , height2 , ylen2 );
+//      for (int i=0;i<ulen2;i++){
+//          if((i%2)==0){
+//              if((i+1)<ulen2){
+//                  uPixel2[i] = uPixel2[i+1];
+//                  vPixel2[i] = vPixel2[i+1];
+//              }
+//          }
+//      }
+
+    } else {
+        first = false;
+
     }
-    out += buf->stride;
-  }
-  double elapse = timeEnd();
-  LOGI("elapse:%f",elapse); // ??? accurate ???
+
+    //  The actual bits
+  uint32_t *out = static_cast<uint32_t *>(buf->bits);
+  uint8_t *out1 = static_cast<uint8_t *>(buf->bits);
+
+  // convert to rgb lib YUV
+if(yuvWriter != NULL){
+//    int ret = libyuv::I422ToRGBA(yPixe2,width2,uPixel2,width2,vPixel2,width2,out1,1088*4, width2, height2);
+//    int ret = libyuv::I422ToABGR(yPixe2,width2,uPixel2,width2,vPixel2,width2,out1,1088*4, 640, 480);
+//    int ret = libyuv::I422ToABGR(yPixe2,width2,vPixel2,width2,uPixel2,width2,out1,1088*4, 640, 480);
+
+// YUV 420 --> RGB use this !!
+//    timeStart();
+// int ret = libyuv::I420ToABGR(yPixe2,width2,uPixel2,width2>>1,vPixel2,width2>>1,out1,1088*4, 640, 480);
+//    int ret = libyuv::I420ToABGR(yPixe2,width2,uPixel2,width2,vPixel2,width2,out1,1088*4, 640, 480);
+
+//    double elapse = timeEnd();
+//    LOGI("elapse:%f",elapse);   // ~ 0.3 - 0.4
+
+}
+
+
+
+
+// use saved yuv data ...
+//  if(yPixe2!=NULL){
+//      timeStart();
+//
+//    for (int32_t y = 0 ; y < height; y++) {
+//      const uint8_t *pY = yPixe2 + yStride * (y + srcRect.top) + srcRect.left;
+//
+//      int32_t uv_row_start = uvStride * ((y + srcRect.top) >> 1);
+//      const uint8_t *pU = uPixel2 + uv_row_start + (srcRect.left >> 1);
+//      const uint8_t *pV = vPixel2 + uv_row_start + (srcRect.left >> 1);
+//
+//      for (int32_t x = 0; x < width; x++) {
+//        const int32_t uv_offset = (x >> 1) * uvPixelStride;
+//        out[x] = YUV2RGB(pY[x], pU[uv_offset], pV[uv_offset]);
+//        if( first && y==4 ){
+//            LOGI("---------    x:%d  y:%d  uv_offset:%d    uv_row_start:%d",x ,y ,uv_offset,uv_row_start );
+//        }
+//      }
+//      out += buf->stride;
+//    }
+//      double elapse = timeEnd();
+//      LOGI("elapse:%f",elapse);   // ~ 9 - 14 ....
+//  }
+
+
+
+  // convert to rgb ----
+//  timeStart();
+//  for (int32_t y = 0; y < height; y++) {
+//    const uint8_t *pY = yPixel + yStride * (y + srcRect.top) + srcRect.left;
+//
+//    int32_t uv_row_start = uvStride * ((y + srcRect.top) >> 1);
+//    const uint8_t *pU = uPixel + uv_row_start + (srcRect.left >> 1);
+//    const uint8_t *pV = vPixel + uv_row_start + (srcRect.left >> 1);
+//
+//    for (int32_t x = 0; x < width; x++) {
+//      const int32_t uv_offset = (x >> 1) * uvPixelStride;
+//      out[x] = YUV2RGB(pY[x], pU[uv_offset], pV[uv_offset]);
+//    }
+//    out += buf->stride;
+//  }
+//  double elapse = timeEnd();
+//  LOGI("elapse:%f",elapse); //  // ~ 9 - 14
+
+
+
+// libyuv convert to rgb ....
+    timeStart();
+if(uvPixelStride!=1){
+    // you need to do conversion like this ....
+
+}
+    uint8_t  *uPixel_, *vPixel_;
+    uPixel_ = (uint8_t*)(malloc( vLen/2 ));
+    vPixel_ = (uint8_t*)(malloc( vLen/2 ));
+    for (int j = 0;j<vLen/2;j++){
+        uPixel_[j]=uPixel[j<<1];
+        vPixel_[j]=vPixel[j<<1];
+    }
+    int ret = libyuv::I420ToARGB(yPixel,width,uPixel_,width>>1,vPixel_,width>>1,out1,buf->stride*4, 640, 480);
+    double elapse = timeEnd();
+    LOGI("elapse:   --- %f",elapse); //  ~~   0.652000 -- 0.803693
 
 
 
@@ -372,6 +486,34 @@ void ImageReader::PresentImage(ANativeWindow_Buffer *buf, AImage *image) {
 //      out += buf->stride;
 //    }
 
+
+
+/**
+ *  int32 -->
+ *  p[0] 最低8位数
+ *  p[3] 最高8位数
+ */
+//  int a = 253;
+//  int b = a<<24;
+//  void* p = &b;
+//    uint8_t *o1 = static_cast<uint8_t *>(p);
+//    LOGI("----- a:%x   b:%x ------  0:%d  1:%d  2:%d  3:%d ",a,b, o1[0],o1[1] ,o1[2] ,o1[3]  );
+
+
+// custom rgb framing.... using a different format ...
+//    for (int32_t y = 0; y < 1000; y++) {
+//        for (int32_t x = 0; x < 100; x++) {
+//            uint8_t b = 0;
+//            uint8_t g = 255;
+//            uint8_t r = 0;
+//            uint8_t a = 255;
+//            out1[x*4] = r;
+//            out1[x*4+1] = g;
+//            out1[x*4+2] = b;
+//            out1[x*4+3] = a;
+//        }
+//        out1 += (buf->stride * 4);
+//    }
 
 }
 

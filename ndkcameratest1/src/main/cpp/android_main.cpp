@@ -11,6 +11,8 @@
 #include "camera2/decoder.cpp"
 #include "camera2/util.cpp"
 
+#include <x264.h>
+
 
 
 //class mylooper: public looper {
@@ -143,6 +145,8 @@ static void ProcessAndroidCmd(struct android_app* app, int32_t cmd) {
 
 
 
+//    编码器
+x264_t *videoCodec = 0;
 
 extern "C" void android_main(struct android_app* state) {
 
@@ -154,6 +158,21 @@ extern "C" void android_main(struct android_app* state) {
 
     state->userData = reinterpret_cast<void*>(&engine);
     state->onAppCmd = ProcessAndroidCmd;
+
+
+    //    定义参数
+    x264_param_t param;
+//    参数赋值   x264  麻烦  编码器 速度   直播  越快 1  越慢2
+    x264_param_default_preset(&param, "ultrafast", "zerolatency");
+    videoCodec = x264_encoder_open(&param);
+
+    if(videoCodec==NULL){
+        LOGI("x264 init --- sucess");
+    } else {
+        LOGI("x264 init --- fail");
+    }
+
+
 
     /**
      *

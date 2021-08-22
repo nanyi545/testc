@@ -739,6 +739,10 @@ Java_com_example_testc2_rtmp_ScreenLive_sendData(JNIEnv *env, jobject thiz, jbyt
 **/
 
 
+/**
+ *
+ */
+#include <libyuv.h>
 
 
 /**
