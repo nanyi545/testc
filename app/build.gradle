@@ -52,6 +52,7 @@ android {
             java {
 //                exclude '**/uncompilable/**'
             }
+            jniLibs.srcDirs = ['src/main/cpp/libs']
         }
     }
 
@@ -495,4 +496,3 @@ gradle.taskGraph.whenReady { taskGraph ->
 
 
 println "---app build end---"
-

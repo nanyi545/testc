@@ -36,6 +36,13 @@ android {
         }
     }
 
+    //  如果使用动态库（.so包）  ！！！！！
+//    sourceSets {
+//        main {
+//            jniLibs.srcDirs = ['src/main/cpp/lib']
+//        }
+//    }
+
 }
 
 dependencies {

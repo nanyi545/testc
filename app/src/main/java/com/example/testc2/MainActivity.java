@@ -25,6 +25,7 @@ import com.example.testc2.cam2test.Cam2Activity;
 import com.example.testc2.codec1.Player1Activity;
 import com.example.testc2.codec2.SpsActivity;
 import com.example.testc2.encoder1.EncoderActivity1;
+import com.example.testc2.ffmpeg.TestFF1Activity;
 import com.example.testc2.gif.GifHandler;
 import com.example.testc2.nestedScroll.NestedScrollActivity;
 import com.example.testc2.opengl.OpenGl1Activity;
@@ -310,6 +311,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.x264_1:
                 Intent p = new Intent(MainActivity.this, X264Activity.class);
                 startActivity(p);
+                break;
+
+            case R.id.ff_1:
+                Intent p1 = new Intent(MainActivity.this, TestFF1Activity.class);
+                startActivity(p1);
                 break;
 
         }

@@ -95,6 +95,6 @@ target_link_libraries( # Specifies the target library.
         camera2ndk
         mediandk
         OpenMAXAL
-#        libyuv
+        libyuv
         x264
         )

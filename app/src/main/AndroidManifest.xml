@@ -22,7 +22,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".yuv.YuvActivity"></activity>
+        <activity android:name=".ffmpeg.TestFF1Activity"></activity>
+        <activity android:name=".yuv.YuvActivity" />
         <activity
             android:name=".opengl.player_gl.PlayerGLActivity"
             android:screenOrientation="landscape"
