@@ -14,20 +14,104 @@
 #include <x264.h>
 
 
+/**
+ *  set native window buffer geometry  !!!!
+ *  ----->
+ * ANativeWindow_setBuffersGeometry
+ *
+ *
+ *
+ *
+ * 获取可用视频分辨率
+ *  --------> ACAMERA_SCALER_AVAILABLE_STREAM_CONFIGURATIONS
+ *     ACameraMetadata_getConstEntry(metadata, ACAMERA_SCALER_AVAILABLE_STREAM_CONFIGURATIONS, &entry);
+ *
+ *
+ */
 
-//class mylooper: public looper {
-//    virtual void handle(int what, void* obj);
-//};
-//
-//void mylooper::handle(int what, void* obj) {
-//    LOGI("mylooper handle %d",what);
-//    switch (what) {
-//        case 1:
-//            break;
-//    }
-//}
-//
-//mylooper* mlooper;
+/**
+ *  ndk 环境变量配置
+ *
+ *
+ *  https://cloud.tencent.com/developer/article/1573318
+
+open -e .bash_profile
+
+
+mac:
+
+
+For ijk ....
+
+export PATH=${PATH}:/Users/weiwang/Downloads/android-ndk-r14b
+export ANDROID_NDK=/Users/weiwang/Downloads/android-ndk-r14b
+
+
+export PATH=${PATH}:/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061
+export ANDROID_NDK=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061
+
+
+
+
+
+ */
+
+
+
+/**
+ *
+ * libyuv 编译  ( Android.mk方式 )
+ *
+ * https://www.jianshu.com/p/b529fdaaf694
+ *
+ *
+ *  1    git clone https://chromium.googlesource.com/libyuv/libyuv
+ *  2    源码文件夹 libyuv 重命名--->jni
+ *  3    修改 Android.mk    ---->   注释 jpeg 相关的代码
+ *      --->  ifneq ($(LIBYUV_DISABLE_JPEG), "yes")
+              LOCAL_SHARED_LIBRARIES := libjpeg
+              endif
+        --->  LOCAL_SHARED_LIBRARIES := libjpeg
+        --->  ifneq ($(LIBYUV_DISABLE_JPEG), "yes")
+              LOCAL_SRC_FILES += \
+                  source/convert_jpeg.cc      \
+                  source/mjpeg_decoder.cc     \
+                  source/mjpeg_validate.cc
+              common_CFLAGS += -DHAVE_JPEG
+              LOCAL_SHARED_LIBRARIES := libjpeg
+              endif
+    4   Application.mk
+
+        APP_PLATFORM := android-21
+        APP_ABI := armeabi-v7a
+
+    5  cd 到 jni folder 的parent  ndk-build
+
+ *
+ *
+ *
+ */
+class looper2: public looper {
+    int aaa = 0;
+    virtual void handle(int what, void* obj);
+};
+
+void looper2::handle(int what, void* obj) {
+    LOGI("Looper-------  2 handle:%d   aaa:%d",what,aaa);
+    aaa++;
+    if(aaa>100){
+        quit();
+    }
+    switch (what) {
+        case 1:
+            break;
+    }
+}
+
+looper2* mlooper2;
+
+
+
 
 
 extern "C"
@@ -93,7 +177,7 @@ const char* ToString1(int32_t v)
  *
  * start
  *
- *
+
 07-29 12:47:17.436 32729-392/com.tvtb.ndkcameratest1 V/ProcessAndroidCmd: ProcessAndroidCmd:10  APP_CMD_START
 07-29 12:47:17.440 32729-392/com.tvtb.ndkcameratest1 V/ProcessAndroidCmd: ProcessAndroidCmd:11  APP_CMD_RESUME
 07-29 12:47:17.443 32729-392/com.tvtb.ndkcameratest1 V/ProcessAndroidCmd: ProcessAndroidCmd:0  APP_CMD_INPUT_CHANGED
@@ -105,7 +189,7 @@ const char* ToString1(int32_t v)
 
  end
 
- 07-29 12:47:06.084 32729-32756/com.tvtb.ndkcameratest1 V/ProcessAndroidCmd: ProcessAndroidCmd:7  APP_CMD_LOST_FOCUS
+07-29 12:47:06.084 32729-32756/com.tvtb.ndkcameratest1 V/ProcessAndroidCmd: ProcessAndroidCmd:7  APP_CMD_LOST_FOCUS
 07-29 12:47:06.085 32729-32756/com.tvtb.ndkcameratest1 V/ProcessAndroidCmd: ProcessAndroidCmd:13  APP_CMD_PAUSE
 07-29 12:47:06.501 32729-32756/com.tvtb.ndkcameratest1 V/ProcessAndroidCmd: ProcessAndroidCmd:2  APP_CMD_TERM_WINDOW
 07-29 12:47:06.508 32729-32756/com.tvtb.ndkcameratest1 V/ProcessAndroidCmd: ProcessAndroidCmd:14  APP_CMD_STOP
@@ -177,7 +261,7 @@ extern "C" void android_main(struct android_app* state) {
     /**
      *
      */
-//    mlooper = new mylooper();
+    mlooper2 = new looper2();
 
 
     // loop waiting for stuff to do.
@@ -203,18 +287,8 @@ extern "C" void android_main(struct android_app* state) {
                 return;
             }
         }
+        mlooper2->post(1, NULL);
         pEngineObj->DrawFrame();
-
-
-/**
- *   test timer ....
- */
-//        timeStart();
-//        usleep(8000);   // sleep in us
-//        sleep(1);     // sleep in s
-//        double elapse = timeEnd();
-//        LOGI("elapse----:%f",elapse); // ??? accurate ???
-
 
     }
 
