@@ -26,12 +26,18 @@ FLAGS="--target=armv7-none-linux-androideabi21 --gcc-toolchain=${TOOLCHAIN}  -g 
 
 # echo ${FLAGS}
 
+# .a
+# --enable-static \
+
+# .so
+# --enable-shared \
+
 
 # prefix: 指定编译结果的保存目录 `pwd`: 当前目录
 ./x264/configure --prefix=${PREFIX} \
 --disable-cli \
---enable-static \
 --enable-pic \
+--enable-shared \
 --host=arm-linux \
 --cross-prefix=${TOOLCHAIN}/bin/arm-linux-androideabi- \
 --sysroot=${TOOLCHAIN}/sysroot \

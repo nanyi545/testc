@@ -8,7 +8,7 @@ SYS_ARCH=ARM
 SYS=LINUX
 CC=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/bin/armv7a-linux-androideabi21-clang
 CFLAGS=-Wshadow -O3 -ffast-math  -Wall -I. -I$(SRCPATH) --sysroot=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -std=gnu99 -D_GNU_SOURCE -mcpu=cortex-a8 -mfpu=neon -fPIC -fomit-frame-pointer -fno-tree-vectorize -fvisibility=hidden
-CFLAGSSO=
+CFLAGSSO= -DX264_API_EXPORTS
 CFLAGSCLI=
 COMPILER=GNU
 COMPILER_STYLE=GNU
@@ -36,5 +36,8 @@ PROF_USE_CC=-fprofile-use
 PROF_USE_LD=-fprofile-use
 HAVE_OPENCL=yes
 CC_O=-o $@
-default: lib-static
-install: install-lib-static
+SOSUFFIX=so
+SONAME=libx264.so.161
+SOFLAGS=-shared -Wl,-soname,$(SONAME)  -Wl,-Bsymbolic
+default: lib-shared
+install: install-lib-shared

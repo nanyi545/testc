@@ -3,7 +3,7 @@ checking for -Werror=unknown-attributes... yes
 checking for -Werror=attributes... yes
 checking for -Werror=ignored-attributes... yes
 x264 configure script
-Command line options: "--prefix=/Users/weiwang/AndroidStudioProjects/TestC2/ext/android/armeabi-v7a" "--disable-cli" "--enable-static" "--enable-pic" "--host=arm-linux" "--cross-prefix=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-" "--sysroot=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/sysroot" "--extra-cflags="
+Command line options: "--prefix=/Users/weiwang/AndroidStudioProjects/TestC2/ext/android/armeabi-v7a" "--disable-cli" "--enable-pic" "--enable-shared" "--disable-static" "--host=arm-linux" "--cross-prefix=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/bin/arm-linux-androideabi-" "--sysroot=/Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/sysroot" "--extra-cflags="
 
 checking whether /Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/bin/armv7a-linux-androideabi21-clang works... yes
 checking whether /Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/toolchains/llvm/prebuilt/darwin-x86_64/bin/armv7a-linux-androideabi21-clang supports for( int i = 0; i < 9; i++ ); with -std=gnu99... yes
@@ -82,8 +82,8 @@ byte order:     little-endian
 system:         LINUX
 cli:            no
 libx264:        internal
-shared:         no
-static:         yes
+shared:         yes
+static:         no
 bashcompletion: no
 asm:            yes
 interlaced:     yes

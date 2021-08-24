@@ -67,7 +67,7 @@ import java.util.concurrent.locks.ReentrantLock;
  *
  *
  * ---x264:script
- * source ./mac.sh    ----> this has issue ???
+ * source ./mac.sh    ---->
  *
  *
  *
