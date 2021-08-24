@@ -150,7 +150,9 @@ public:
 //        if(w_ * other.h_ == h_ * other.w_) {
 //            return true;
 //        }
+
         return false;
+
 //        int diff = (w_ * other.h_ - h_ * other.w_);
 //        if(diff<0){
 //            diff = 0-diff;

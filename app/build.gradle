@@ -465,7 +465,6 @@ gradle.taskGraph.whenReady { taskGraph ->
         }
         /**
          * task.dependsOn what does it actually do  ??
-         *
          */
 //        task.dependsOn.forEach { dep ->
 //            if(dep instanceof Task){
@@ -496,3 +495,4 @@ gradle.taskGraph.whenReady { taskGraph ->
 
 
 println "---app build end---"
+

@@ -77,13 +77,23 @@ void CameraEngine::CreateCamera(void) {
       imageRotation = (angle - rotation_ + 360) % 360;
     }
   }
-  LOGI("Phone Rotation: %d, imageRotation Angle: %d", rotation_,imageRotation);
+  if(facing==ACAMERA_LENS_FACING_FRONT){
+
+  }
+    if(facing==ACAMERA_LENS_FACING_BACK){
+
+    }
+
+    LOGI("Phone Rotation: %d, imageRotation Angle: %d", rotation_,imageRotation);
   /**
    *
    * ACAMERA_LENS_FACING_FRONT:
    * Phone Rotation: 0,   imageRotation Angle: 90
    * Phone Rotation: 90,  imageRotation Angle: 0
    * Phone Rotation: 270, imageRotation Angle: 180
+   *
+   *
+   *
    *
    */
 
@@ -97,11 +107,17 @@ void CameraEngine::CreateCamera(void) {
   bool portraitNativeWindow =
       (savedNativeWinRes_.width < savedNativeWinRes_.height);
 
+    LOGI("***  size  w1:%d, h1:%d",savedNativeWinRes_.width, savedNativeWinRes_.height);
+    LOGI("***  size  w:%d, h:%d",view.width,view.height);
 
-  // set native window buffer geometry  !!!!
+
+    // set native window buffer geometry  !!!!
 //  ANativeWindow_setBuffersGeometry(
 //      app_->window, portraitNativeWindow ? view.height : view.width,
-//      portraitNativeWindow ? view.width : view.height, WINDOW_FORMAT_RGBA_8888);
+//      portraitNativeWindow ? view.width : view.height, WINDOW_FORMAT_RGBA_8888
+//      );
+
+
 
   yuvReader_ = new ImageReader(&view, AIMAGE_FORMAT_YUV_420_888);
   yuvReader_->SetPresentRotation(imageRotation);

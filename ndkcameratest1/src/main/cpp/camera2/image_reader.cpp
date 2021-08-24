@@ -309,6 +309,11 @@ int32_t height2;
 uint8_t* yPixe2,*uPixel2, *vPixel2;
 int32_t ylen2,ulen2,vlen2;
 
+//
+uint8_t  *uPixel_, *vPixel_, *out1_;
+uint8_t *preYPixel;
+
+
 void ImageReader::PresentImage(ANativeWindow_Buffer *buf, AImage *image) {  
   AImageCropRect srcRect;
   AImage_getCropRect(image, &srcRect);
@@ -343,7 +348,7 @@ void ImageReader::PresentImage(ANativeWindow_Buffer *buf, AImage *image) {
     LOGI("pstride1:%d   pstride2:%d   pstride3:%d",yPixStride,uvPixelStride,pixStride3);
 
 
-    LOGI("yLen:%d  uLen:%d,  vLen:%d  yStride:%d  uvStride:%d  yPixStride:%d   uvPixelStride:%d   buf->stride:%d  buf->width:%d buf->height:%d"
+    LOGI("***  yLen:%d  uLen:%d,  vLen:%d  yStride:%d  uvStride:%d  yPixStride:%d   uvPixelStride:%d   buf->stride:%d  buf->width:%d buf->height:%d"
             ,yLen ,uLen ,vLen ,yStride , uvStride, yPixStride, uvPixelStride, buf->stride, buf->width,buf->height);
     //  yLen:307200  uLen:153599,  vLen:153599  yStride:640  uvStride:640  yPixStride:1   uvPixelStride:2   buf->stride:1088  buf->width:1080  buf->height:2400
 
@@ -457,20 +462,47 @@ if(yuvWriter != NULL){
 
 // libyuv convert to rgb ....
     timeStart();
-if(uvPixelStride!=1){
-    // you need to do conversion like this ....
+    if(uvPixelStride!=1){
+        if(uPixel_==NULL){
+            uPixel_ = (uint8_t*)(malloc( vLen/uvPixelStride ));
+            vPixel_ = (uint8_t*)(malloc( vLen/uvPixelStride ));
+            out1_ =  (uint8_t*)(malloc( buf->stride * 4 * buf->height ));
+        }
 
-}
-    uint8_t  *uPixel_, *vPixel_;
-    uPixel_ = (uint8_t*)(malloc( vLen/2 ));
-    vPixel_ = (uint8_t*)(malloc( vLen/2 ));
-    for (int j = 0;j<vLen/2;j++){
-        uPixel_[j]=uPixel[j<<1];
-        vPixel_[j]=vPixel[j<<1];
+        for (int j = 0;j<vLen/uvPixelStride;j++){
+            uPixel_[j]=uPixel[j*uvPixelStride];
+            vPixel_[j]=vPixel[j*uvPixelStride];
+        }
+
+        int ret = libyuv::I420ToARGB(yPixel,yStride,
+                uPixel_,uvStride/uvPixelStride,
+                vPixel_,uvStride/uvPixelStride,
+                out1_,buf->stride*4, width, height);
+
+        int shiftX = 200;
+        int shiftY = 500;
+        int shift = shiftY*buf->stride*4 + shiftX*4;
+
+
+      libyuv::ARGBRotate(out1_,buf->stride*4, out1+shift, buf->stride*4,width, height,libyuv::kRotate270);
+
+
+      if(preYPixel != NULL){
+        uint64_t sse = libyuv::ComputeSumSquareError(preYPixel,yPixel,yLen);
+        uint64_t sseReduced = sse / width / height;
+        LOGI("sseReduced:   ---%" PRId64, sseReduced);
+      }
+      if(preYPixel == NULL){
+          preYPixel = (uint8_t*)(malloc( yLen ));
+      }
+      memcpy(preYPixel,yPixel,yLen);
+
     }
-    int ret = libyuv::I420ToARGB(yPixel,width,uPixel_,width>>1,vPixel_,width>>1,out1,buf->stride*4, 640, 480);
     double elapse = timeEnd();
-    LOGI("elapse:   --- %f",elapse); //  ~~   0.652000 -- 0.803693
+    LOGI("elapse:   --- %f",elapse);
+
+    // I420ToARGB  ~~   0.652000 -- 0.803693
+    // I420ToARGB + ARGBRotate  ~~  1.4-1.7
 
 
 
