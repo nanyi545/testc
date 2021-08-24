@@ -41,7 +41,8 @@
         <activity android:name=".encoder1.EncoderActivity1" />
         <activity android:name=".nestedScroll.NestedScrollActivity" />
         <activity android:name=".codec1.Player1Activity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:excludeFromRecents="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

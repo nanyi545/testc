@@ -96,8 +96,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         // YUV ... test
-        Intent i = new Intent(MainActivity.this, YuvActivity.class);
-        startActivity(i);
+//        Intent i = new Intent(MainActivity.this, YuvActivity.class);
+//        startActivity(i);
 
     }
 
