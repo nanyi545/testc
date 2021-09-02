@@ -20,8 +20,13 @@ public class ExampleUnitTest {
 
     @Test
     public void call1(){
-        int[] arr1 = {1,2,3,4,5};
-        test1(arr1,1);
+//        int[] arr1 = {1,2,3,4,5};
+//        test1(arr1,1);
+
+        String value =  "0.5";
+        String[] values = value.split("\\.");
+        System.out.print(values.length);
+
     }
 
 

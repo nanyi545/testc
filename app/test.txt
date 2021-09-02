@@ -52,6 +52,7 @@ android {
             java {
 //                exclude '**/uncompilable/**'
             }
+            jniLibs.srcDirs = ['src/main/cpp/libs']
         }
     }
 
@@ -465,7 +466,6 @@ gradle.taskGraph.whenReady { taskGraph ->
         }
         /**
          * task.dependsOn what does it actually do  ??
-         *
          */
 //        task.dependsOn.forEach { dep ->
 //            if(dep instanceof Task){

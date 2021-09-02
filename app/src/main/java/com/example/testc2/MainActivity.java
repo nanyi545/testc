@@ -115,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         getWindow().getDecorView().postDelayed(new Runnable() {
             @Override
             public void run() {

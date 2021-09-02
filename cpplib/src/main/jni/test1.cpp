@@ -3,3 +3,7 @@
 //
 
 #include "test1.h"
+
+int test1::add(int a, int b ) {
+    return a + b;
+}

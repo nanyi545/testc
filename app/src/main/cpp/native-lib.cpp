@@ -5,9 +5,11 @@
 #include <thread>
 extern "C"{
 #include "giflib/gif_lib.h"
+#include "poly1.h"
 }
 #include "abi.h"
 #include "ctest1/test1.h"
+
 
 #define  argb(a,r,g,b) ( ((a) & 0xff) << 24 ) | ( ((b) & 0xff) << 16 ) | ( ((g) & 0xff) << 8 ) | ((r) & 0xff)
 
@@ -35,6 +37,11 @@ int times(int a, int b){
 }
 
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
+
+    poly1* pt1 = getPoly1(1);
+    poly1* pt2 = getPoly1(2);
+    poly1* pt3 = getPoly1(3);
+    __android_log_print(ANDROID_LOG_VERBOSE, "JNI_OnLoad", "pt1:%d   pt2:%d  pt3:%d  ",pt1->compute(pt1),pt2->compute(pt2),pt3->compute(pt3));
 
 
     // how to print ??

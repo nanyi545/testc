@@ -61,6 +61,8 @@ add_library( # Sets the name of the library.
 
         # Provides a relative path to your source file(s).
         native-lib.cpp
+        poly1.c
+
         # recommanded not to use glob /
         #          https://stackoverflow.com/questions/3201154/automatically-add-all-files-in-a-folder-to-a-target-using-cmake
         giflib/dgif_lib.c
