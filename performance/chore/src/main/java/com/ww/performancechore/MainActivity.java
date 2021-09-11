@@ -2,36 +2,25 @@ package com.ww.performancechore;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ActivityManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
-import android.view.Choreographer;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+
+import com.ww.performancechore.webview.WebTestActivity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import leakcanary.AppWatcher;
 
 public class MainActivity extends AppCompatActivity {
 
-
-
-
-
     Button tv1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        App.getInstance().setA(this);
 
         setContentView(R.layout.activity_main);
         tv1 = findViewById(R.id.tv1);
@@ -84,6 +73,14 @@ public class MainActivity extends AppCompatActivity {
                 AppWatcher.INSTANCE.getObjectWatcher().expectWeaklyReachable(list,"hehehe");
             }
         });
+
+        findViewById(R.id.tv4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, WebTestActivity.class ));
+            }
+        });
+
 
     }
 

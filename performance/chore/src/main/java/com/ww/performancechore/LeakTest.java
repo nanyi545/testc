@@ -114,7 +114,9 @@ public class LeakTest {
         System.gc();
         try {
             /**
-             * not working ?? ....
+             * ref queue    not working ?? ....
+             *
+             * why ?????
              */
             log("queue:"+(q.remove(2000)==null));
         } catch (InterruptedException e) {
