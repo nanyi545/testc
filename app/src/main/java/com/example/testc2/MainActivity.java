@@ -90,7 +90,15 @@ public class MainActivity extends AppCompatActivity {
 //        Intent i =new Intent(MainActivity.this, PlayerGLActivity.class);
 //        startActivity(i);
 
-
+        /**
+         * demo of replace classes in aar module ...
+         *
+         * need to switch dependency ...
+         *     implementation('com.example.lib1:exampleLib1:1.0.0@aar') {} // original aar
+         *     implementation(name: 'exampleLib1_patch', ext: 'aar')   // modified(patched) aar
+         *
+         * see lib1/lib1modifier for how to do it ....
+         */
 //        Intent i = new Intent(MainActivity.this, DummyMainActivity.class);
 //        startActivity(i);
 

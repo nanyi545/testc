@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
 
 android {
     compileSdkVersion 30
@@ -36,27 +37,103 @@ dependencies {
 }
 
 
+
+def group = 'com.example.lib1_patch' //组
+def vers = '1.0.0' //版本
+def artId = 'exampleLib1_patch' //唯一标示
+
+def unZipAarFile = new File(buildDir, "unzipaar")
+def unZipJarFile = new File(buildDir, 'unzipjar')
+def replaceAarFile = new File(buildDir, "excludeaar")
+def replaceAarName = "exampleLib1_patch"
+
+
+
 /**
- * copy get class file
+ *
+ *   0 build lib1modifier project 生产class文件
+ *   1 copy  lib1的aar文件到    "${project.projectDir}/original_aar"
+ *   2 执行 excludeAAR task --> ( 解压aar / 解压aar中jar包 / 替换class / 再打包(压缩)jar / 再打包(压缩)aar )
+ *     生产修改后的aar
+ *
+ **/
+
+def getInputAar() {
+    println "${project.projectDir}/original_aar"
+    File[] files = file("${project.projectDir}/original_aar").listFiles(new FileFilter() {
+        @Override
+        boolean accept(File pathname) {
+            println pathname.name
+            return pathname.name.endsWith(".aar")
+        }
+    })
+    if (files.size() > 0)
+        return files[0]
+    return null
+}
+
+task deleteDir(type: Delete) {
+    delete unZipAarFile, unZipJarFile, replaceAarFile
+}
+
+task unZipAar(type: Copy) {
+    group = "replaceAar"
+    def zipFile = getInputAar()
+    def outputDir = unZipAarFile
+    from zipTree(zipFile)
+    into outputDir
+}
+unZipAar.dependsOn deleteDir
+
+
+task unzipJar(type: Copy) {
+    group = "replaceAar"
+    def zipFile = new File(unZipAarFile, 'classes.jar')
+    def outputDir = unZipJarFile
+    from zipTree(zipFile)
+    into outputDir
+}
+
+unzipJar.dependsOn unZipAar
+
+task zipJar(type: Jar) {
+    baseName = 'classes'
+    from unZipJarFile
+    destinationDir unZipAarFile
+}
+
+task replaceClass(type: Copy) {
+    from new File("${project.buildDir}/intermediates/javac/release/classes/")
+    destinationDir unZipJarFile
+    include "**/*.class"
+    exclude "**/BuildConfig.class"
+    exclude "**/R.class"
+    exclude "**/R\$*.class"
+}
+
+replaceClass.dependsOn(unzipJar, "assembleRelease")
+
+zipJar.dependsOn(replaceClass)
+
+
+task excludeAAR(type: Zip) {
+    group = 'replaceAar'
+    description '生成一个替换之后的aar包'
+    baseName replaceAarName
+    extension "aar"
+    from unZipAarFile
+    destinationDir replaceAarFile
+}
+
+excludeAAR.dependsOn zipJar
+
+
+/**
+ *  copy to app lib folder....
  */
-//gradle.taskGraph.whenReady {taskGraph ->
-//    println "Found task graph: " + taskGraph
-//    println "Found " + taskGraph.allTasks.size() + " tasks."
-//    taskGraph.allTasks.forEach { task ->
-//
-//        if(task.name.contains("transformClassesAndResourcesWithSyncLibJarsForRelease")
-//        ){
-//            task.doFirst {
-//                println "  ******* doFirst ********* "
-//                inputs.getFiles().getFiles().each {
-//                    f ->
-//                        if(f.getName().contains("DummyMainActivity")){
-//                            println " ----------DummyMainActivity: "+f.getPath()
-//                        }
-//                }
-//            }
-//            task.doLast {
-//            }
-//        }
-//    }
-//}
+task dummyPublish(type: Copy){
+    def f1 = new File("${project.buildDir}/excludeaar/exampleLib1_patch.aar")
+    def f2 = new File("${project.rootDir}/app/testlibs")
+    from f1
+    destinationDir f2
+}

@@ -46,7 +46,8 @@ uploadArchives {
 
 
 /**
- * For integration with a local Maven installation, it is sometimes useful to publish the module into the Maven local repository
+ *
+ * **** For integration with a local Maven installation, it is sometimes useful to publish the module into the Maven local repository
  * (typically at $USER_HOME/.m2/repository), along with its POM file and other metadata
  *
  *
@@ -68,13 +69,6 @@ publishing {
             artifactId = artId
             version = vers
             artifact("$buildDir/outputs/aar/lib1-release.aar")
-
-//            configurations.compile.resolvedConfiguration.firstLevelModuleDependencies.each {
-//                ResolvedDependency dep ->
-//                    def depName = String.format("%s:%s", dep.moduleGroup, dep.moduleName)
-//                    println "depName："+depName
-//            }
-
         }
     }
 }
@@ -219,6 +213,7 @@ dependencies {
  ./gradlew :lib1:assemble taskTree >tasks-tree.txt
  ./gradlew :lib1:assemble taskTree --no-repeat >tasks-tree.txt
  ./gradlew :app:assemble taskTree --no-repeat >tasks-tree.txt
+ ./gradlew :pluginapk1:assemble taskTree --no-repeat >tasks-tree.txt
 
 
  ./gradlew :lib1:publishToMavenLocal --debug

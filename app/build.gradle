@@ -95,9 +95,8 @@ dependencies {
     // use local aar ... method 1
 //    implementation(name: 'lib1-debug', ext: 'aar')
     // method2 -----> publish .. then use ....
-    implementation('com.example.lib1:exampleLib1:1.0.0@aar') {
-    }
-
+//    implementation('com.example.lib1:exampleLib1:1.0.0@aar') {} // original aar
+    implementation(name: 'exampleLib1_patch', ext: 'aar')   // modified(patched) aar
 
     implementation "androidx.camera:camera-core:1.0.0-alpha05"
     implementation "androidx.camera:camera-camera2:1.0.0-alpha05"
@@ -328,7 +327,7 @@ task getAllConfigs() {
 /**
  * view tasks ...
  *
- *
+ *  for apks
  *
  *
  *   ----------------- aidl ------------------
@@ -429,44 +428,132 @@ task getAllConfigs() {
  *    output:  build/intermediates/transforms/dexBuilder/debug   ---> dex files
  *
  */
-gradle.taskGraph.whenReady { taskGraph ->
-    println "  app -- graph ready  "
 
-    println "Found task graph: " + taskGraph
-    println "Found " + taskGraph.allTasks.size() + " tasks."
-    taskGraph.allTasks.forEach { task ->
 
-        def group = task.group
-        boolean hasInput = task.inputs.getHasInputs()
-        boolean hasSource = task.inputs.getHasSourceFiles()
-        def props = task.inputs.getProperties()
+/**
+ *  for aars
+ *
+ *
+ * -----
+ *  :pluginapk1:compileDebugAidl
+ *
+ *  :pluginapk1:packageDebugResources
+ *
+ *
+ *
+ * ------------------generate classes------
+ * :pluginapk1:compileDebugJavaWithJavac
+ *
+ *  ----  task class:com.android.build.gradle.tasks.AndroidJavaCompile_Decorated
+ *
+ * input  :[
+ * /Users/weiwang/AndroidStudioProjects/TestC2/pluginapk1/build/intermediates/annotation_processor_list/debug/annotationProcessors.json,
+ * /Users/weiwang/AndroidStudioProjects/TestC2/pluginapk1/src/main/java/com/hehe/pluginapk1/MainActivity.java,
+ * /Users/weiwang/AndroidStudioProjects/TestC2/pluginapk1/build/generated/source/buildConfig/debug/com/hehe/pluginapk1/BuildConfig.java,
+ * /Users/weiwang/.gradle/caches/transforms-2/files-2.1/b52df0bd64ffe0434a326afc19be25d9/constraintlayout-2.0.4-api.jar,
+ * .....
+ * /Users/weiwang/Library/Android/sdk/platforms/android-30/android.jar
+ * ]
+ * out  :[
+ * /Users/weiwang/AndroidStudioProjects/TestC2/pluginapk1/build/generated/ap_generated_sources/debug/out,
+ * /Users/weiwang/AndroidStudioProjects/TestC2/pluginapk1/build/intermediates/javac/debug/classes
+ * ]
+ *
+ *
+ *
+ *  --------------------
+ *  :pluginapk1:transformClassesAndResourcesWithSyncLibJarsForDebug
+ *
+ *   ----  task class:com.android.build.gradle.internal.pipeline.TransformTask_Decorated
+ *
+ *  input  :[
+ *  /Users/weiwang/AndroidStudioProjects/TestC2/pluginapk1/build/intermediates/annotations_typedef_file/debug/extractDebugAnnotations/typedefs.txt,
+ *  /Users/weiwang/AndroidStudioProjects/TestC2/pluginapk1/build/intermediates/javac/debug/classes/com/hehe/pluginapk1/MainActivity.class,
+ *  /Users/weiwang/AndroidStudioProjects/TestC2/pluginapk1/build/intermediates/javac/debug/classes/com/hehe/pluginapk1/BuildConfig.class,
+ *  /Users/weiwang/AndroidStudioProjects/TestC2/pluginapk1/build/intermediates/merged_java_res/debug/out.jar ]
+ *
+ * out  :[
+ * /Users/weiwang/AndroidStudioProjects/TestC2/pluginapk1/build/intermediates/packaged-classes/debug/classes.jar,
+ * /Users/weiwang/AndroidStudioProjects/TestC2/pluginapk1/build/intermediates/packaged-classes/debug/libs
+ * ]
+ *     task deps ----  task:extractDebugAnnotations
+ *     task deps ----  task:compileDebugJavaWithJavac
+ *     task deps ----  task:mergeDebugJavaResource
+ *
+ *
+ *
+ *
+ *
+ * -----------------
+ *  :pluginapk1:bundleDebugAar
+ *
+ *  ----  task class:com.android.build.gradle.tasks.BundleAar_Decorated
+ *
+ *  input  :[
+ *  /Users/weiwang/AndroidStudioProjects/TestC2/pluginapk1/build/intermediates/symbols/debug/R.txt,
+ *  /Users/weiwang/AndroidStudioProjects/TestC2/pluginapk1/build/intermediates/library_manifest/debug/AndroidManifest.xml,
+ *  /Users/weiwang/AndroidStudioProjects/TestC2/pluginapk1/build/intermediates/packaged-classes/debug/classes.jar,
+ *  /Users/weiwang/AndroidStudioProjects/TestC2/pluginapk1/build/intermediates/packaged_res/debug/drawable-v24/ic_launcher_foreground.xml,
+ *  ... other resource
+ *  /Users/weiwang/AndroidStudioProjects/TestC2/pluginapk1/build/intermediates/packaged_res/debug/mipmap-anydpi-v26/ic_launcher_round.xml]
+ *
+ * out  :[/Users/weiwang/AndroidStudioProjects/TestC2/pluginapk1/build/outputs/aar/pluginapk1-debug.aar]
+ *
+ *
+ *     task deps ----  task:mergeDebugConsumerProguardFiles
+ *     task deps ----  task:generateDebugRFile
+ *     task deps ----  task:processDebugManifest
+ *     task deps ----  task:packageDebugResources
+ *     task deps ----  task:prepareLintJarForPublish
+ *     task deps ----  task:extractDebugAnnotations
+ *     task deps ----  task:transformClassesAndResourcesWithSyncLibJarsForDebug
+ *     task deps ----  task:compileDebugAidl
+ *     task deps ----  task:packageDebugRenderscript
+ *     task deps ----  task:transformNativeLibsWithSyncJniLibsForDebug
+ *     task deps ----  task:packageDebugAssets
+ *     task deps ----  task:preDebugBuild
+ *
+ *
+ */
+if (rootProject.ext.enableTasksGraphLog) {
+    gradle.taskGraph.whenReady { taskGraph ->
+        println "  app -- graph ready  "
 
-        println "  ----  view task of ---- " + task + "  group:" + group + "   hasInput:" + hasInput + "   hasSource:" + hasSource
-        println "  ----  props:" + props
-        println "  ----  task class:" + task.getClass().getName()
+        println "Found task graph: " + taskGraph
+        println "Found " + taskGraph.allTasks.size() + " tasks."
+        taskGraph.allTasks.forEach { task ->
 
-        try {
-            println "input  :" + task.inputs.getFiles().getFiles()
-        } catch (Exception e) {
-            println "input  err :" + task.getName()
-        }
+            def group = task.group
+            boolean hasInput = task.inputs.getHasInputs()
+            boolean hasSource = task.inputs.getHasSourceFiles()
+            def props = task.inputs.getProperties()
 
-        task.getMustRunAfter().getDependencies().forEach {
-            t -> println "    must run after ----  task:" + t.getName()
-        }
-        task.getShouldRunAfter().getDependencies().forEach {
-            t -> println "    should run after ----  task:" + t.getName()
-        }
-        task.getFinalizedBy().getDependencies().forEach {
-            t -> println "    final by ----  task:" + t.getName()
-        }
-        println "out  :" + task.outputs.getFiles().getFiles()
-        task.getTaskDependencies().getDependencies().forEach {
-            t -> println "    task deps ----  task:" + t.getName()
-        }
-        /**
-         * task.dependsOn what does it actually do  ??
-         */
+            println "  ----  view task of ---- " + task + "  group:" + group + "   hasInput:" + hasInput + "   hasSource:" + hasSource
+            println "  ----  props:" + props
+            println "  ----  task class:" + task.getClass().getName()
+
+            try {
+                println "input  :" + task.inputs.getFiles().getFiles()
+            } catch (Exception e) {
+                println "input  err :" + task.getName()
+            }
+
+            task.getMustRunAfter().getDependencies().forEach {
+                t -> println "    must run after ----  task:" + t.getName()
+            }
+            task.getShouldRunAfter().getDependencies().forEach {
+                t -> println "    should run after ----  task:" + t.getName()
+            }
+            task.getFinalizedBy().getDependencies().forEach {
+                t -> println "    final by ----  task:" + t.getName()
+            }
+            println "out  :" + task.outputs.getFiles().getFiles()
+            task.getTaskDependencies().getDependencies().forEach {
+                t -> println "    task deps ----  task:" + t.getName()
+            }
+            /**
+             * task.dependsOn what does it actually do  ??
+             */
 //        task.dependsOn.forEach { dep ->
 //            if(dep instanceof Task){
 //                Task task1 = (Task)dep
@@ -485,13 +572,14 @@ gradle.taskGraph.whenReady { taskGraph ->
 //            }
 //        }
 
-        println "  --------------- "
-        println ""
-        println ""
-        println ""
+            println "  --------------- "
+            println ""
+            println ""
+            println ""
+        }
+
+
     }
-
-
 }
 
 

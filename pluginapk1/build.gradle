@@ -9,58 +9,6 @@ apply plugin: 'com.dorongold.task-tree'
 apply plugin: 'maven-publish'
 
 
-/**
- * make jar from a directory .....
- */
-//task sourceJar(type: Jar) {
-//    from android.sourceSets.main.java.srcDirs
-//    classifier "sources"
-//}
-
-//publishing {
-//    publications {
-//        /**
-//         * this will generate different task name ....
-//         **/
-//        bar(MavenPublication) {
-//            groupId 'com.foo'
-//            artifactId 'bar'
-//            version '0.1'
-////            artifact(sourceJar)
-//
-//            /**
-//             * https://docs.gradle.org/current/userguide/dependency_management_terminology.html
-//             *
-//             * Artifact
-//             *
-//             * A file or directory produced by a build, such as a JAR, a ZIP distribution, or a native executable.
-//             *
-//             */
-//            artifact("$buildDir/outputs/aar/pluginapk1-p1-release.aar")
-//
-//            println "-------+"
-//            configurations.each {
-//                config -> println(config.name+"   dep:"+config.dependencies)
-//            }
-//        }
-//    }
-//
-//    repositories {
-//        maven {
-//            /**
-//             * this will generate different tasks based on name ....
-//             **/
-//            name 'hehe'
-//            url "$buildDir/repo1"
-//        }
-//    }
-//}
-
-//   Publish with ./gradlew clean build publish
-
-
-
-
 
 android {
     compileSdkVersion 30
@@ -91,21 +39,13 @@ android {
     flavorDimensions "type1"
 
     productFlavors {
-        p1 {
-
-        }
-        p2 {
-
-        }
-    }
-
-//    variantFilter { variant ->
-//        def names = variant.flavors*.name
-//        project.ext{
-//            println "-----------:"+variant.flavors.name
-//            type = variant.flavors
+//        p1 {
+//
 //        }
-//    }
+//        p2 {
+//
+//        }
+    }
 
 }
 
@@ -134,8 +74,3 @@ dependencies {
  **/
 
 
-//task bundleReleaseAndrPublishToMaven {
-//    group 'publishing'
-//    dependsOn 'build'
-//    dependsOn 'publishBarPublicationToHeheRepository'
-//}
