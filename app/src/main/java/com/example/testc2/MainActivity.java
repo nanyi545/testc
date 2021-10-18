@@ -33,26 +33,33 @@ import com.example.testc2.opengl.camera_gl.CameraOpenGlActivity;
 import com.example.testc2.opengl.player_gl.PlayerGLActivity;
 import com.example.testc2.rtmp.RtmpBilibiliActivity;
 import com.example.testc2.selector.Selector2Activity;
+import com.example.testc2.threadpool.TestThreadPool;
+import com.example.testc2.util.DeviceUtil;
 import com.example.testc2.util.TestUtil;
 import com.example.testc2.videochat1.VideoChatPush;
 import com.example.testc2.videochat2.VideoChatReceiver;
 import com.example.testc2.x264.X264Activity;
 import com.example.testc2.yuv.YuvActivity;
 
+
 /**
  *
+ * /Users/weiwang/AndroidStudioProjects/TestSdk2/app/build/outputs/logs/manifest-merger-debug-report.txt
+ *
+ * to see manifest merge record
+ *
+ * .....
+ *
+ */
+
+
+/**
  *
  * LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to
  * ---->
  *
  * git config --global --unset http.proxy
  * git config --global --unset https.proxy
- *
- *
- *
- *
- *
- *
  *
  */
 import java.io.File;
@@ -122,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d(DeviceUtil.DEVICE_UTIL_KEY,"mac1:"+DeviceUtil.getMacAddress());
+        Log.d(DeviceUtil.DEVICE_UTIL_KEY,"mac2:"+DeviceUtil.getWifiMac(this));
 
         getWindow().getDecorView().postDelayed(new Runnable() {
             @Override
@@ -130,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
             }
         },4000);
 
-
+        System.out.println("System.out.println-----");
 
         Log.d("TAG","-------test----call-----");
 
@@ -164,6 +173,12 @@ public class MainActivity extends AppCompatActivity {
         } catch (Throwable e) {
             e.printStackTrace();
         }
+
+
+        // test thread pool
+        TestThreadPool t1= new TestThreadPool();
+        t1.testAbNormal();
+
 
     }
 

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.ww.performancechore.async_inflate.InflatorActivity;
 import com.ww.performancechore.webview.WebTestActivity;
 
 import java.util.ArrayList;
@@ -78,6 +79,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, WebTestActivity.class ));
+            }
+        });
+
+        findViewById(R.id.tv5).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, InflatorActivity.class ));
             }
         });
 

@@ -61,16 +61,16 @@ gradle.taskGraph.whenReady {taskGraph ->
         if(task.name.contains("compileJava")){
             task.doLast {
 
-                // unzip the jar and put the class files in this place in advance ......
-                File src = new File("/Users/weiwang/temp/commons-collections4-4.0/org")
-                File dest = new File(project.getBuildDir().getAbsolutePath(),"classes/java/main/org")
-                FileUtils.copyDirectory(src, dest)
-
-                // class file to replace ....
-                // this class file is made in advance ....
-                File class1 = new File("/Users/weiwang/temp/UnmodifiableSet.class")
-                File dest1 = new File(project.getBuildDir().getAbsolutePath(),"classes/java/main/org/apache/commons/collections4/set/UnmodifiableSet.class")
-                FileUtils.copyFile(class1, dest1)
+//                // unzip the jar and put the class files in this place in advance ......
+//                File src = new File("/Users/weiwang/temp/commons-collections4-4.0/org")
+//                File dest = new File(project.getBuildDir().getAbsolutePath(),"classes/java/main/org")
+//                FileUtils.copyDirectory(src, dest)
+//
+//                // class file to replace ....
+//                // this class file is made in advance ....
+//                File class1 = new File("/Users/weiwang/temp/UnmodifiableSet.class")
+//                File dest1 = new File(project.getBuildDir().getAbsolutePath(),"classes/java/main/org/apache/commons/collections4/set/UnmodifiableSet.class")
+//                FileUtils.copyFile(class1, dest1)
 
             }
         }

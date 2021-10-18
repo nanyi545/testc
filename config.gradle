@@ -4,7 +4,7 @@ println "---config start---"
 ext {
 
     apkMode = false
-    enableTasksGraphLog = true
+    enableTasksGraphLog = false
 
     dependencies = [
             constraintLayout      : 'androidx.constraintlayout:constraintlayout:2.0.4',
