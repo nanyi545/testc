@@ -100,7 +100,7 @@ void ImageReader::ImageCallback(AImageReader *reader) {
   int32_t format;
   media_status_t status = AImageReader_getFormat(reader, &format);
   ASSERT(status == AMEDIA_OK, "Failed to get the media format");
-  LOGI("ImageCallback  format:%d   status:%d",format,status);
+//  LOGI("ImageCallback  format:%d   status:%d",format,status);
   if (format == AIMAGE_FORMAT_JPEG) {
     AImage *image = nullptr;
     media_status_t status = AImageReader_acquireNextImage(reader, &image);
@@ -238,10 +238,13 @@ bool ImageReader::DisplayImage(ANativeWindow_Buffer *buf, AImage *image) {
   AImage_getNumberOfPlanes(image, &srcPlanes);
   ASSERT(srcPlanes == 3, "Is not 3 planes");
 
+  LOGI("DisplayImage:   gettid:%d",(int)gettid());
+
+
   /**
    * srcFormat  --->  AIMAGE_FORMAT_YUV_420_888   35
    */
-  LOGI("DisplayImage  srcPlanes:%d  srcFormat:%d   presentRotation_:%d",srcPlanes,srcFormat, presentRotation_ );
+//  LOGI("DisplayImage  srcPlanes:%d  srcFormat:%d   presentRotation_:%d",srcPlanes,srcFormat, presentRotation_ );
 
   /**
    *  test write file
@@ -335,7 +338,7 @@ void ImageReader::PresentImage(ANativeWindow_Buffer *buf, AImage *image) {
   AImage_getPlaneData(image, 0, &yPixel, &yLen);
   AImage_getPlaneData(image, 1, &vPixel, &vLen);
   AImage_getPlaneData(image, 2, &uPixel, &uLen);
-    LOGI("stride1:%d   stride2:%d   stride3:%d",yStride,uvStride,stride3);
+//    LOGI("stride1:%d   stride2:%d   stride3:%d",yStride,uvStride,stride3);
 
   // https://docs.microsoft.com/en-us/windows/win32/medfound/image-stride
   // stride : width + padding ...
@@ -345,17 +348,16 @@ void ImageReader::PresentImage(ANativeWindow_Buffer *buf, AImage *image) {
     AImage_getPlanePixelStride(image, 0, &yPixStride);
     AImage_getPlanePixelStride(image, 1, &uvPixelStride);
     AImage_getPlanePixelStride(image, 2, &pixStride3);
-    LOGI("pstride1:%d   pstride2:%d   pstride3:%d",yPixStride,uvPixelStride,pixStride3);
+//    LOGI("pstride1:%d   pstride2:%d   pstride3:%d",yPixStride,uvPixelStride,pixStride3);
 
 
-    LOGI("***  yLen:%d  uLen:%d,  vLen:%d  yStride:%d  uvStride:%d  yPixStride:%d   uvPixelStride:%d   buf->stride:%d  buf->width:%d buf->height:%d"
-            ,yLen ,uLen ,vLen ,yStride , uvStride, yPixStride, uvPixelStride, buf->stride, buf->width,buf->height);
+//    LOGI("***  yLen:%d  uLen:%d,  vLen:%d  yStride:%d  uvStride:%d  yPixStride:%d   uvPixelStride:%d   buf->stride:%d  buf->width:%d buf->height:%d",yLen ,uLen ,vLen ,yStride , uvStride, yPixStride, uvPixelStride, buf->stride, buf->width,buf->height);
     //  yLen:307200  uLen:153599,  vLen:153599  yStride:640  uvStride:640  yPixStride:1   uvPixelStride:2   buf->stride:1088  buf->width:1080  buf->height:2400
 
 
-    LOGI("v0:%d  v1:%d,  v2:%d,  v3:%d,  4:%d,  v5:%d",vPixel[0],vPixel[1],vPixel[2],vPixel[3],vPixel[4],vPixel[5]);
+//    LOGI("v0:%d  v1:%d,  v2:%d,  v3:%d,  4:%d,  v5:%d",vPixel[0],vPixel[1],vPixel[2],vPixel[3],vPixel[4],vPixel[5]);
 
-    LOGI("srcRect.top:%d , srcRect.right:%d, srcRect.bottom%d, srcRect.left%d ",srcRect.top,srcRect.right,srcRect.bottom,srcRect.left);
+//    LOGI("srcRect.top:%d , srcRect.right:%d, srcRect.bottom%d, srcRect.left%d ",srcRect.top,srcRect.right,srcRect.bottom,srcRect.left);
     // srcRect.top:0 , srcRect.right:640, srcRect.bottom480, srcRect.left0
 
 
@@ -487,19 +489,25 @@ if(yuvWriter != NULL){
       libyuv::ARGBRotate(out1_,buf->stride*4, out1+shift, buf->stride*4,width, height,libyuv::kRotate270);
 
 
-      if(preYPixel != NULL){
-        uint64_t sse = libyuv::ComputeSumSquareError(preYPixel,yPixel,yLen);
-        uint64_t sseReduced = sse / width / height;
-        LOGI("sseReduced:   ---%" PRId64, sseReduced);
-      }
+//      if(preYPixel != NULL){
+//        uint64_t sse = libyuv::ComputeSumSquareError(preYPixel,yPixel,yLen);
+//        uint64_t sseReduced = sse / width / height;
+//        LOGI("sseReduced:   ---%" PRId64, sseReduced);
+//      }
+
       if(preYPixel == NULL){
           preYPixel = (uint8_t*)(malloc( yLen ));
       }
       memcpy(preYPixel,yPixel,yLen);
 
     }
+
+  // sleep 1000000 ---> for 1 sec
+//  usleep(100000);
+
+
     double elapse = timeEnd();
-    LOGI("elapse:   --- %f",elapse);
+//    LOGI("elapse:   --- %f",elapse);
 
     // I420ToARGB  ~~   0.652000 -- 0.803693
     // I420ToARGB + ARGBRotate  ~~  1.4-1.7

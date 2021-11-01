@@ -20,7 +20,7 @@
 #include <string>
 #include <sstream>
 #include <android/native_window_jni.h>
-
+#include <unistd.h>
 
 
 /**
@@ -41,7 +41,8 @@ int CameraEngine::GetDisplayRotation() {
   std::stringstream ss;
   ss << myid;
   std::string mystring = ss.str();
-   LOGI("GetDisplayRotation   thread:%s",mystring.c_str());
+  LOGI("GetDisplayRotation   thread:%s",mystring.c_str());
+  LOGI("GetDisplayRotation   thread: gettid [%d] ", (int)gettid() );  // ??
 
 
   /**
@@ -175,15 +176,46 @@ Java_com_sample_camera_basic_CameraActivity_notifyCameraPermission(
   permissionHandler.detach();
 }
 
+
+void call1(){
+
+}
+
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_tvtb_ndkcameratest1_MainActivity_notifyCameraPermission(JNIEnv *env, jclass clazz,
                                                                  jboolean permission) {
 
-  LOGI("c-notifyCameraPermission");
-  std::thread permissionHandler(&CameraEngine::OnCameraPermission,
-                                GetAppEngine(), permission);
+  LOGI("---- notifyCameraPermission   thread: gettid [%d]", (int)gettid() );
+
+  /**
+   *
+   *
+   *
+   * https://thispointer.com/c11-start-thread-by-member-function-with-arguments/
+   *
+   *
+ Create a thread using member function
+std::thread th(&Task::execute, taskPtr, "Sample Task");
+
+ 1.) Pointer to member function execute of class Task
+When std::thread will internally create a new thread, it will use this passed member function as thread function. But to call a member function, we need a object.
+
+2.) Pointer to the object of class Task
+As a second argument we passed a pointer to the object of class Task, with which above member function will be called. In every non static member function, first argument is always the pointer to the object of its own class. So, thread class will pass this pointer as first argument while calling the passed member function.
+
+3.) String value
+This will be passed as second argument to member function i.e. after Task
+   *
+   *
+   */
+  std::thread permissionHandler(&CameraEngine::OnCameraPermission, GetAppEngine(), permission);
   permissionHandler.detach();
+
+  //  https://stackoverflow.com/questions/22803600/when-should-i-use-stdthreaddetach
+  //  join() waits until a thread completes.
+  //  if you do not want to call join() call detach()
+
 }
 
 
@@ -203,6 +235,12 @@ Java_com_tvtb_ndkcameratest1_MainActivity_callJni(JNIEnv *env, jobject iobj,
   if(body[0]==0){
     GetAppEngine()->record(false);
   }
+
+  // testing thread...
+  if(body[0]==2){
+    LOGI("call jni:   gettid:%d",(int)gettid());
+  }
+
 
   env->ReleaseIntArrayElements(in,body,0);
 

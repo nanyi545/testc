@@ -56,19 +56,19 @@ looper::looper() {
     pthread_attr_t attr;
     pthread_attr_init(&attr);
 
-    LOGI("Looper constructor  worker:%l", worker);
+//    LOGI("Looper constructor  worker:%l", worker);
     unsigned char *ptc1 = (unsigned char*)(void*)(&worker);
     for (size_t i=0; i<sizeof(worker); i++) {
-        LOGI("Looper constructor called  worker    %02x", (unsigned)(ptc1[i]));
+//        LOGI("Looper constructor called  worker    %02x", (unsigned)(ptc1[i]));
     }
 
     pthread_create(&worker, &attr, trampoline, this);
-    LOGI("Looper constructor call ------------ ");
+//    LOGI("Looper constructor call ------------ ");
 
 
     unsigned char *ptc = (unsigned char*)(void*)(&worker);
     for (size_t i=0; i<sizeof(worker); i++) {
-        LOGI("Looper constructor called  worker    %02x", (unsigned)(ptc[i]));
+//        LOGI("Looper constructor called  worker    %02x", (unsigned)(ptc[i]));
     }
 
 
@@ -78,7 +78,7 @@ looper::looper() {
 
 looper::~looper() {
     if (running) {
-        LOGI("Looper deleted while still running. Some messages will not be processed");
+//        LOGI("Looper deleted while still running. Some messages will not be processed");
         quit();
     }
 }
@@ -112,25 +112,25 @@ void looper::addmsg(loopermessage *msg, bool flush) {
     } else {
         head = msg;
     }
-    LOGI("Looper post msg %d", msg->what);
+//    LOGI("Looper post msg %d", msg->what);
     sem_post(&headwriteprotect);
     sem_post(&headdataavailable);
 }
 
 void looper::loop() {
-    LOGI("Looper start ");
+//    LOGI("Looper start ");
 
     while(true) {
         // wait for available message
-        LOGI("Looper wait 1 ");
+//        LOGI("Looper wait 1 ");
         sem_wait(&headdataavailable);
 
-        LOGI("Looper wait 2 ");
+//        LOGI("Looper wait 2 ");
         // get next available message
         sem_wait(&headwriteprotect);
         loopermessage *msg = head;
         if (msg == NULL) {
-            LOGI("Looper no msg");
+//            LOGI("Looper no msg");
             sem_post(&headwriteprotect);
             continue;
         }
@@ -138,18 +138,18 @@ void looper::loop() {
         sem_post(&headwriteprotect);
 
         if (msg->quit) {
-            LOGI("Looper quitting");
+//            LOGI("Looper quitting");
             delete msg;
             return;
         }
-        LOGI("Looper processing msg %d", msg->what);
+//        LOGI("Looper processing msg %d", msg->what);
         handle(msg->what, msg->obj);
         delete msg;
     }
 }
 
 void looper::quit() {
-    LOGI("Looper quit");
+//    LOGI("Looper quit");
     loopermessage *msg = new loopermessage();
     msg->what = 0;
     msg->obj = NULL;
@@ -164,6 +164,6 @@ void looper::quit() {
 }
 
 void looper::handle(int what, void* obj) {
-    LOGI("Looper dropping msg %d %p", what, obj);
+//    LOGI("Looper dropping msg %d %p", what, obj);
 }
 

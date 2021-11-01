@@ -121,4 +121,76 @@ public class TestUtil {
     }
 
 
+
+    public static String convertChinese(int i){
+        if(i<=10){
+            switch (i){
+                case 0:
+                    return "零";
+                case 1:
+                    return "一";
+                case 2:
+                    return "二";
+                case 3:
+                    return "三";
+                case 4:
+                    return "四";
+                case 5:
+                    return "五";
+                case 6:
+                    return "六";
+                case 7:
+                    return "七";
+                case 8:
+                    return "八";
+                case 9:
+                    return "九";
+                case 10:
+                    return "十";
+            }
+        }
+        if(i<100) {
+            int tens = i/10;
+            int ones = i%10;
+            String tensStr = convertChinese(tens);
+            if(tens==1){
+                tensStr="";
+            }
+            String onesStr = convertChinese(ones);
+            if(ones==0){
+                return tensStr+"十";
+            } else {
+                return tensStr+"十"+onesStr;
+            }
+        }
+        if(i<999) {
+            int hundreds = i/100;
+            int tens = (i-hundreds*100)/10;
+            int ones = i%10;
+            String hundredStr=convertChinese(hundreds);
+            String tensStr =  convertChinese(tens);
+            if(tens==1){
+                tensStr="";
+            }
+            String onesStr =  convertChinese(ones);
+            if(tens==0){
+                if(ones==0){
+                    return hundredStr+"百";
+                }
+                if(ones!=0){
+                    return hundredStr+"百零"+onesStr;
+                }
+            } else {
+                if(ones==0){
+                    return hundredStr+"百"+tensStr+"十";
+                }
+                if(ones!=0){
+                    return hundredStr+"百"+tensStr+"十"+onesStr;
+                }
+            }
+        }
+        return "";
+    }
+
+
 }

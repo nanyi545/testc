@@ -92,6 +92,12 @@ public class MainActivity extends NativeActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("CAMERA-SAMPLE","activity oncreate  gettid: "+Thread.currentThread().getName()+"    "+Thread.currentThread().getId());
+
+        int p[]= {2};
+        callJni(p);
+
+
         if(play) {
             setContentView(R.layout.activity_main);
             SurfaceView s = findViewById(R.id.surfaceview1);
@@ -114,7 +120,6 @@ public class MainActivity extends NativeActivity {
             });
         }
 
-//        Log.d("fff",""+Thread.currentThread().getName()+"    "+Thread.currentThread().getId());
         handler.sendEmptyMessageDelayed(1,3000);
     }
 
@@ -133,12 +138,14 @@ public class MainActivity extends NativeActivity {
      * 270: 0 -> 90 degrees turn right side
      *
      * @return
+     *
+     * 每次JNI调用java，都会启用新java线程？？
      */
     int getRotationDegree() {
         int val = 90 * ((WindowManager)(getSystemService(WINDOW_SERVICE)))
                 .getDefaultDisplay()
                 .getRotation();
-        Log.d("ffff","getRotationDegree:"+val);
+        Log.d("ffff","getRotationDegree:"+val+"   gettid:"+Thread.currentThread().getId()+"  name:"+Thread.currentThread().getName());
         return val;
     }
 

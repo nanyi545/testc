@@ -20,6 +20,7 @@
 
 #include <cstdio>
 #include <sstream>
+#include <zconf.h>
 #include "camera_engine.h"
 #include "native_debug.h"
 
@@ -118,7 +119,6 @@ void CameraEngine::CreateCamera(void) {
 //      );
 
 
-
   yuvReader_ = new ImageReader(&view, AIMAGE_FORMAT_YUV_420_888);
   yuvReader_->SetPresentRotation(imageRotation);
   jpgReader_ = new ImageReader(&capture, AIMAGE_FORMAT_JPEG);
@@ -187,8 +187,7 @@ void CameraEngine::RequestCameraPermission() {
 
   jobject activityObj = env->NewGlobalRef(activity->clazz);
   jclass clz = env->GetObjectClass(activityObj);
-  env->CallVoidMethod(activityObj,
-                      env->GetMethodID(clz, "RequestCamera", "()V"));
+  env->CallVoidMethod(activityObj,env->GetMethodID(clz, "RequestCamera", "()V"));
   env->DeleteGlobalRef(activityObj);
 
   activity->vm->DetachCurrentThread();
@@ -701,7 +700,7 @@ void CameraEngine::DrawFrame(void) {
    *  camera ready has next img ....
    */
 
-  LOGI("frame count:%d",pcount);
+//  LOGI("frame count:%d",pcount);
   if(pcount==0){
 //      callOnFirstFrame(this , true);
 //      encodeFrame2mp4(this, image );
@@ -729,6 +728,7 @@ void CameraEngine::DrawFrame(void) {
     yuvReader_->DeleteImage(image);
     return;
   }
+
 
   yuvReader_->DisplayImage(&buf, image);
 

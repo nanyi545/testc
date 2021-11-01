@@ -87,7 +87,6 @@ void test1::action1() {
 
 
     // assign function pointers
-
     fcnPtr = &foo;
 
     fcnPtr3= &foo1;

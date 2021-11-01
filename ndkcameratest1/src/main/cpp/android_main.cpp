@@ -97,7 +97,7 @@ class looper2: public looper {
 };
 
 void looper2::handle(int what, void* obj) {
-    LOGI("Looper-------  2 handle:%d   aaa:%d",what,aaa);
+//    LOGI("Looper-------  2 handle:%d   aaa:%d",what,aaa);
     aaa++;
     if(aaa>100){
         quit();
@@ -231,6 +231,7 @@ static void ProcessAndroidCmd(struct android_app* app, int32_t cmd) {
 
 //    编码器
 x264_t *videoCodec = 0;
+bool flag1=true;
 
 extern "C" void android_main(struct android_app* state) {
 
@@ -288,6 +289,10 @@ extern "C" void android_main(struct android_app* state) {
             }
         }
         mlooper2->post(1, NULL);
+        if(flag1){
+            LOGI("looper DrawFrame:   gettid:%d",(int)gettid());
+            flag1 =false;
+        }
         pEngineObj->DrawFrame();
 
     }
@@ -305,19 +310,23 @@ extern "C" void android_main(struct android_app* state) {
  *
  *   preview entry point !!!!
  *
+ *   app初始化--->  OnAppInitWindow--->    if has permission --> continue
+ *                                        if no permission --> request permission in java
+ *   java层授权--->  OnAppInitWindow
+ *
  */
 void CameraEngine::OnAppInitWindow(void) {
     if(!showCameraPreview){
         return;
     }
     if (!cameraGranted_) {
-        LOGI("not granted");
+        LOGI("---- not granted");
 
         // Not permitted to use camera yet, ask(again) and defer other events
         RequestCameraPermission();
         return;
     }
-    LOGI(" granted");
+    LOGI("---- OnAppInitWindow   granted thread: gettid [%d]", (int)gettid() );
 
     rotation_ = GetDisplayRotation();
     LOGI(" rotation_  %d",rotation_);
