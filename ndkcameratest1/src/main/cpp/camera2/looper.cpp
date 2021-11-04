@@ -63,7 +63,7 @@ looper::looper() {
     }
 
     pthread_create(&worker, &attr, trampoline, this);
-//    LOGI("Looper constructor call ------------ ");
+    LOGI("Looper constructor call ------------ ");
 
 
     unsigned char *ptc = (unsigned char*)(void*)(&worker);

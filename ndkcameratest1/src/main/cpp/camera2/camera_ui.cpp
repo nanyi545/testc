@@ -119,10 +119,28 @@ void CameraEngine::EnableUI(void) {
   range[1] = 1;
   range[2] = 2;
 
-  jni->SetLongArrayRegion(initData, 3, 3, range);
+  jni->SetLongArrayRegion(initData, 3, 3, range);  //  ????  should be 0-3
   jni->CallVoidMethod(app_->activity->clazz, methodID, initData);
   app_->activity->vm->DetachCurrentThread();
 }
+
+
+
+
+void CameraEngine::onYuvFrameCallJava(YuvFrame yuvFrame) {
+  JNIEnv *jni;
+  app_->activity->vm->AttachCurrentThread(&jni, NULL);
+  jclass clazz = jni->GetObjectClass(app_->activity->clazz);
+  jmethodID methodID = jni->GetMethodID(clazz, "onYuvFrame", "([I)V");
+  jintArray initData = jni->NewIntArray(10);
+  jni->SetIntArrayRegion(initData, 0, 10, yuvFrame.data);
+  jni->CallVoidMethod(app_->activity->clazz, methodID, initData);
+  app_->activity->vm->DetachCurrentThread();
+}
+
+
+
+
 
 /**
  * Handles UI request to take a photo into

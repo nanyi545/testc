@@ -718,9 +718,7 @@ void CameraEngine::DrawFrame(void) {
       encodeFrame2mp4(this, image );
   }
 
-
   pcount++;
-
 
   ANativeWindow_acquire(app_->window);
   ANativeWindow_Buffer buf;
@@ -729,8 +727,14 @@ void CameraEngine::DrawFrame(void) {
     return;
   }
 
-
-  yuvReader_->DisplayImage(&buf, image);
+  YuvFrame yuvFrame = yuvReader_->DisplayImage(&buf, image);
+  if(yuvFrameHandler){
+      LOGI("---- YuvFrame handler---- ");
+      yuvFrameHandler(yuvFrame);
+  } else {
+      LOGI("----no YuvFrame handler---- ");
+  }
+  onYuvFrameCallJava(yuvFrame);
 
   ANativeWindow_unlockAndPost(app_->window);
   ANativeWindow_release(app_->window);

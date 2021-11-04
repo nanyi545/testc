@@ -13,6 +13,10 @@
 
 #include <x264.h>
 
+extern "C" {
+    #include "camera2/ijksdl_thread.h"
+}
+
 
 /**
  *  set native window buffer geometry  !!!!
@@ -97,7 +101,7 @@ class looper2: public looper {
 };
 
 void looper2::handle(int what, void* obj) {
-//    LOGI("Looper-------  2 handle:%d   aaa:%d",what,aaa);
+    LOGI("Looper-------  2 handle:%d   aaa:%d  ",what,aaa );
     aaa++;
     if(aaa>100){
         quit();
@@ -227,11 +231,50 @@ static void ProcessAndroidCmd(struct android_app* app, int32_t cmd) {
 }
 
 
+void* work(void * parm) {
+    while(true){
+        sleep(2);
+        LOGI("worker  gettid:%d",(int)gettid());
+    }
+}
+
+
+long iii = 0;
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
+
+int call1(void * parm) {
+    LOGI("call1  gettid:%d",(int)gettid());
+    for (long i=0;i<100000000;i++){
+        pthread_mutex_lock(&mutex);
+        iii++;
+        pthread_mutex_unlock(&mutex);
+    }
+    LOGI("call1  --long:%d",iii);
+    return 1;
+}
+
+int call2(void * parm) {
+    LOGI("call2  gettid:%d",(int)gettid());
+    for (long i=0;i<100000000;i++){
+        pthread_mutex_lock(&mutex);
+        iii++;
+        pthread_mutex_unlock(&mutex);
+    }
+    LOGI("call2  --long:%d",iii);
+    return 2;
+}
+
 
 
 //    编码器
 x264_t *videoCodec = 0;
 bool flag1=true;
+
+void function1(YuvFrame yuvFrame){
+    LOGI("YuvFrame --- function1");
+
+}
 
 extern "C" void android_main(struct android_app* state) {
 
@@ -263,6 +306,20 @@ extern "C" void android_main(struct android_app* state) {
      *
      */
     mlooper2 = new looper2();
+    engine.yuvFrameHandler= function1;
+
+
+    // demo 1 of pthreading...
+//    pthread_t id;
+//    pthread_create(&id, NULL, work, NULL);
+
+
+    // demo 2 of pthreading... more elegant way + sync with mutex_lock
+    SDL_Thread tid1;
+    SDL_CreateThreadEx(&tid1, call1, &iii, "calll1_thread");
+
+    SDL_Thread tid2;
+    SDL_CreateThreadEx(&tid2, call2, &iii, "calll2_thread");
 
 
     // loop waiting for stuff to do.

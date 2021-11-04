@@ -27,6 +27,8 @@
 //#include "../../../../../../../../../../home/ww/Android/Sdk/ndk/21.0.6113669/sources/android/native_app_glue/android_native_app_glue.h"
 #include "../../../../../../../Library/Android/sdk/ndk/22.0.7026061/sources/android/native_app_glue/android_native_app_glue.h"
 
+
+
 /**
  * basic CameraAppEngine
  */
@@ -54,6 +56,7 @@ class CameraEngine {
   void EnableUI(void);
   void OnTakePhoto(void);
   void OnCameraParameterChanged(int32_t code, int64_t val);
+  void onYuvFrameCallJava(YuvFrame yuvFrame);
 
 
     // Manage NDKCamera Object
@@ -62,7 +65,9 @@ class CameraEngine {
 
   void record(bool start);
 
- private:
+  YuvFrameHandler yuvFrameHandler;
+
+private:
   void OnPhotoTaken(const char* fileName);
   int  GetDisplayRotation(void);
 
@@ -74,7 +79,6 @@ class CameraEngine {
   NDKCamera* camera_;
   ImageReader* yuvReader_;
   ImageReader* jpgReader_;
-
 };
 
 /**

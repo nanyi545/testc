@@ -226,7 +226,7 @@ FILE *fp_out = NULL;
  * @param image a {@link AImage} instance, source of image conversion.
  *            it will be deleted via {@link AImage_delete}
  */
-bool ImageReader::DisplayImage(ANativeWindow_Buffer *buf, AImage *image) {
+YuvFrame ImageReader::DisplayImage(ANativeWindow_Buffer *buf, AImage *image) {
   ASSERT(buf->format == WINDOW_FORMAT_RGBX_8888 ||
              buf->format == WINDOW_FORMAT_RGBA_8888,
          "Not supported buffer format");
@@ -238,7 +238,7 @@ bool ImageReader::DisplayImage(ANativeWindow_Buffer *buf, AImage *image) {
   AImage_getNumberOfPlanes(image, &srcPlanes);
   ASSERT(srcPlanes == 3, "Is not 3 planes");
 
-  LOGI("DisplayImage:   gettid:%d",(int)gettid());
+//  LOGI("DisplayImage:   gettid:%d",(int)gettid());
 
 
   /**
@@ -270,7 +270,7 @@ bool ImageReader::DisplayImage(ANativeWindow_Buffer *buf, AImage *image) {
 //  PresentImage270(buf, image);
 
 
-  PresentImage(buf, image);
+  YuvFrame yuvFrame = PresentImage(buf, image);
 
 
 //  switch (presentRotation_) {
@@ -292,7 +292,7 @@ bool ImageReader::DisplayImage(ANativeWindow_Buffer *buf, AImage *image) {
 
   AImage_delete(image);
 
-  return true;
+  return yuvFrame;
 }
 
 
@@ -317,7 +317,7 @@ uint8_t  *uPixel_, *vPixel_, *out1_;
 uint8_t *preYPixel;
 
 
-void ImageReader::PresentImage(ANativeWindow_Buffer *buf, AImage *image) {  
+YuvFrame ImageReader::PresentImage(ANativeWindow_Buffer *buf, AImage *image) {
   AImageCropRect srcRect;
   AImage_getCropRect(image, &srcRect);
 
@@ -464,6 +464,9 @@ if(yuvWriter != NULL){
 
 // libyuv convert to rgb ....
     timeStart();
+  int shiftX;
+  int shiftY;
+
     if(uvPixelStride!=1){
         if(uPixel_==NULL){
             uPixel_ = (uint8_t*)(malloc( vLen/uvPixelStride ));
@@ -481,8 +484,8 @@ if(yuvWriter != NULL){
                 vPixel_,uvStride/uvPixelStride,
                 out1_,buf->stride*4, width, height);
 
-        int shiftX = 200;
-        int shiftY = 500;
+        shiftX = 200;
+        shiftY = 500;
         int shift = shiftY*buf->stride*4 + shiftX*4;
 
 
@@ -555,6 +558,15 @@ if(yuvWriter != NULL){
 //        out1 += (buf->stride * 4);
 //    }
 
+  YuvFrame f;
+  f.data[0] = yLen;
+  f.data[5] = buf->width;
+  f.data[6] = buf->height;
+  f.data[7] = shiftX;
+  f.data[8] = shiftY;
+  f.data[9] = buf->stride;
+
+  return f;
 }
 
 /*

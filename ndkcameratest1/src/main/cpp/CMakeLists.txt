@@ -77,6 +77,7 @@ add_library( # Sets the name of the library.
 
         # Provides a relative path to your source file(s).
         android_main.cpp
+        camera2/ijksdl_thread.c
         )
 
 

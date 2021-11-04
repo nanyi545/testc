@@ -18,6 +18,8 @@
 #define CAMERA_IMAGE_READER_H
 #include <media/NdkImageReader.h>
 #include <functional>
+#include "unit/yuv_fame.h"
+
 /*
  * ImageFormat:
  *     A Data Structure to communicate resolution between camera and ImageReader
@@ -80,7 +82,7 @@ class ImageReader {
    *            it will be deleted via {@link AImage_delete}
    *   @return true on success, false on failure
    */
-  bool DisplayImage(ANativeWindow_Buffer* buf, AImage* image);
+  YuvFrame DisplayImage(ANativeWindow_Buffer* buf, AImage* image);
   /**
    * Configure the rotation angle necessary to apply to
    * Camera image when presenting: all rotations should be accumulated:
@@ -105,7 +107,7 @@ private:
   std::function<void(void *ctx, const char* fileName)> callback_;
   void *callbackCtx_;
 
-  void PresentImage(ANativeWindow_Buffer* buf, AImage* image);
+  YuvFrame PresentImage(ANativeWindow_Buffer* buf, AImage* image);
   void PresentImage90(ANativeWindow_Buffer* buf, AImage* image);
   void PresentImage180(ANativeWindow_Buffer* buf, AImage* image);
   void PresentImage270(ANativeWindow_Buffer* buf, AImage* image);

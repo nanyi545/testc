@@ -200,6 +200,13 @@ public class MainActivity extends NativeActivity {
     }
 
 
+    public void onYuvFrame(final int[] params)
+    {
+        Log.d("ffff","YuvFrame   java  onYuvFrame:"+params[0]);
+    }
+
+
+
     private static final int PERMISSION_REQUEST_CODE_CAMERA = 1;
 
     String TAG = "MainUI";

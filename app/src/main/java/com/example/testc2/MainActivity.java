@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
         testCallLib();
 
         try {
-            Method mod1 = getClass().getDeclaredMethod("mod1",null);
+            Method mod1 = getClass().getDeclaredMethod("mod1");
             Log.d("TAG","mod1    getModifiers:"+ Modifier.toString(mod1.getModifiers())+"   name:"+mod1.getName());
             mod1();
         } catch (Throwable e) {
