@@ -1,0 +1,87 @@
+import org.apache.commons.io.FileUtils
+
+apply plugin: 'java-library'
+
+
+dependencies {
+    compileOnly fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+def originalJar = new File("${project.projectDir}/originJar", "crashsdk-3.3.0.0-umeng.jar")
+def unzipTarget = new File("${project.projectDir}/originJar", "unzip1")
+def targetJarDir = new File("${project.projectDir}/libs")
+def newTempTarget = new File("${project.projectDir}/originJar", "newjar")
+def newJarTargetDir = new File("${project.projectDir}/originJar")
+
+task unzipJar(type: Copy) {
+    group "replaceJar"
+    def zipFile = originalJar
+    def outputDir = unzipTarget
+    from zipTree(zipFile)
+    into outputDir
+    doLast {
+        sleep(1 * 1000)
+        sleep(1 * 1000)
+    }
+}
+
+task deleteTargetFile(){
+    doFirst {
+    }
+    def tree = fileTree(unzipTarget)
+    def filesToDelete = tree.filter { File f->
+        return f.getAbsolutePath().contains("uc/crashsdk/a.class") }
+    filesToDelete.forEach{File f-> delete f}
+}
+
+//  第一步：生产一个去掉  uc/crashsdk/a.class的jar包
+task zipJar(type: Jar) {
+    from unzipTarget
+    destinationDir targetJarDir
+}
+
+
+
+
+task unzipJar2(type: Copy) {
+    group "replaceJar"
+    def zipFile = originalJar
+    def outputDir = newTempTarget
+    from zipTree(zipFile)
+    into outputDir
+}
+
+task replaceClass(type: Copy) {
+    from new File("${project.buildDir}/classes/java/main/")
+    destinationDir newTempTarget
+    include "**/*.class"
+}
+
+task zipJar2(type: Jar) {
+    from newTempTarget
+    destinationDir newJarTargetDir
+}
+
+
+
+
+/**
+ * view tasks ...
+ */
+//gradle.taskGraph.whenReady {taskGraph ->
+//    println "Found task graph: " + taskGraph
+//    println "Found " + taskGraph.allTasks.size() + " tasks."
+//    taskGraph.allTasks.forEach { task ->
+//        println "  ----  view task of ---- " + task
+//        println "input  :"+task.inputs.getFiles().getFiles()
+//        println "out  :"+task.outputs.getFiles().getFiles()
+//        task.dependsOn.forEach { dep ->
+//            println "    dependon ---- " + dep.toString()
+//        }
+//        println "  --------------- "
+//        println ""
+//        println ""
+//        println ""
+//    }
+//}
+

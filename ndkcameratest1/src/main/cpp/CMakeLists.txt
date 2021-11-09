@@ -18,6 +18,7 @@ cmake_minimum_required(VERSION 3.4.1)
 
 add_subdirectory(camera2)
 
+
 set(CMAKE_VERBOSE_MAKEFILE on)
 
 # 用于添加公共的cpp文件 ...
@@ -69,6 +70,14 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${CMAKE_SOURCE_DIR}/x264/${ANDROID_ABI
 
 
 
+#所有源文件放入 camera2_threading 变量 ----> 加入 camera2/threading  下文件
+file(GLOB camera2_threading camera2/threading/*.*)
+file(GLOB camera2_unit camera2/unit/*.*)
+
+message("-----------xxxxx----------")
+message(${camera2_threading})
+
+
 add_library( # Sets the name of the library.
         native-lib1
 
@@ -77,7 +86,8 @@ add_library( # Sets the name of the library.
 
         # Provides a relative path to your source file(s).
         android_main.cpp
-        camera2/ijksdl_thread.c
+        ${camera2_threading}
+        ${camera2_unit}
         )
 
 

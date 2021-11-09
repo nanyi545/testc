@@ -370,6 +370,8 @@ public class MainActivity extends AppCompatActivity {
  * /Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/ndk-stack -sym /Users/weiwang/AndroidStudioProjects/TestC2/app/build/intermediates/cmake/debug/obj/armeabi-v7a -dump error2.txt >error2_parse.txt
  *
  *
+ * /Users/weiwang/Library/Android/sdk/ndk/22.0.7026061/ndk-stack -sym /Users/weiwang/AndroidStudioProjects/TestC2/ndkcameratest1/build/intermediates/cmake/debug/obj/armeabi-v7a -dump xxxx.txt >xxxx_parse.txt
+ *
  * ******   Use the .so file under obj/local/armeabi, since this is the non-stripped version
  *
  *

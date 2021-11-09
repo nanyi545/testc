@@ -2,6 +2,7 @@ package com.tvtb.ndkcameratest1;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
@@ -25,6 +26,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import static android.hardware.camera2.CameraMetadata.LENS_FACING_BACK;
@@ -152,6 +154,7 @@ public class MainActivity extends NativeActivity {
 
 
     PopupWindow popupWindow;
+    RelativeLayout indicator_holder;
 
     public static final long OPER_INIT = 0;
     public void EnableUI(final long[] params)
@@ -169,10 +172,11 @@ public class MainActivity extends NativeActivity {
                             = (LayoutInflater) getBaseContext()
                             .getSystemService(LAYOUT_INFLATER_SERVICE);
                     View popupView = layoutInflater.inflate(R.layout.widgets, null);
+
                     popupWindow = new PopupWindow(
                             popupView,
                             WindowManager.LayoutParams.MATCH_PARENT,
-                            WindowManager.LayoutParams.WRAP_CONTENT);
+                            WindowManager.LayoutParams.MATCH_PARENT);
 
                     // Show our UI over NativeActivity window
                     popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM | Gravity.START, 0, 0);
@@ -194,6 +198,9 @@ public class MainActivity extends NativeActivity {
                         }
                     });
 
+
+                    indicator_holder = popupView.findViewById(R.id.indicator_holder);
+
                 }
             });
         }
@@ -202,9 +209,57 @@ public class MainActivity extends NativeActivity {
 
     public void onYuvFrame(final int[] params)
     {
-        Log.d("ffff","YuvFrame   java  onYuvFrame:"+params[0]);
+        Log.d("ffff","YuvFrame   java  ystride:"+params[0]+"   uvstride:"+params[1] +"   window_w_offset:"+params[7]+"   window_h_offset:"+params[8]  + " thread:"+Thread.currentThread().getName());
+
+        /**
+         *  0  yStride
+         *  1  uvStride
+         *  2  yLen
+         *  3  uLen
+         *  4  vLen
+         *  5  window_w
+         *  6  window_h
+         *  7  window_w_offset
+         *  8  window_h_offset
+         *  9  stride
+         *  10
+         */
+        indicator_holder.post(new Runnable() {
+            @Override
+            public void run() {
+                showPopView(params);
+            }
+        });
     }
 
+
+    private void showPopView(final int[] params){
+        if(indicator_holder==null){
+            return;
+        }
+        indicator_holder.removeAllViews();
+        int width = params[0];
+        int height = params[2] / width;
+
+        RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(height,width);
+        p.leftMargin = params[7];
+        p.topMargin = params[8] - getStatusBarHeight();
+
+        View v = new View(indicator_holder.getContext());
+        v.setBackgroundResource(R.drawable.customborder);
+        indicator_holder.addView(v , p);
+    }
+
+
+
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
 
 
     private static final int PERMISSION_REQUEST_CODE_CAMERA = 1;

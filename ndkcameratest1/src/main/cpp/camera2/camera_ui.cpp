@@ -126,16 +126,32 @@ void CameraEngine::EnableUI(void) {
 
 
 
+JNIEnv *jni;
 
 void CameraEngine::onYuvFrameCallJava(YuvFrame yuvFrame) {
-  JNIEnv *jni;
-  app_->activity->vm->AttachCurrentThread(&jni, NULL);
+  bool hasJni = false;
+  if(jni) {
+    hasJni = true;
+    LOGI("-------- has jni   ttid:%d", gettid() );
+  } else {
+      LOGI("-------- not has jni    ttid:%d", gettid());
+  }
+  if(!hasJni){
+    app_->activity->vm->AttachCurrentThread(&jni, NULL);
+  }
   jclass clazz = jni->GetObjectClass(app_->activity->clazz);
   jmethodID methodID = jni->GetMethodID(clazz, "onYuvFrame", "([I)V");
   jintArray initData = jni->NewIntArray(10);
   jni->SetIntArrayRegion(initData, 0, 10, yuvFrame.data);
   jni->CallVoidMethod(app_->activity->clazz, methodID, initData);
-  app_->activity->vm->DetachCurrentThread();
+  //  only call this if you not not need to call .... onYuvFrameCallJava
+  //     not calling this might cause leak ....
+  //
+  //     https://stackoverflow.com/questions/26534304/android-jni-call-attachcurrentthread-without-detachcurrentthread/26534926
+  //
+// app_->activity->vm->DetachCurrentThread();
+
+
 }
 
 

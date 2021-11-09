@@ -559,7 +559,10 @@ if(yuvWriter != NULL){
 //    }
 
   YuvFrame f;
-  f.data[0] = yLen;
+  f.data[0] = yStride;
+  f.data[1] = uvStride;
+  f.data[2] = yLen;
+
   f.data[5] = buf->width;
   f.data[6] = buf->height;
   f.data[7] = shiftX;
