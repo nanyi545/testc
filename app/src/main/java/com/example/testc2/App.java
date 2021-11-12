@@ -1,6 +1,7 @@
 package com.example.testc2;
 
 import android.app.Application;
+import android.app.Instrumentation;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
@@ -153,6 +154,8 @@ import xcrash.XCrash;
 //  androidx.camera.camera2.impl.Camera2Initializer  ??
 
 public class  App extends Application {
+
+    Instrumentation ins;
 
     public static App getInstance(){
         return instance;

@@ -93,6 +93,8 @@ import android.view.Choreographer;
  */
 
 
+import java.util.LinkedList;
+
 public class FpsMonitor {
 
     static Choreographer c;
@@ -105,6 +107,24 @@ public class FpsMonitor {
     private static int count = 0;
     private static StringBuilder sb = new StringBuilder();
 
+
+    private static LinkedList<Long> recorder = new LinkedList<>();
+    private static int recorderSize = 100;
+    private static long recorderTotal = 0;
+
+    private static void add2recorder(long frameTime){
+        recorderTotal+=frameTime;
+        recorder.addLast(frameTime);
+        if(recorder.size()>recorderSize){
+            long f = recorder.removeFirst();
+            recorderTotal-=f;
+        }
+    }
+
+    private static void printRecorder(){
+        long averageFrameTime = recorderTotal / recorderSize ;
+        Log.d("fpsfps","average fps:"+ (1000/averageFrameTime));
+    }
 
     public static void init(boolean debug){
         if(!debug){
@@ -122,7 +142,7 @@ public class FpsMonitor {
                     }
                 }
                 if(sb.length()>1){
-                    Log.d("aaa",sb.toString());
+                    Log.d("fpsfps",sb.toString());
                 }
             }
 
@@ -131,12 +151,14 @@ public class FpsMonitor {
                 long now = System.currentTimeMillis();
                 long diff = now - t;
                 times[ (count%COUNT) ] = diff;
+                add2recorder(diff);
                 c.postFrameCallback(cb);
                 t = now;
                 count ++ ;
                 if(count == COUNT) {
                     count = 0;
-                    printCounts();
+//                    printCounts();
+                    printRecorder();
                 }
 
             }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.ww.performancechore.async_inflate.InflatorActivity;
+import com.ww.performancechore.mem.TestLargeClassAPI;
 import com.ww.performancechore.stacktest.ActivityA;
 import com.ww.performancechore.webview.WebTestActivity;
 
@@ -97,8 +98,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        TestLargeClassAPI.test1();
 
     }
+
+
+
 
     static List<LeakTest.MemObject> list = new ArrayList<>() ;
 

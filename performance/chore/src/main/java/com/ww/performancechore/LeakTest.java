@@ -29,7 +29,7 @@ import leakcanary.AppWatcher;
  *
  *
  * hprof-conv android.hprof mat.hprof
- * hprof-conv as.hprof mat.hprof
+ * hprof-conv aas.hprof mat.hprof
  *
  */
 
