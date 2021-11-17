@@ -89,6 +89,25 @@ import android.view.Choreographer;
  *
  * -----
  *
+ * https://juejin.cn/post/6863756420380196877
+ *
+ *主要有以下逻辑：
+ *
+ * 1 首先使用mTraversalScheduled字段保证同时间多次更改只会刷新一次，例如TextView连续两次setText()，也只会走一次绘制流程。
+ * 2 然后把当前线程的消息队列Queue添加了同步屏障，这样就屏蔽了正常的同步消息，保证VSync到来后立即执行绘制，而不是要等前面的同步消息。后面会具体分析同步屏障和异步消息的代码逻辑。
+ * 3 调用了mChoreographer.postCallback()方法，发送一个会在下一帧执行的回调，即在下一个VSync到来时会执行TraversalRunnable-->doTraversal()--->performTraversals()-->绘制流程。
+ *
+ * Choreographer和Looper一样 是线程单例
+ *
+ *  接着看看Choreographer构造方法：
+ *     private Choreographer(Looper looper, int vsyncSource) {
+ *  创建了一个mHandler
+ *  VSync事件接收器mDisplayEventReceiver
+ *  任务链表数组mCallbackQueues
+ *
+ *
+ *
+ *
  *
  */
 
