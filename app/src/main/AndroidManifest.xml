@@ -11,6 +11,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
 
     <application
         android:name=".App"
@@ -21,7 +23,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ffmpeg.TestFF1Activity"></activity>
+        <service
+            android:foregroundServiceType="mediaProjection"
+            android:name=".encoder1.MyService"
+            android:enabled="true"
+            android:exported="false"></service>
+
+        <activity android:name=".ffmpeg.TestFF1Activity" />
         <activity android:name=".yuv.YuvActivity" />
         <activity
             android:name=".opengl.player_gl.PlayerGLActivity"
@@ -40,7 +48,8 @@
         <activity android:name=".encoder1.EncoderActivity1" />
         <activity android:name=".nestedScroll.NestedScrollActivity" />
         <activity android:name=".codec1.Player1Activity" />
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:excludeFromRecents="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

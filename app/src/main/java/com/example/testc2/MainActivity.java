@@ -25,6 +25,7 @@ import com.example.testc2.cam2test.Cam2Activity;
 import com.example.testc2.codec1.Player1Activity;
 import com.example.testc2.codec2.SpsActivity;
 import com.example.testc2.encoder1.EncoderActivity1;
+import com.example.testc2.encoder1.MyService;
 import com.example.testc2.ffmpeg.TestFF1Activity;
 import com.example.testc2.gif.GifHandler;
 import com.example.testc2.nestedScroll.NestedScrollActivity;

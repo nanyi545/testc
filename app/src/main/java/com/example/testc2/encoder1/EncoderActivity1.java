@@ -12,6 +12,7 @@ import android.hardware.display.DisplayManager;
 import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
+import android.media.MediaMuxer;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.os.Build;
@@ -45,16 +46,19 @@ import java.nio.ByteBuffer;
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class EncoderActivity1 extends AppCompatActivity {
     private MediaProjectionManager mediaProjectionManager;
-
     private MediaProjection mediaProjection;
-
     private MediaCodec mediaCodec;
 
+    private String TAG = "xxxx_recorder";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_encoder1);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(new Intent(this,MyService.class));
+            //  Context.startForegroundService() did not then call Service.startForeground() ???
+        }
 
         checkPermission();
 
@@ -121,6 +125,8 @@ public class EncoderActivity1 extends AppCompatActivity {
 
             mediaCodec.configure(format, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE);
             final Surface surface = mediaCodec.createInputSurface();
+
+
             new Thread(){
                 @Override
                 public void run() {
@@ -135,7 +141,7 @@ public class EncoderActivity1 extends AppCompatActivity {
 
 
                     MediaCodec.BufferInfo bufferInfo = new MediaCodec.BufferInfo();
-                    while (true) {
+                    while ( (!end) ) {
 //                        源源不断的插叙编码好的数据
                         int index = mediaCodec.dequeueOutputBuffer(bufferInfo, 100000);
 
@@ -144,13 +150,30 @@ public class EncoderActivity1 extends AppCompatActivity {
                             ByteBuffer buffer = mediaCodec.getOutputBuffer(index);
 //                                byteBuffer  压缩数据
 
-                            byte[] outData = new byte[bufferInfo.size];
-                            buffer.get(outData);
+                            // 初始muxer
+                            if(!muxerInited){
+                                initMuxer(mediaCodec.getOutputFormat());
+                            }
 
-                            writeContent(outData);  //以字符串的方式写入
-//写成 文件  我们就能够播放起来
-                            writeBytes(outData);
+
+                            // 测试h264/265数据
+//                            byte[] outData = new byte[bufferInfo.size];
+//                            buffer.get(outData);
+//                            writeContent(outData);  //以字符串的方式写入
+//                            writeBytes(outData); //
+
+
+                            // 写入mp4
+                            muxer.writeSampleData(videoTrackIndex,buffer,bufferInfo);
+
+
                             mediaCodec.releaseOutputBuffer(index, false);
+
+                            frameCount++;
+                            Log.d(TAG,"frameCount:"+frameCount );
+                        }
+                        if(frameCount>100){
+                            endRecord();
                         }
 
                     }
@@ -161,10 +184,61 @@ public class EncoderActivity1 extends AppCompatActivity {
 
         } catch ( Exception e) {
             e.printStackTrace();
-            Log.i("encoder1", "initMediaCodec fail: "+Log.getStackTraceString(e));
+            Log.i(TAG, "initMediaCodec fail: "+Log.getStackTraceString(e));
         }
 
     }
+
+
+    int frameCount = 0;
+    private boolean end = false;
+    private void endRecord(){
+        if(!end){
+
+            mediaCodec.stop();
+            mediaCodec.release();
+            mediaCodec=null;
+
+
+            muxer.stop();
+            muxer.release();
+            muxer=null;
+
+            end = true;
+        }
+    }
+
+
+    MediaMuxer muxer;
+    boolean muxerInited = false;
+    int videoTrackIndex;
+
+    private void initMuxer(MediaFormat format){
+        try {
+            if(muxer==null){
+                muxerInited = true;
+                String mp4FileName = Environment.getExternalStorageDirectory() + "/aaa/c1.mp4";
+                muxer = new MediaMuxer(mp4FileName ,  MediaMuxer.OutputFormat.MUXER_OUTPUT_MPEG_4);
+                // More often, the MediaFormat will be retrieved from MediaCodec.getOutputFormat()
+                // or MediaExtractor.getTrackFormat().
+
+//        MediaFormat audioFormat = new MediaFormat(...);
+//        int audioTrackIndex = muxer.addTrack(audioFormat);
+                videoTrackIndex = muxer.addTrack(format);
+                muxer.start();
+                Log.d(TAG,"mux started:" );
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d(TAG,"mux fail:"+e.toString());
+        }
+
+    }
+
+
+
+
     public void writeBytes(byte[] array) {
         FileOutputStream writer = null;
         try {
@@ -214,7 +288,7 @@ public class EncoderActivity1 extends AppCompatActivity {
             sb.append(HEX_CHAR_TABLE[(b & 0xf0) >> 4]);
             sb.append(HEX_CHAR_TABLE[b & 0x0f]);
         }
-        Log.i("encoder1", "writeContent: "+sb.toString());
+        Log.i(TAG, "writeContent: "+sb.toString());
         FileWriter writer = null;
         try {
             // 打开一个写文件器，构造函数中的第二个参数true表示以追加形式写文件
