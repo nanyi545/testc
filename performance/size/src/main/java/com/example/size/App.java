@@ -7,7 +7,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        FpsMonitor.init(true);
+//        FpsMonitor.init(true);
     }
 }
 

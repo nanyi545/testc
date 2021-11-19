@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import com.ww.performancechore.async_inflate.InflatorActivity;
 import com.ww.performancechore.mem.TestLargeClassAPI;
+import com.ww.performancechore.recy_scroll.RVTestActivity;
 import com.ww.performancechore.stacktest.ActivityA;
 import com.ww.performancechore.webview.WebTestActivity;
 
@@ -50,6 +51,13 @@ public class MainActivity extends AppCompatActivity {
 //                        throw new RuntimeException("hehe");
 //                    }
 //                }).start();
+
+
+
+
+                //  to recyclerview 焦点移动 scroll performance test
+                startActivity(new Intent(MainActivity.this, RVTestActivity.class ));
+
 
             }
         });

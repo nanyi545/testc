@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    tools:context=".recy_scroll.RVTestActivity">
+
+
+    <Button
+        android:id="@+id/btn1"
+        android:text="btn1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+<!--    <com.ww.performancechore.recy_scroll.Rv-->
+<!--        android:id="@+id/rv1"-->
+<!--        android:layout_width="300dp"-->
+<!--        android:layout_height="match_parent"/>-->
+
+
+    <com.ww.performancechore.recy_scroll.TvRecyclerView
+        android:id="@+id/rv1"
+        android:layout_width="500dp"
+        android:layout_height="match_parent"/>
+
+
+</LinearLayout>
