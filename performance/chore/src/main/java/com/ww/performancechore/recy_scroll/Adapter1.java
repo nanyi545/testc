@@ -15,8 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ww.performancechore.R;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE;
 
 
 /**
@@ -49,8 +53,27 @@ public class Adapter1 extends RecyclerView.Adapter<Adapter1.VH> {
     List<Data> data = getData();
 
 
-    public Adapter1() {
+    RecyclerView rv;
+    public Adapter1(RecyclerView rv) {
         setHasStableIds(true);
+        this.rv = rv;
+        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull @NotNull RecyclerView recyclerView, int newState) {
+                if(newState==SCROLL_STATE_IDLE){
+                    rv.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            notifyDataSetChanged();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull @NotNull RecyclerView recyclerView, int dx, int dy) {
+            }
+        });
     }
 
     @Override public long getItemId(int position) { return position; }
@@ -79,6 +102,17 @@ public class Adapter1 extends RecyclerView.Adapter<Adapter1.VH> {
         }
         if(holder instanceof VH3){
             VH3 cast1 = (VH3) holder;
+            cast1.setupMock(item, Adapter1.this);
+            // *** use this to increase list FPS during scroll ....
+            if(rv.getScrollState()!=SCROLL_STATE_IDLE){
+                return;
+            }
+            // 模拟较长时间.....
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             cast1.setup1(item, Adapter1.this);
         }
     }
@@ -158,13 +192,16 @@ public class Adapter1 extends RecyclerView.Adapter<Adapter1.VH> {
             focusSubRightBg = (ImageView) itemView.findViewById(R.id.focus_right_sub_bg);
             playingIcon = (ImageView) itemView.findViewById(R.id.playing_icon);
         }
+        private void setupMock(Data data, Adapter1 adapter){
+            VH3 holder = this;
+            holder.channelTitle.setText("");
+        }
         private void setup1(Data data, Adapter1 adapter){
             VH3 holder = this;
 
             holder.channelTitle.setTextColor(ContextCompat.getColor(holder.channelTitle.getContext(), R.color.colorPrimary));
             holder.watching.setTextColor(ContextCompat.getColor(holder.channelTitle.getContext(), R.color.colorAccent));
-            holder.channelTitle.setText("6666");
-
+            holder.channelTitle.setText(data.str);
 
             holder.channelTitle.setAlpha(1f);
             holder.watching.setAlpha(1f);

@@ -24,11 +24,11 @@ public class VG2 extends ConstraintLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         // 模拟较长测量时间.....
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(100);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 }

@@ -41,7 +41,7 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
 
-        classpath 'com.hehe.gplugin1:myGradlePlugin1:1.1.0'
+//        classpath 'com.hehe.gplugin1:myGradlePlugin1:1.1.0'
 
     }
 }

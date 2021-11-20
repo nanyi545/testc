@@ -15,7 +15,7 @@ public class RVTestActivity extends AppCompatActivity {
     private void init1(){
         rc = findViewById(R.id.rv1);
         rc.setLayoutManager(new LinearLayoutManager(this));
-        rc.setAdapter(new Adapter1());
+        rc.setAdapter(new Adapter1(rc));
     }
 
 
@@ -24,9 +24,8 @@ public class RVTestActivity extends AppCompatActivity {
     private void init2(){
         rc2 = findViewById(R.id.rv1);
         rc2.setLayoutManager(new NewGridLayoutManager(this,1));
-        adapter2 = new Adapter1();
+        adapter2 = new Adapter1(rc2);
         rc2.setAdapter(adapter2);
-
         findViewById(R.id.btn1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
