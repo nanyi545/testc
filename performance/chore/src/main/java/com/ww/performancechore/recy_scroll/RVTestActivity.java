@@ -11,6 +11,10 @@ import com.ww.performancechore.R;
 
 public class RVTestActivity extends AppCompatActivity {
 
+    /**
+     * test rv scroll fps
+     */
+
     Rv rc;
     private void init1(){
         rc = findViewById(R.id.rv1);
@@ -34,11 +38,35 @@ public class RVTestActivity extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * test measure time
+     *
+     *
+     */
+
+    VG2 vg1;
+    V1 v1;
+    private void test1(){
+        vg1 = findViewById(R.id.vg1);
+        vg1.setDEBUG_ON("_g");
+        v1 = findViewById(R.id.iv1);
+        v1.setDEBUG_ON("_v");
+        findViewById(R.id.btn1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v1.requestLayout();
+            }
+        });
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rvtest);
-        init2();
+//        init2();
+        test1();
     }
 
 }
