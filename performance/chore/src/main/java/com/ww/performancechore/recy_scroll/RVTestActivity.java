@@ -13,6 +13,10 @@ public class RVTestActivity extends AppCompatActivity {
 
     /**
      * test rv scroll fps
+     *
+     * log tag:
+     * fpsfps|NewGridLayoutManager|VG2|aaadapter
+     *
      */
 
     Rv rc;
