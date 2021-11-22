@@ -3,6 +3,7 @@ package com.ww.performancechore.recy_scroll;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -56,4 +57,13 @@ public class NewGridLayoutManager extends GridLayoutManager {
 //    }
 
 
+    private String TAG= "NewGridLayoutManager";
+
+    @Override
+    public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+        long t1 = System.currentTimeMillis();
+        super.onLayoutChildren(recycler, state);
+        long t2 = System.currentTimeMillis();
+        Log.d(TAG,"onLayoutChildren "+(t2-t1));
+    }
 }

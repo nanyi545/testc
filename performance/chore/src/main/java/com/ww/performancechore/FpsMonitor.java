@@ -128,7 +128,7 @@ public class FpsMonitor {
 
 
     private static LinkedList<Long> recorder = new LinkedList<>();
-    private static int recorderSize = 100;
+    private static int recorderSize = 30;
     private static long recorderTotal = 0;
 
     private static void add2recorder(long frameTime){
@@ -155,10 +155,12 @@ public class FpsMonitor {
             private void printCounts(){
                 sb.setLength(0);
                 for (int i=0;i<COUNT;i++){
-                    if( times[i] > UPPER_LIMIT ){
-                        sb.append(times[i]);
-                        sb.append("|");
-                    }
+//                    if( times[i] > UPPER_LIMIT ){
+//                        sb.append(times[i]);
+//                        sb.append("|");
+//                    }
+                    sb.append(times[i]);
+                    sb.append("|");
                 }
                 if(sb.length()>1){
                     Log.d("fpsfps",sb.toString());
@@ -176,7 +178,7 @@ public class FpsMonitor {
                 count ++ ;
                 if(count == COUNT) {
                     count = 0;
-//                    printCounts();
+                    printCounts();
                     printRecorder();
                 }
 
@@ -186,4 +188,45 @@ public class FpsMonitor {
     }
 
 
+    /**
+
+     2021-11-22 23:13:35.429 25138-25138/com.ww.performancechore D/fpsfps: 17|16|17|16|18|16|17|16|16|17|17|17|16|17|16|17|16|17|17|16|
+     2021-11-22 23:13:35.429 25138-25138/com.ww.performancechore D/fpsfps: average fps:62
+     2021-11-22 23:13:35.762 25138-25138/com.ww.performancechore D/fpsfps: 17|17|17|16|17|16|17|16|17|17|17|16|17|17|17|16|16|17|17|17|
+     2021-11-22 23:13:35.762 25138-25138/com.ww.performancechore D/fpsfps: average fps:62
+     2021-11-22 23:13:36.095 25138-25138/com.ww.performancechore D/fpsfps: 16|17|17|16|17|16|17|17|17|16|17|16|17|17|16|17|16|17|17|16|
+     2021-11-22 23:13:36.095 25138-25138/com.ww.performancechore D/fpsfps: average fps:62
+     2021-11-22 23:13:36.428 25138-25138/com.ww.performancechore D/fpsfps: 17|16|19|15|16|17|18|15|17|17|16|17|17|16|17|16|17|17|17|16|
+     2021-11-22 23:13:36.428 25138-25138/com.ww.performancechore D/fpsfps: average fps:62
+     2021-11-22 23:13:36.480 25138-25138/com.ww.performancechore D/VG2: on measure time:1  this:com.ww.performancechore.recy_scroll.VG2{564c744 VFE...... ......I. 0,-305-900,31 #7f080107 app:id/rv_item_holder}
+     2021-11-22 23:13:36.480 25138-25138/com.ww.performancechore D/VG2: on onLayout:0  this:com.ww.performancechore.recy_scroll.VG2{564c744 VFE...... ......ID 0,2312-900,2648 #7f080107 app:id/rv_item_holder}
+     2021-11-22 23:13:36.515 25138-25138/com.ww.performancechore D/VG2: on measure time:1  this:com.ww.performancechore.recy_scroll.VG2{2e63f12 VFE...... ......I. 0,-320-900,16 #7f080107 app:id/rv_item_holder}
+     2021-11-22 23:13:36.515 25138-25138/com.ww.performancechore D/VG2: on onLayout:0  this:com.ww.performancechore.recy_scroll.VG2{2e63f12 VFE...... ......ID 0,2226-900,2562 #7f080107 app:id/rv_item_holder}
+     2021-11-22 23:13:36.583 25138-25138/com.ww.performancechore D/VG2: on measure time:1  this:com.ww.performancechore.recy_scroll.VG2{c682a10 VFE...... ......I. 0,-307-900,29 #7f080107 app:id/rv_item_holder}
+     2021-11-22 23:13:36.583 25138-25138/com.ww.performancechore D/VG2: on onLayout:0  this:com.ww.performancechore.recy_scroll.VG2{c682a10 VFE...... ......ID 0,2157-900,2493 #7f080107 app:id/rv_item_holder}
+     2021-11-22 23:13:36.615 25138-25138/com.ww.performancechore D/VG2: on measure time:1  this:com.ww.performancechore.recy_scroll.VG2{da13fbe VFE...... ......I. 0,-334-900,2 #7f080107 app:id/rv_item_holder}
+     2021-11-22 23:13:36.616 25138-25138/com.ww.performancechore D/VG2: on onLayout:0  this:com.ww.performancechore.recy_scroll.VG2{da13fbe VFE...... ......ID 0,2192-900,2528 #7f080107 app:id/rv_item_holder}
+     2021-11-22 23:13:36.666 25138-25138/com.ww.performancechore D/VG2: on measure time:1  this:com.ww.performancechore.recy_scroll.VG2{33da39c VFE...... ......I. 0,-40-900,296 #7f080107 app:id/rv_item_holder}
+     2021-11-22 23:13:36.667 25138-25138/com.ww.performancechore D/VG2: on onLayout:1  this:com.ww.performancechore.recy_scroll.VG2{33da39c VFE...... ......ID 0,2155-900,2491 #7f080107 app:id/rv_item_holder}
+     2021-11-22 23:13:36.716 25138-25138/com.ww.performancechore D/VG2: on measure time:1  this:com.ww.performancechore.recy_scroll.VG2{e956691 VFE...... ......I. 0,-318-900,18 #7f080107 app:id/rv_item_holder}
+     2021-11-22 23:13:36.716 25138-25138/com.ww.performancechore D/VG2: on onLayout:0  this:com.ww.performancechore.recy_scroll.VG2{e956691 VFE...... ......ID 0,2194-900,2530 #7f080107 app:id/rv_item_holder}
+     2021-11-22 23:13:36.761 25138-25138/com.ww.performancechore D/fpsfps: 17|19|18|15|20|14|16|15|17|16|16|17|17|17|16|17|17|16|17|17|
+     2021-11-22 23:13:36.761 25138-25138/com.ww.performancechore D/fpsfps: average fps:62
+     2021-11-22 23:13:36.799 25138-25138/com.ww.performancechore D/VG2: on measure time:1  this:com.ww.performancechore.recy_scroll.VG2{26fb6e7 VFE...... ......I. 0,-195-900,141 #7f080107 app:id/rv_item_holder}
+     2021-11-22 23:13:36.799 25138-25138/com.ww.performancechore D/VG2: on onLayout:0  this:com.ww.performancechore.recy_scroll.VG2{26fb6e7 VFE...... ......ID 0,2143-900,2479 #7f080107 app:id/rv_item_holder}
+     2021-11-22 23:13:36.915 25138-25138/com.ww.performancechore D/VG2: on measure time:1  this:com.ww.performancechore.recy_scroll.VG2{31fc3ad VFE...... ......I. 0,-288-900,48 #7f080107 app:id/rv_item_holder}
+     2021-11-22 23:13:36.916 25138-25138/com.ww.performancechore D/VG2: on onLayout:0  this:com.ww.performancechore.recy_scroll.VG2{31fc3ad VFE...... ......ID 0,2126-900,2462 #7f080107 app:id/rv_item_holder}
+     2021-11-22 23:13:37.094 25138-25138/com.ww.performancechore D/fpsfps: 16|17|17|17|16|16|17|17|16|17|17|17|16|17|17|16|17|17|16|17|
+     2021-11-22 23:13:37.094 25138-25138/com.ww.performancechore D/fpsfps: average fps:62
+     2021-11-22 23:13:37.115 25138-25138/com.ww.performancechore D/VG2: on measure time:1  this:com.ww.performancechore.recy_scroll.VG2{42bd663 VFE...... ......I. 0,-300-900,36 #7f080107 app:id/rv_item_holder}
+     2021-11-22 23:13:37.115 25138-25138/com.ww.performancechore D/VG2: on onLayout:0  this:com.ww.performancechore.recy_scroll.VG2{42bd663 VFE...... ......ID 0,2140-900,2476 #7f080107 app:id/rv_item_holder}
+     2021-11-22 23:13:37.427 25138-25138/com.ww.performancechore D/fpsfps: 16|17|16|17|17|16|17|17|17|16|17|16|17|17|17|16|17|16|17|17|
+     2021-11-22 23:13:37.427 25138-25138/com.ww.performancechore D/fpsfps: average fps:62
+     2021-11-22 23:13:37.760 25138-25138/com.ww.performancechore D/fpsfps: 17|16|17|16|17|16|18|16|17|16|17|17|17|16|16|17|17|17|16|17|
+     2021-11-22 23:13:37.760 25138-25138/com.ww.performancechore D/fpsfps: average fps:62
+     2021-11-22 23:13:38.215 25138-25138/com.ww.performancechore D/NewGridLayoutManager: onLayoutChildren 367
+     2021-11-22 23:13:38.443 25138-25138/com.ww.performancechore D/fpsfps: 16|17|17|16|17|376|6|17|17|17|17|16|17|16|18|16|17|16|17|16|
+     2021-11-22 23:13:38.443 25138-25138/com.ww.performancechore D/fpsfps: average fps:35
+
+     */
 }

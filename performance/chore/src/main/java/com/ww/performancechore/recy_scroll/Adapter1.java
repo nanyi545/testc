@@ -95,6 +95,7 @@ public class Adapter1 extends RecyclerView.Adapter<Adapter1.VH> {
 
     @Override
     public void onBindViewHolder(@NonNull VH holder, int position) {
+        long t1 = System.currentTimeMillis();
         final Data item = data.get(position);
         if(holder instanceof VH1){
             VH1 cast1 = (VH1) holder;
@@ -115,6 +116,8 @@ public class Adapter1 extends RecyclerView.Adapter<Adapter1.VH> {
             }
             cast1.setup1(item, Adapter1.this);
         }
+        long t2 = System.currentTimeMillis();
+        Log.d("aaadapter","onbind:"+(t2-t1)+"  position:"+position);
     }
 
     @Override

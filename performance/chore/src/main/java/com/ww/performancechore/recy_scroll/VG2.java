@@ -37,19 +37,24 @@ public class VG2 extends ConstraintLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if(isDEBUG_ON()){
             long t2 = System.currentTimeMillis();
-            Log.d(TAG,"on measure time:"+(t2-t));
+            Log.d(TAG,"on measure time:"+(t2-t)+"  this:"+this);
         }
     }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        long t = 0;
+        if(isDEBUG_ON()){
+            t = System.currentTimeMillis();
+        }
         super.onLayout(changed, left, top, right, bottom);
         if(isDEBUG_ON()){
-            Log.d(TAG,"on onLayout:");
+            long t2 = System.currentTimeMillis();
+            Log.d(TAG,"on onLayout:"+(t2-t)+"  this:"+this);
         }
     }
 
-    private boolean DEBUG_ON = false;
+    private boolean DEBUG_ON = true;
     private String TAG = "VG2";
 
     public boolean isDEBUG_ON() {
