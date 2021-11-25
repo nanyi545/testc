@@ -3,6 +3,7 @@ package com.ww.performancechore.rv;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.ww.performancechore.R;
 import com.ww.performancechore.rv.rv.LinearLayoutManager;
@@ -18,7 +19,7 @@ import com.ww.performancechore.rv.rv.RecyclerView;
 public class RvTest2Activity extends AppCompatActivity {
 
     RecyclerView rv1;
-
+    Adapter2 adapter2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,14 @@ public class RvTest2Activity extends AppCompatActivity {
         setContentView(R.layout.activity_rv_test2);
         rv1 = findViewById(R.id.rv1);
         rv1.setLayoutManager(new LinearLayoutManager(this));
-        rv1.setAdapter(new Adapter1());
+        adapter2 = new Adapter2();
+        rv1.setAdapter(adapter2);
+        rv1.setItemAnimator(null);
+        findViewById(R.id.shift).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter2.add();
+            }
+        });
     }
 }

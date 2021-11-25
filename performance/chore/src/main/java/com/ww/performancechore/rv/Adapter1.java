@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class Adapter1 extends RecyclerView.Adapter<Adapter1.VH> {
 
-
     @NonNull
     @NotNull
     @Override
