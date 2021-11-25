@@ -94,7 +94,8 @@ public class Adapter1 extends RecyclerView.Adapter<Adapter1.VH> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VH holder,final int position) {
+    public void onBindViewHolder(@NonNull VH holder, int position) {
+        long t1 = System.currentTimeMillis();
         final Data item = data.get(position);
         if(holder instanceof VH1){
             VH1 cast1 = (VH1) holder;
@@ -102,8 +103,21 @@ public class Adapter1 extends RecyclerView.Adapter<Adapter1.VH> {
         }
         if(holder instanceof VH3){
             VH3 cast1 = (VH3) holder;
+            cast1.setupMock(item, Adapter1.this);
+            // *** use this to increase list FPS during scroll ....
+            if(rv.getScrollState()!=SCROLL_STATE_IDLE){
+                return;
+            }
+            // 模拟较长时间.....
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             cast1.setup1(item, Adapter1.this, position);
         }
+        long t2 = System.currentTimeMillis();
+        Log.d("aaadapter","onbind:"+(t2-t1)+"  position:"+position);
     }
 
     @Override

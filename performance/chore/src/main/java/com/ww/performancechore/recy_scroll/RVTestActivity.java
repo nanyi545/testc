@@ -13,6 +13,10 @@ public class RVTestActivity extends AppCompatActivity {
 
     /**
      * test rv scroll fps
+     *
+     * log tag:
+     * fpsfps|NewGridLayoutManager|VG2|aaadapter
+     *
      */
 
     Rv rc;
@@ -62,16 +66,16 @@ public class RVTestActivity extends AppCompatActivity {
     VG2 vg1;
     V1 v1;
     private void test1(){
-        vg1 = findViewById(R.id.vg1);
-        vg1.setDEBUG_ON("_g");
-        v1 = findViewById(R.id.iv1);
-        v1.setDEBUG_ON("_v");
-        findViewById(R.id.btn1).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v1.requestLayout();
-            }
-        });
+//        vg1 = findViewById(R.id.vg1);
+//        vg1.setDEBUG_ON("_g");
+//        v1 = findViewById(R.id.iv1);
+//        v1.setDEBUG_ON("_v");
+//        findViewById(R.id.btn1).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                v1.requestLayout();
+//            }
+//        });
     }
 
 
