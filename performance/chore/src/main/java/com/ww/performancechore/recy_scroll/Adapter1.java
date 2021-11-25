@@ -94,7 +94,7 @@ public class Adapter1 extends RecyclerView.Adapter<Adapter1.VH> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull VH holder, int position) {
+    public void onBindViewHolder(@NonNull VH holder,final int position) {
         final Data item = data.get(position);
         if(holder instanceof VH1){
             VH1 cast1 = (VH1) holder;
@@ -102,18 +102,7 @@ public class Adapter1 extends RecyclerView.Adapter<Adapter1.VH> {
         }
         if(holder instanceof VH3){
             VH3 cast1 = (VH3) holder;
-            cast1.setupMock(item, Adapter1.this);
-            // *** use this to increase list FPS during scroll ....
-            if(rv.getScrollState()!=SCROLL_STATE_IDLE){
-                return;
-            }
-            // 模拟较长时间.....
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            cast1.setup1(item, Adapter1.this);
+            cast1.setup1(item, Adapter1.this, position);
         }
     }
 
@@ -192,12 +181,80 @@ public class Adapter1 extends RecyclerView.Adapter<Adapter1.VH> {
             focusSubRightBg = (ImageView) itemView.findViewById(R.id.focus_right_sub_bg);
             playingIcon = (ImageView) itemView.findViewById(R.id.playing_icon);
         }
+
+
+        private int key;
+        private void setKey(int newKey){
+            key = newKey;
+        }
+
+        private int getKey(int pos, boolean focus){
+            if(focus){
+                return ~pos;
+            }else {
+                return pos;
+            }
+        }
+
+
         private void setupMock(Data data, Adapter1 adapter){
             VH3 holder = this;
             holder.channelTitle.setText("");
         }
-        private void setup1(Data data, Adapter1 adapter){
+
+
+        private void setup1(Data data, Adapter1 adapter, int post){
             VH3 holder = this;
+
+            boolean focusing = isItemFocusing(data, adapter);
+            int newKey = getKey(post,focusing);
+
+
+            //  根据pos/是否聚焦   来决定是否显示mock
+            if(newKey==key){
+
+            } else {
+                setupMock(data,adapter);
+                setKey(newKey);
+            }
+
+            holder.showFocusBg(focusing);
+            holder.showDisplayingIcon(focusing);
+
+            holder.itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    Log.d("aaadapter1","onFocusChange  hasFocus:"+hasFocus+"   data:"+data.str);
+                    if (hasFocus) {
+                        adapter.currentF = data;
+                        holder.showFocusBg(true);
+                    } else {
+                        adapter.currentF = null;
+                        holder.showFocusBg(false);
+                    }
+                    // no need to update whole list .....
+//                    v.post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            adapter.notifyDataSetChanged();
+//                        }
+//                    });
+                }
+            });
+
+
+            // *** use this to increase list FPS during scroll ....
+            if(adapter.rv.getScrollState()!=SCROLL_STATE_IDLE){
+                return;
+            }
+
+            // 模拟较长时间 ....
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
 
             holder.channelTitle.setTextColor(ContextCompat.getColor(holder.channelTitle.getContext(), R.color.colorPrimary));
             holder.watching.setTextColor(ContextCompat.getColor(holder.channelTitle.getContext(), R.color.colorAccent));
@@ -207,31 +264,6 @@ public class Adapter1 extends RecyclerView.Adapter<Adapter1.VH> {
             holder.watching.setAlpha(1f);
 
 
-            boolean focusing = isItemFocusing(data, adapter);
-//            boolean focusing = itemView.isFocused();
-            holder.showFocusBg(focusing);
-            holder.showDisplayingIcon(focusing);
-
-
-            holder.itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    Log.d("aaadapter1","onFocusChange  hasFocus:"+hasFocus+"   data:"+data.str);
-                    if (hasFocus) {
-                        adapter.currentF = data;
-//                        holder.showFocusBg(true);
-                    } else {
-                        adapter.currentF = null;
-//                        holder.showFocusBg(false);
-                    }
-                    v.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            adapter.notifyDataSetChanged();
-                        }
-                    });
-                }
-            });
 
         }
 

@@ -79,8 +79,8 @@ public class RVTestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rvtest);
-//        init2();
-        test1();
+        init2();
+//        test1();
     }
 
 }
