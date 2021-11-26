@@ -1,0 +1,82 @@
+package com.ww.performancechore.rv;
+
+import android.os.Handler;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+
+import com.ww.performancechore.rv.rv.RecyclerView;
+import com.ww.performancechore.rv.util.VG3;
+
+import org.jetbrains.annotations.NotNull;
+
+public class Adapter2 extends RecyclerView.Adapter<Adapter2.VH> {
+
+    RecyclerView.LayoutParams p1  = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,300);
+    RecyclerView.LayoutParams p2  = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,400);
+    RecyclerView.LayoutParams p3  = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,RecyclerView.LayoutParams.WRAP_CONTENT);
+
+    RelativeLayout.LayoutParams p4 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,300);
+    RelativeLayout.LayoutParams p5 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,400);
+
+
+    int active=0;
+
+    Handler h = new Handler();
+
+    public void add(){
+        int copy = active;
+        active++;
+        h.post(new Runnable() {
+            @Override
+            public void run() {
+                notifyItemChanged(copy);
+                notifyItemChanged(active);
+            }
+        });
+    }
+
+    @NonNull
+    @NotNull
+    @Override
+    public VH onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+        VG3 vg = new VG3(parent.getContext());
+        vg.setKey(VG3.generteKey());
+//        vg.setLayoutParams(p3);   // why this will cause collapse .....
+        TextView tv = new TextView(parent.getContext());
+        tv.setTag("tv1");
+        vg.addView(tv);
+        return new VH(vg);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull @NotNull VH holder, int position) {
+        if(active==position){
+            holder.tv.setLayoutParams(p5);
+            holder.tv.setText("**** item index:"+position+"  holder key:"+holder.vg.getKey());
+        } else{
+            holder.tv.setLayoutParams(p4);
+            holder.tv.setText("item index:"+position+"  holder key:"+holder.vg.getKey());
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return 1000;
+    }
+
+    static class VH extends RecyclerView.ViewHolder {
+
+        public VH(@NonNull @NotNull View itemView) {
+            super(itemView);
+            vg = (VG3) itemView;
+            tv = itemView.findViewWithTag("tv1");
+        }
+        VG3 vg;
+        TextView tv;
+    }
+}
