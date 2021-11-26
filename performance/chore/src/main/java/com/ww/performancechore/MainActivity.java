@@ -3,6 +3,8 @@ package com.ww.performancechore;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaCodec;
+import android.media.MediaFormat;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +16,7 @@ import com.ww.performancechore.rv.RvTest2Activity;
 import com.ww.performancechore.stacktest.ActivityA;
 import com.ww.performancechore.webview.WebTestActivity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +25,17 @@ import leakcanary.AppWatcher;
 public class MainActivity extends AppCompatActivity {
 
     Button tv1;
+
+
+    private void testMediaCodec(){
+        try {
+            MediaCodec decoderByType = MediaCodec.createDecoderByType(MediaFormat.MIMETYPE_VIDEO_HEVC);
+            decoderByType.release();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
 //                throw new RuntimeException("hehe");
 
 
-
                 // this will not get caught by disasterTolerance
 //                new Thread(new Runnable() {
 //                    @Override
@@ -60,8 +73,9 @@ public class MainActivity extends AppCompatActivity {
 //                startActivity(new Intent(MainActivity.this, RVTestActivity.class ));
 
                 //  rv fundamental
-                startActivity(new Intent(MainActivity.this, RvTest2Activity.class ));
+//                startActivity(new Intent(MainActivity.this, RvTest2Activity.class ));
 
+                testMediaCodec();
 
             }
         });

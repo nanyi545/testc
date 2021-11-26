@@ -43,7 +43,7 @@ public class App extends Application {
         super.onCreate();
         instance = this;
 
-        FpsMonitor.init(BuildConfig.DEBUG);
+//        FpsMonitor.init(BuildConfig.DEBUG);
 
         DisasterTolerance.getInstance().catchLooperException(Looper.getMainLooper(), new DisasterTolerance.ExceptionFilter() {
             @Override
