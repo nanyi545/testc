@@ -1,5 +1,7 @@
 package com.ww.performancechore;
 
+import com.ww.performancechore.rv.rv.Logger;
+
 import org.junit.Test;
 
 import java.io.File;
@@ -23,6 +25,9 @@ public class ExampleUnitTest {
     }
 
 
+    /**
+     * generate a very large java file ...
+     */
     @Test
     public void writeFile() {
         File f = new File("/Users/weiwang/AndroidStudioProjects/TestC2/performance/chore/src/main/java/com/ww/performancechore/mem/TestLargeClass.java");
@@ -42,7 +47,17 @@ public class ExampleUnitTest {
             e.printStackTrace();
             System.out.println("22");
         }
-
     }
+
+
+    @Test
+    public void test1() {
+        test2();
+    }
+
+    public void test2(){
+        System.out.println("method:"+ Logger.currentLocation());
+    }
+
 
 }
