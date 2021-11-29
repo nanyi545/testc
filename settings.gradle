@@ -2,3 +2,4 @@ println "---settings start---"
 include ':app', ':lib1', ':smartcamera', ':gPlugin1', ':pluginapk1', ':lib1modifier', ':jlib', ':ndkcameratest1', ':cpplib', ':performance:chore', ':jlib2modify'
 println "----settings end----"
 include ':performance:size'
+include ':performance:uitest'

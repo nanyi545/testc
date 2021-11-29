@@ -22,6 +22,15 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+
+/**
+ *
+ * gradle cache location on ubuntu ...
+ *
+ * ~/.gradle/wrapper/dists
+ *
+ *
+ */
 import com.ww.performancechore.webview.WebViewHolder;
 
 public class App extends Application {
