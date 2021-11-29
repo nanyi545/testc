@@ -3506,6 +3506,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
 
     @Override
     protected void onMeasure(int widthSpec, int heightSpec) {
+        Logger.log(TAG,"");
         if (mLayout == null) {
             defaultOnMeasure(widthSpec, heightSpec);
             return;
@@ -3513,6 +3514,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         if (mLayout.isAutoMeasureEnabled()) {
             final int widthMode = MeasureSpec.getMode(widthSpec);
             final int heightMode = MeasureSpec.getMode(heightSpec);
+            Logger.log(TAG,"  widthMode:"+Logger.getModeStr(widthMode)+"  heightMode:"+Logger.getModeStr(heightMode));
 
             /**
              * This specific call should be considered deprecated and replaced with
@@ -3526,6 +3528,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             final boolean measureSpecModeIsExactly =
                     widthMode == MeasureSpec.EXACTLY && heightMode == MeasureSpec.EXACTLY;
             if (measureSpecModeIsExactly || mAdapter == null) {
+                // ww:  if MeasureSpec.EXACTLY , you do not need to do layout  inorder to set size
                 return;
             }
 

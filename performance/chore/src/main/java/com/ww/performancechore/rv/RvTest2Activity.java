@@ -3,10 +3,12 @@ package com.ww.performancechore.rv;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.ww.performancechore.R;
 import com.ww.performancechore.rv.rv.LinearLayoutManager;
+import com.ww.performancechore.rv.rv.Logger;
 import com.ww.performancechore.rv.rv.RecyclerView;
 
 
@@ -36,5 +38,6 @@ public class RvTest2Activity extends AppCompatActivity {
                 adapter2.add();
             }
         });
+
     }
 }

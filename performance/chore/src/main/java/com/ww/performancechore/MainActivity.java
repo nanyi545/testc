@@ -73,9 +73,9 @@ public class MainActivity extends AppCompatActivity {
 //                startActivity(new Intent(MainActivity.this, RVTestActivity.class ));
 
                 //  rv fundamental
-//                startActivity(new Intent(MainActivity.this, RvTest2Activity.class ));
+                startActivity(new Intent(MainActivity.this, RvTest2Activity.class ));
 
-                testMediaCodec();
+//                testMediaCodec();
 
             }
         });
