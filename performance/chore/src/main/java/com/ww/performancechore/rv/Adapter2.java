@@ -2,6 +2,7 @@ package com.ww.performancechore.rv;
 
 import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -9,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.ww.performancechore.R;
+import com.ww.performancechore.rv.rv.Logger;
 import com.ww.performancechore.rv.rv.RecyclerView;
 import com.ww.performancechore.rv.util.VG3;
 
@@ -44,22 +47,24 @@ public class Adapter2 extends RecyclerView.Adapter<Adapter2.VH> {
     @NotNull
     @Override
     public VH onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        VG3 vg = new VG3(parent.getContext());
+        VG3 vg  = (VG3) LayoutInflater.from(parent.getContext()).inflate(R.layout.rv_item_,parent,false);
         vg.setKey(VG3.generteKey());
+
+//        VG3 vg = new VG3(parent.getContext());
 //        vg.setLayoutParams(p3);   // why this will cause collapse .....
-        TextView tv = new TextView(parent.getContext());
-        tv.setTag("tv1");
-        vg.addView(tv);
+
+        Logger.log(TAG,"   k"+vg.getKey()+" w:"+vg.getLayoutParams().width+"  h:"+vg.getLayoutParams().height);
+
         return new VH(vg);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull VH holder, int position) {
         if(active==position){
-            holder.tv.setLayoutParams(p5);
+//            holder.tv.setLayoutParams(p5);
             holder.tv.setText("**** item index:"+position+"  holder key:"+holder.vg.getKey());
         } else{
-            holder.tv.setLayoutParams(p4);
+//            holder.tv.setLayoutParams(p4);
             holder.tv.setText("item index:"+position+"  holder key:"+holder.vg.getKey());
         }
     }
@@ -70,13 +75,14 @@ public class Adapter2 extends RecyclerView.Adapter<Adapter2.VH> {
     }
 
     static class VH extends RecyclerView.ViewHolder {
-
         public VH(@NonNull @NotNull View itemView) {
             super(itemView);
             vg = (VG3) itemView;
-            tv = itemView.findViewWithTag("tv1");
+            tv = itemView.findViewById(R.id.my_tv1);
         }
         VG3 vg;
         TextView tv;
     }
+
+    private static final String TAG = "Adapter2Tag";
 }
