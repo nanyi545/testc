@@ -12,10 +12,21 @@
         android:layout_width="200dp"
         android:layout_height="match_parent"/>
 
-    <Button
-        android:id="@+id/shift"
-        android:text="shift"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/shift"
+            android:text="shift"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn2"
+            android:text="notifyAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
 
 </LinearLayout>

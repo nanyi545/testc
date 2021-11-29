@@ -11,8 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.ww.performancechore.R;
-import com.ww.performancechore.rv.rv.Logger;
 import com.ww.performancechore.rv.rv.RecyclerView;
+import com.ww.performancechore.rv.util.Logger;
 import com.ww.performancechore.rv.util.VG3;
 
 import org.jetbrains.annotations.NotNull;

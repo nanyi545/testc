@@ -1,12 +1,9 @@
-package com.ww.performancechore.rv.rv;
+package com.ww.performancechore.rv.util;
 
 import android.util.Log;
 import android.view.View;
 
 public class Logger {
-
-
-
 
     public static String currentLocation() {
         StackTraceElement classMethod = new Throwable().getStackTrace()[1];
@@ -15,7 +12,6 @@ public class Logger {
         return fullClass + "." + currMethod;
     }
 
-
     public static void log(String TAG, String str){
         StackTraceElement classMethod = new Throwable().getStackTrace()[1];
         String   currMethod = classMethod.getMethodName();
@@ -23,6 +19,8 @@ public class Logger {
         Log.d(TAG,"called at:"+fullClass+"."+currMethod+"  content:"+str);
     }
 
+    public static final String RECYCLERVIEW_TAG = "RecyclerView";
+    public static final String ADAPTER2_TAG = "Adapter2Tag";
 
     public static String getModeStr(int mode){
         if(mode== View.MeasureSpec.EXACTLY){
@@ -36,6 +34,5 @@ public class Logger {
         }
         return "non??";
     }
-
 
 }

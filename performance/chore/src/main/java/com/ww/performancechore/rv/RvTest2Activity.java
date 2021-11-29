@@ -8,7 +8,6 @@ import android.view.View;
 
 import com.ww.performancechore.R;
 import com.ww.performancechore.rv.rv.LinearLayoutManager;
-import com.ww.performancechore.rv.rv.Logger;
 import com.ww.performancechore.rv.rv.RecyclerView;
 
 
@@ -36,6 +35,12 @@ public class RvTest2Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 adapter2.add();
+            }
+        });
+        findViewById(R.id.btn2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter2.notifyDataSetChanged();
             }
         });
 
