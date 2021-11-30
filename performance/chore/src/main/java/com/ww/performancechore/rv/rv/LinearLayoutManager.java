@@ -32,6 +32,8 @@ import androidx.annotation.RestrictTo;
 import androidx.core.os.TraceCompat;
 import androidx.core.view.ViewCompat;
 
+import com.ww.performancechore.rv.util.Logger;
+
 import java.util.List;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY;
@@ -577,6 +579,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
         if (DEBUG) {
             Log.d(TAG, "Anchor info:" + mAnchorInfo);
         }
+        Logger.log(Logger.LLM_TAG,"Anchor info:" + mAnchorInfo );
 
         // LLM may decide to layout items for "extra" pixels to account for scrolling target,
         // caching or predictive animations.
@@ -1579,6 +1582,8 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
         }
         int remainingSpace = layoutState.mAvailable + layoutState.mExtraFillSpace;
         LayoutChunkResult layoutChunkResult = mLayoutChunkResult;
+
+        //** ww:  measure each child and re-calculate remainingSpace --->
         while ((layoutState.mInfinite || remainingSpace > 0) && layoutState.hasMore(state)) {
             layoutChunkResult.resetInternal();
             if (RecyclerView.VERBOSE_TRACING) {
@@ -1624,6 +1629,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
 
     void layoutChunk(RecyclerView.Recycler recycler, RecyclerView.State state,
                      LayoutState layoutState, LayoutChunkResult result) {
+        Logger.log(Logger.LLM_TAG,"---layoutChunk---"  );
         View view = layoutState.next(recycler);
         if (view == null) {
             if (DEBUG && layoutState.mScrapList == null) {

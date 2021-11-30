@@ -2,9 +2,10 @@ package com.ww.performancechore.rv.util;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-public class VG3 extends RelativeLayout {
+public class VG3 extends FrameLayout {
     public VG3(Context context) {
         super(context);
     }

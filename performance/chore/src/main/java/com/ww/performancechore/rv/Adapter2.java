@@ -53,13 +53,15 @@ public class Adapter2 extends RecyclerView.Adapter<Adapter2.VH> {
 //        VG3 vg = new VG3(parent.getContext());
 //        vg.setLayoutParams(p3);   // why this will cause collapse .....
 
-        Logger.log(TAG,"   k"+vg.getKey()+" w:"+vg.getLayoutParams().width+"  h:"+vg.getLayoutParams().height);
+        Logger.log(Logger.ADAPTER2_TAG,"   k"+vg.getKey()+" w:"+vg.getLayoutParams().width+"  h:"+vg.getLayoutParams().height);
 
         return new VH(vg);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull VH holder, int position) {
+        Logger.log(Logger.ADAPTER2_TAG,"   position"+position);
+
         if(active==position){
 //            holder.tv.setLayoutParams(p5);
             holder.tv.setText("**** item index:"+position+"  holder key:"+holder.vg.getKey());
