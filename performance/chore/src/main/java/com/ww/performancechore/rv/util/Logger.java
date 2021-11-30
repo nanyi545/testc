@@ -19,7 +19,7 @@ public class Logger {
         StackTraceElement classMethod = new Throwable().getStackTrace()[1];
         String   currMethod = classMethod.getMethodName();
         String   fullClass  = classMethod.getClassName();
-        Log.d(TAG,"called at:"+fullClass+"."+currMethod+"  content:"+str);
+        Log.d("mylogger"+TAG,"called at:"+fullClass+"."+currMethod+"  content:"+str);
     }
 
     public static final String RECYCLERVIEW_TAG = "RecyclerView";

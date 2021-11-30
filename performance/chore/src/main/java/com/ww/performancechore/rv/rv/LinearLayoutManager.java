@@ -33,6 +33,7 @@ import androidx.core.os.TraceCompat;
 import androidx.core.view.ViewCompat;
 
 import com.ww.performancechore.rv.util.Logger;
+import com.ww.performancechore.rv.util.VG3;
 
 import java.util.List;
 
@@ -1629,7 +1630,14 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
 
     void layoutChunk(RecyclerView.Recycler recycler, RecyclerView.State state,
                      LayoutState layoutState, LayoutChunkResult result) {
-        Logger.log(Logger.LLM_TAG,"---layoutChunk---"  );
+
+        /**
+         *
+         * ww:  this calls  -->
+         *    com.ww.performancechore.rv.rv.RecyclerView.Adapter#onCreateViewHolder(android.view.ViewGroup, int) /
+         *    com.ww.performancechore.rv.rv.RecyclerView.Adapter#onBindViewHolder(com.ww.performancechore.rv.rv.RecyclerView.ViewHolder, int)
+         *
+         */
         View view = layoutState.next(recycler);
         if (view == null) {
             if (DEBUG && layoutState.mScrapList == null) {
@@ -1641,6 +1649,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
             return;
         }
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) view.getLayoutParams();
+        Logger.log(Logger.LLM_TAG,"---layoutChunk---pw:"+params.width+"  ph:"+params.height  );
         if (layoutState.mScrapList == null) {
             if (mShouldReverseLayout == (layoutState.mLayoutDirection
                     == LayoutState.LAYOUT_START)) {
@@ -2303,6 +2312,8 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
          * @return The next element that we should layout.
          */
         View next(RecyclerView.Recycler recycler) {
+            Logger.log(Logger.LLM_TAG,"next    mScrapList!=null:" + (mScrapList!=null)+"   mCurrentPosition:"+mCurrentPosition );
+            //  ww:  when is mScrapList!=null ??????   todo
             if (mScrapList != null) {
                 return nextViewFromScrapList();
             }

@@ -14,9 +14,15 @@ import com.ww.performancechore.rv.util.VG3;
 
 
 /**
- *  https://blog.csdn.net/qq_33275597/article/details/93849695
  *
+ * 1
+ *  https://blog.csdn.net/qq_33275597/article/details/93849695
  *  https://android.jlelse.eu/anatomy-of-recyclerview-part-1-a-search-for-a-viewholder-404ba3453714
+ *
+ *
+ * 2 RecyclerView缓存原理，有图有真相
+ * https://juejin.cn/post/6844903661726859271
+ *
  *
  */
 public class RvTest2Activity extends Activity {
