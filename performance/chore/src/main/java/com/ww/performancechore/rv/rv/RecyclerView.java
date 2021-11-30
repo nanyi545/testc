@@ -5925,7 +5925,17 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
      * may be repositioned by a LayoutManager without remeasurement.</p>
      */
     public final class Recycler {
+
+        /**
+         * ww:
+         * ArrayList mAttachedScrap：未与RecyclerView分离的ViewHolder列表,如果仍依赖于 RecyclerView （比如已经滑动出可视范围，但还没有被移除掉），但已经被标记移除的 ItemView 集合会被添加到 mAttachedScrap 中
+         * 按照id和position来查找ViewHolder
+         */
         final ArrayList<ViewHolder> mAttachedScrap = new ArrayList<>();
+
+        /**
+         * ArrayList mChangedScrap：表示数据已经改变的viewHolder列表,存储 notifXXX 方法时需要改变的 ViewHolder,匹配机制按照position和id进行匹配
+         */
         ArrayList<ViewHolder> mChangedScrap = null;
 
         final ArrayList<ViewHolder> mCachedViews = new ArrayList<ViewHolder>();
@@ -6174,6 +6184,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                         + "(" + position + "). Item count:" + mState.getItemCount()
                         + exceptionLabel());
             }
+            Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,"   ----  tryGetViewHolderForPositionByDeadline    position:" + (position)+"   dryRun:"+dryRun );
             boolean fromScrapOrHiddenOrCache = false;
             ViewHolder holder = null;
             // 0) If there is a changed scrap, try to find from there

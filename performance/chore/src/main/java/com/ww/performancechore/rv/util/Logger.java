@@ -24,6 +24,7 @@ public class Logger {
 
     public static final String RECYCLERVIEW_TAG = "RecyclerView";
     public static final String LLM_TAG = "LinearLayoutManager";
+    public static final String RECYCLERVIEW_RECYCLER_TAG = "RecyclerView#RECYCLER";
     public static final String ADAPTER2_TAG = "Adapter2Tag";
 
     public static String getModeStr(int mode){

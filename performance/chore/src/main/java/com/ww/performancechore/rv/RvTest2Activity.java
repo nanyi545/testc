@@ -23,6 +23,19 @@ import com.ww.performancechore.rv.util.VG3;
  * 2 RecyclerView缓存原理，有图有真相
  * https://juejin.cn/post/6844903661726859271
  *
+ * ----------------
+ * systrace
+ *
+ * https://www.androidperformance.com/2019/05/28/Android-Systrace-About/
+ *
+ * --------
+ *
+ *
+ * RenderThread
+ *
+ * https://juejin.cn/post/6844903432642363399
+ *
+ *
  *
  */
 public class RvTest2Activity extends Activity {
@@ -40,6 +53,7 @@ public class RvTest2Activity extends Activity {
      *
      * ?????
      * https://www.jianshu.com/p/733c7e9fb284
+     *
      *
      *
      */
