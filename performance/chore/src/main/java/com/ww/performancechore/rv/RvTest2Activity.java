@@ -10,6 +10,7 @@ import android.view.View;
 import com.ww.performancechore.R;
 import com.ww.performancechore.rv.rv.LinearLayoutManager;
 import com.ww.performancechore.rv.rv.RecyclerView;
+import com.ww.performancechore.rv.util.Logger;
 import com.ww.performancechore.rv.util.VG3;
 
 
@@ -72,9 +73,7 @@ public class RvTest2Activity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rv_test2);
 
-
 //        testMeasureTimes();
-
 
         rv1 = findViewById(R.id.rv1);
         rv1.setLayoutManager(new LinearLayoutManager(this));
@@ -101,4 +100,5 @@ public class RvTest2Activity extends Activity {
         });
 
     }
+
 }

@@ -48,4 +48,12 @@ public class Logger {
         return "non??";
     }
 
+    public static void traceMarker(){
+        try {
+            Thread.sleep(33);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

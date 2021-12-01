@@ -3170,6 +3170,11 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent e) {
+        // ww:  testing ... todo remove this  ...
+//        if(true){
+//            return false;
+//        }
+
         if (mLayoutSuppressed) {
             // When layout is suppressed,  RV does not intercept the motion event.
             // A child view e.g. a button may still get the click.
@@ -3224,6 +3229,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                 if (canScrollVertically) {
                     nestedScrollAxis |= ViewCompat.SCROLL_AXIS_VERTICAL;
                 }
+                Logger.log(Logger.RECYCLERVIEW_TAG, "onInterceptTouchEvent   startNestedScroll   mScrollState:"+mScrollState);
                 startNestedScroll(nestedScrollAxis, TYPE_TOUCH);
                 break;
 
@@ -3277,7 +3283,9 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                 cancelScroll();
             }
         }
-        return mScrollState == SCROLL_STATE_DRAGGING;
+        boolean b = (mScrollState == SCROLL_STATE_DRAGGING);
+        Logger.log(Logger.RECYCLERVIEW_TAG, "onInterceptTouchEvent:"+b+"  action:"+action+"   mScrollState:"+mScrollState);
+        return b;
     }
 
     @Override
@@ -3290,8 +3298,13 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         super.requestDisallowInterceptTouchEvent(disallowIntercept);
     }
 
+    /**
+     * ww:
+     *    if intercept return false , and child view does not handle touch event  ----->  dispatchTouchEvent will still call onTouchEvent ....
+     */
     @Override
     public boolean onTouchEvent(MotionEvent e) {
+        Logger.log(Logger.RECYCLERVIEW_TAG, "onTouchEvent  action:"+e.getActionMasked());
         if (mLayoutSuppressed || mIgnoreMotionEventTillDown) {
             return false;
         }
@@ -3448,7 +3461,6 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             mVelocityTracker.addMovement(vtev);
         }
         vtev.recycle();
-
         return true;
     }
 

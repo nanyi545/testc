@@ -2,6 +2,8 @@ package com.ww.performancechore.rv.util;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
@@ -49,4 +51,24 @@ public class VG3 extends FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         timer.end(key,"onMeasure");
     }
+
+    //  todo .... this has something to do with rv onInterceptTouchEvent/onTouchEvent
+    //             super ---> return false ...
+//    @Override
+//    public boolean onInterceptTouchEvent(MotionEvent ev) {
+//        boolean b = super.onInterceptTouchEvent(ev);
+//        Logger.traceMarker();
+//        Log.d("VG3","VG3 onInterceptTouchEvent:"+b);
+//        return b;
+//    }
+//
+//    @Override
+//    public boolean onTouchEvent(MotionEvent event) {
+//        boolean b = super.onTouchEvent(event);
+//        Logger.traceMarker();
+//        Log.d("VG3","VG3 onTouchEvent:"+b);
+//        return b;
+//    }
+
+
 }
