@@ -20,6 +20,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ww.performancechore.rv.util.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -280,6 +282,8 @@ class ChildHelper {
      */
     void detachViewFromParent(int index) {
         final int offset = getOffset(index);
+        // ww:   what is offset ?  todo
+        Logger.log(Logger.ChildHelper_TAG," detachViewFromParent    index:"+index+"   offset:"+offset);
         mBucket.remove(offset);
         mCallback.detachViewFromParent(offset);
         if (DEBUG) {

@@ -631,6 +631,8 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
         }
 
         onAnchorReady(recycler, state, mAnchorInfo, firstLayoutDirection);
+        Logger.log(Logger.LLM_TAG,"----detachAndScrapAttachedViews----" );
+        // ww:  during layout  ....   Temporarily detach and scrap all currently attached child views
         detachAndScrapAttachedViews(recycler);
         mLayoutState.mInfinite = resolveIsInfinite();
         mLayoutState.mIsPreLayout = state.isPreLayout();

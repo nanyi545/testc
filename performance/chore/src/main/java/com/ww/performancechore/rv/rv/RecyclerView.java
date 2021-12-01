@@ -5934,6 +5934,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         final ArrayList<ViewHolder> mAttachedScrap = new ArrayList<>();
 
         /**
+         * ww:
          * ArrayList mChangedScrap：表示数据已经改变的viewHolder列表,存储 notifXXX 方法时需要改变的 ViewHolder,匹配机制按照position和id进行匹配
          */
         ArrayList<ViewHolder> mChangedScrap = null;
@@ -5948,6 +5949,11 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
 
         RecycledViewPool mRecyclerPool;
 
+        /**
+         *
+         * ww:
+         * ViewCacheExtension mViewCacheExtension：开发者可自定义的一层缓存，是虚拟类ViewCacheExtension的一个实例，开发者可实现方法getViewForPositionAndType(Recycler recycler, int position, int type)来实现自己的缓存。
+         */
         private ViewCacheExtension mViewCacheExtension;
 
         static final int DEFAULT_CACHE_SIZE = 2;
@@ -6184,7 +6190,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                         + "(" + position + "). Item count:" + mState.getItemCount()
                         + exceptionLabel());
             }
-            Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,"   ----  tryGetViewHolderForPositionByDeadline    position:" + (position)+"   dryRun:"+dryRun );
+            Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,":tryGetViewHolderForPositionByDeadline   position:" + (position) +"  mState.getItemCount():" +mState.getItemCount());
             boolean fromScrapOrHiddenOrCache = false;
             ViewHolder holder = null;
             // 0) If there is a changed scrap, try to find from there
@@ -6196,6 +6202,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             if (holder == null) {
                 holder = getScrapOrHiddenOrCachedHolderForPosition(position, dryRun);
                 if (holder != null) {
+                    Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,":tryGetViewHolderForPositionByDeadline   111:"  );
                     if (!validateViewHolderForOffsetPosition(holder)) {
                         // recycle holder (and unscrap if relevant) since it can't be used
                         if (!dryRun) {
@@ -6694,7 +6701,9 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
          * @return a ViewHolder that can be re-used for this position.
          */
         ViewHolder getScrapOrHiddenOrCachedHolderForPosition(int position, boolean dryRun) {
+
             final int scrapCount = mAttachedScrap.size();
+            Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,":getScrapOrHiddenOrCachedHolderForPosition   scrapCount:"+scrapCount  );
 
             // Try first for an exact, non-invalid match from scrap.
             for (int i = 0; i < scrapCount; i++) {
@@ -6702,6 +6711,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                 if (!holder.wasReturnedFromScrap() && holder.getLayoutPosition() == position
                         && !holder.isInvalid() && (mState.mInPreLayout || !holder.isRemoved())) {
                     holder.addFlags(ViewHolder.FLAG_RETURNED_FROM_SCRAP);
+                    Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,":getScrapOrHiddenOrCachedHolderForPosition   ViewHolder.FLAG_RETURNED_FROM_SCRAP    i:" + i  );
                     return holder;
                 }
             }
@@ -9215,6 +9225,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
 
         private void scrapOrRecycleView(Recycler recycler, int index, View view) {
             final ViewHolder viewHolder = getChildViewHolderInt(view);
+            Logger.log(Logger.LM_TAG,"----scrapOrRecycleView---- index:"+index+"  b1:" +viewHolder.shouldIgnore()+"  b2:"+viewHolder.isInvalid()+"  b3:"+viewHolder.isRemoved());
             if (viewHolder.shouldIgnore()) {
                 if (DEBUG) {
                     Log.d(TAG, "ignoring view " + viewHolder);

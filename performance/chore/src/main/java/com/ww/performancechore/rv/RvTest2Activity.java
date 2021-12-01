@@ -23,6 +23,11 @@ import com.ww.performancechore.rv.util.VG3;
  * 2 RecyclerView缓存原理，有图有真相
  * https://juejin.cn/post/6844903661726859271
  *
+ *
+ *
+ *
+ *
+ *
  * ----------------
  * systrace
  *
@@ -86,6 +91,12 @@ public class RvTest2Activity extends Activity {
             @Override
             public void onClick(View v) {
                 adapter2.notifyDataSetChanged();
+            }
+        });
+        findViewById(R.id.btn3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rv1.smoothScrollBy(0,500);
             }
         });
 
