@@ -35,6 +35,9 @@ public class Logger {
     public static final String ADAPTER2_TAG = "Adapter2Tag";
     public static final String ChildHelper_TAG = "ChildHelper";
 
+
+    public static final String SCROLL_TAG = "scrollBy";
+
     public static String getModeStr(int mode){
         if(mode== View.MeasureSpec.EXACTLY){
             return "EXACTLY";

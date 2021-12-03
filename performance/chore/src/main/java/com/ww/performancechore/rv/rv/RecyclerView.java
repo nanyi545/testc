@@ -1940,12 +1940,24 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
      * @param y  The amount of vertical scroll request
      * @param ev The originating MotionEvent, or null if not from a touch event.
      * @return Whether any scroll was consumed in either direction.
+     *
+     *
+     * ww:
+     *
+     * scrollByInternal
+     * --> scrollStep()
+     * --> LayoutManager#scrollVerticallyBy()
+     * --> LayoutManager#scrollBy()
+     * --> LayoutManager#updateLayoutState() --> fill()
+     *
+     *
      */
     boolean scrollByInternal(int x, int y, MotionEvent ev) {
         int unconsumedX = 0;
         int unconsumedY = 0;
         int consumedX = 0;
         int consumedY = 0;
+        Logger.log(Logger.RECYCLERVIEW_TAG, "scrollByInternal:");
 
         consumePendingUpdateOperations();
         if (mAdapter != null) {
@@ -3406,6 +3418,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                             canScrollVertically ? dy : 0,
                             mReusableIntPair, mScrollOffset, TYPE_TOUCH
                     )) {
+                        Logger.log(Logger.RECYCLERVIEW_TAG, "onTouchEvent  dispatchNestedPreScroll:");
                         dx -= mReusableIntPair[0];
                         dy -= mReusableIntPair[1];
                         // Updated the nested offsets
@@ -3422,6 +3435,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                             canScrollHorizontally ? dx : 0,
                             canScrollVertically ? dy : 0,
                             e)) {
+                        Logger.log(Logger.RECYCLERVIEW_TAG, "onTouchEvent  scrollByInternal:");
                         getParent().requestDisallowInterceptTouchEvent(true);
                     }
                     if (mGapWorker != null && (dx != 0 || dy != 0)) {
@@ -3540,7 +3554,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
 
     @Override
     protected void onMeasure(int widthSpec, int heightSpec) {
-        Logger.log(Logger.RECYCLERVIEW_TAG, "");
+        Logger.log(Logger.RECYCLERVIEW_TAG, " ---onMeasure--- ");
         if (mLayout == null) {
             defaultOnMeasure(widthSpec, heightSpec);
             return;

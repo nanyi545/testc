@@ -1243,7 +1243,10 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
         mLayoutState.mExtraFillSpace = layoutToEnd ? extraForEnd : extraForStart;
         mLayoutState.mNoRecycleSpace = layoutToEnd ? extraForStart : extraForEnd;
         int scrollingOffset;
+        Logger.log(Logger.LLM_TAG,Logger.SCROLL_TAG + " updateLayoutState   layoutToEnd:"+layoutToEnd);
         if (layoutToEnd) {
+            // ww: scroll down
+
             mLayoutState.mExtraFillSpace += mOrientationHelper.getEndPadding();
             // get the first child in the direction we are going
             final View child = getChildClosestToEnd();
@@ -1252,11 +1255,22 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
                     : LayoutState.ITEM_DIRECTION_TAIL;
             mLayoutState.mCurrentPosition = getPosition(child) + mLayoutState.mItemDirection;
             mLayoutState.mOffset = mOrientationHelper.getDecoratedEnd(child);
+            // ww:  !!!!   scrollingOffset: calculate how much we can scroll without adding new children
+            //
+            //           getDecoratedEnd: end of the (child) view including its decoration and margin
+            //           getEndAfterPadding: The end boundary for this RV
+            //
             // calculate how much we can scroll without adding new children (independent of layout)
             scrollingOffset = mOrientationHelper.getDecoratedEnd(child)
                     - mOrientationHelper.getEndAfterPadding();
 
+            Logger.log(Logger.LLM_TAG,Logger.SCROLL_TAG + " mLayoutState.mItemDirection:"+mLayoutState.mItemDirection+"  mLayoutState.mCurrentPosition:"+mLayoutState.mCurrentPosition
+            +" mLayoutState.mOffset:"+mLayoutState.mOffset+"   scrollingOffset:"+scrollingOffset+"    EndAferPadding:"+mOrientationHelper.getEndAfterPadding());
+
+
         } else {
+            // ww: scroll up
+
             final View child = getChildClosestToStart();
             mLayoutState.mExtraFillSpace += mOrientationHelper.getStartAfterPadding();
             mLayoutState.mItemDirection = mShouldReverseLayout ? LayoutState.ITEM_DIRECTION_TAIL
@@ -1389,12 +1403,15 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
             return 0;
         }
         ensureLayoutState();
+        Logger.log(Logger.LLM_TAG,Logger.SCROLL_TAG+ "  delta:"+delta);
         mLayoutState.mRecycle = true;
         final int layoutDirection = delta > 0 ? LayoutState.LAYOUT_END : LayoutState.LAYOUT_START;
         final int absDelta = Math.abs(delta);
         updateLayoutState(layoutDirection, absDelta, true, state);
-        final int consumed = mLayoutState.mScrollingOffset
-                + fill(recycler, mLayoutState, state, false);
+        Logger.log(Logger.LLM_TAG,Logger.SCROLL_TAG+ "  0000   mLayoutState.mScrollingOffset:"+mLayoutState.mScrollingOffset);
+        int t = fill(recycler, mLayoutState, state, false);
+        final int consumed = mLayoutState.mScrollingOffset + t;
+        Logger.log(Logger.LLM_TAG,Logger.SCROLL_TAG+ "  1111  consumed:"+consumed+"   mLayoutState.mScrollingOffset:"+mLayoutState.mScrollingOffset+"   fill:"+t);
         if (consumed < 0) {
             if (DEBUG) {
                 Log.d(TAG, "Don't have any more elements to scroll");
@@ -1562,6 +1579,11 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
     }
 
     /**
+     *
+     * ww:fill   The magic function
+     *
+     *
+     *
      * The magic functions :). Fills the given layout, defined by the layoutState. This is fairly
      * independent from the rest of the {@link LinearLayoutManager}
      * and with little change, can be made publicly available as a helper class.
@@ -1576,6 +1598,8 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
              RecyclerView.State state, boolean stopOnFocusable) {
         // max offset we should set is mFastScroll + available
         final int start = layoutState.mAvailable;
+        Logger.log(Logger.LLM_TAG,Logger.SCROLL_TAG + " fill---start:" + start  );
+
         if (layoutState.mScrollingOffset != LayoutState.SCROLLING_OFFSET_NaN) {
             // TODO ugly bug fix. should not happen
             if (layoutState.mAvailable < 0) {
@@ -1592,6 +1616,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
             if (RecyclerView.VERBOSE_TRACING) {
                 TraceCompat.beginSection("LLM LayoutChunk");
             }
+            Logger.log(Logger.LLM_TAG,Logger.SCROLL_TAG + " fill---layoutChunk:"   );
             layoutChunk(recycler, state, layoutState, layoutChunkResult);
             if (RecyclerView.VERBOSE_TRACING) {
                 TraceCompat.endSection();

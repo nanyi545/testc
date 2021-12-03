@@ -92,10 +92,17 @@ public class RvTest2Activity extends Activity {
                 adapter2.notifyDataSetChanged();
             }
         });
+        findViewById(R.id.btn3_1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rv1.smoothScrollBy(0,-1);
+            }
+        });
         findViewById(R.id.btn3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rv1.smoothScrollBy(0,500);
+                rv1.smoothScrollBy(0,1);
+//                rv1.invalidate();
             }
         });
 

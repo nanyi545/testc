@@ -79,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         // nested scroll
-//        Intent i =new Intent(MainActivity.this, NestedScrollActivity.class);
-//        startActivity(i);
+        Intent i =new Intent(MainActivity.this, NestedScrollActivity.class);
+        startActivity(i);
 
 
         // selector
