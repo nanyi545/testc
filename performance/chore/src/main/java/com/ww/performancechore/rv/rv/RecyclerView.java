@@ -1948,8 +1948,13 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
      * --> scrollStep()
      * --> LayoutManager#scrollVerticallyBy()
      * --> LayoutManager#scrollBy()
-     * --> LayoutManager#updateLayoutState() --> fill()
-     *
+     *  --> LayoutManager#updateLayoutState() --> fill()
+     * --> OrientationHelper#offsetChildren(int)
+     * --> RecyclerView.LayoutManager#offsetChildrenVertical(int)
+     *     RecyclerView.LayoutManager#offsetChildrenHorizontal(int)
+     * --> RecyclerView#offsetChildrenHorizontal(int)
+     *     RecyclerView#offsetChildrenVertical(int)
+     * --> use ChildHelper ---> to call View#offsetTopAndBottom(int) / View#offsetLeftAndRight(int)
      *
      */
     boolean scrollByInternal(int x, int y, MotionEvent ev) {

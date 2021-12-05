@@ -13,6 +13,7 @@ import com.ww.performancechore.async_inflate.InflatorActivity;
 import com.ww.performancechore.mem.TestLargeClassAPI;
 import com.ww.performancechore.recy_scroll.RVTestActivity;
 import com.ww.performancechore.rv.RvTest2Activity;
+import com.ww.performancechore.rv.TestOffsetActivity;
 import com.ww.performancechore.stacktest.ActivityA;
 import com.ww.performancechore.webview.WebTestActivity;
 
@@ -74,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
 
                 //  rv fundamental
                 startActivity(new Intent(MainActivity.this, RvTest2Activity.class ));
+                //  test ui methods
+//                startActivity(new Intent(MainActivity.this, TestOffsetActivity.class ));
 
 //                testMediaCodec();
 

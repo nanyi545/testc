@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ww.performancechore.rv.util.VG3 xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/myroot"
+    android:orientation="vertical"
+    tools:context=".rv.TestOffsetActivity">
+
+    <TextView
+        android:background="#900"
+        android:layout_marginTop="100dp"
+        android:id="@+id/tv1"
+        android:text="i am text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:text="move"
+        android:id="@+id/btn11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</com.ww.performancechore.rv.util.VG3>

@@ -1265,7 +1265,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
                     - mOrientationHelper.getEndAfterPadding();
 
             Logger.log(Logger.LLM_TAG,Logger.SCROLL_TAG + " mLayoutState.mItemDirection:"+mLayoutState.mItemDirection+"  mLayoutState.mCurrentPosition:"+mLayoutState.mCurrentPosition
-            +" mLayoutState.mOffset:"+mLayoutState.mOffset+"   scrollingOffset:"+scrollingOffset+"    EndAferPadding:"+mOrientationHelper.getEndAfterPadding());
+            +" mLayoutState.mOffset:"+mLayoutState.mOffset+"   scrollingOffset:"+scrollingOffset+"    EndAferPadding:"+mOrientationHelper.getEndAfterPadding()+"  canUseExistingSpace:"+canUseExistingSpace+"   requiredSpace:"+requiredSpace);
 
 
         } else {
@@ -1409,9 +1409,9 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
         final int absDelta = Math.abs(delta);
         updateLayoutState(layoutDirection, absDelta, true, state);
         Logger.log(Logger.LLM_TAG,Logger.SCROLL_TAG+ "  0000   mLayoutState.mScrollingOffset:"+mLayoutState.mScrollingOffset);
+        // ww:   fill --->  Number of pixels that it added
         int t = fill(recycler, mLayoutState, state, false);
         final int consumed = mLayoutState.mScrollingOffset + t;
-        Logger.log(Logger.LLM_TAG,Logger.SCROLL_TAG+ "  1111  consumed:"+consumed+"   mLayoutState.mScrollingOffset:"+mLayoutState.mScrollingOffset+"   fill:"+t);
         if (consumed < 0) {
             if (DEBUG) {
                 Log.d(TAG, "Don't have any more elements to scroll");
@@ -1419,6 +1419,9 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
             return 0;
         }
         final int scrolled = absDelta > consumed ? layoutDirection * consumed : delta;
+        Logger.log(Logger.LLM_TAG,Logger.SCROLL_TAG+ "  1111  consumed:"+consumed+"  scrolled:"+scrolled+"  mLayoutState.mScrollingOffset:"+mLayoutState.mScrollingOffset+"   fill:"+t+"  mOrientationHelper:"+mOrientationHelper.getClass().getName());
+
+        //    ww:  here is the actual scroll  !!!
         mOrientationHelper.offsetChildren(-scrolled);
         if (DEBUG) {
             Log.d(TAG, "scroll req: " + delta + " scrolled: " + scrolled);
@@ -1608,9 +1611,12 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
             recycleByLayoutState(recycler, layoutState);
         }
         int remainingSpace = layoutState.mAvailable + layoutState.mExtraFillSpace;
+        Logger.log(Logger.LLM_TAG,Logger.SCROLL_TAG + " fill---start:" + start +"  remainingSpace:"+remainingSpace +"   mInfinite:"+layoutState.mInfinite+"  hasMore:"+layoutState.hasMore(state));
+
         LayoutChunkResult layoutChunkResult = mLayoutChunkResult;
 
         //** ww:  measure each child and re-calculate remainingSpace --->
+        //        remainingSpace --> the space we need to fill ( if remainingSpace<0 , it means the last view is not fully shown)
         while ((layoutState.mInfinite || remainingSpace > 0) && layoutState.hasMore(state)) {
             layoutChunkResult.resetInternal();
             if (RecyclerView.VERBOSE_TRACING) {

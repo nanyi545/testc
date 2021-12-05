@@ -37,6 +37,8 @@ public class Logger {
 
 
     public static final String SCROLL_TAG = "scrollBy";
+    public static final String UTIL_TAG = "UTIL_TAG";
+
 
     public static String getModeStr(int mode){
         if(mode== View.MeasureSpec.EXACTLY){

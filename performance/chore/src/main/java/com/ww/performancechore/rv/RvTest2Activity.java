@@ -16,6 +16,15 @@ import com.ww.performancechore.rv.util.VG3;
 
 /**
  *
+ * keys:
+ * wwnow  previous location
+ * ww:  key positions ..
+ *
+ *
+ *
+ *
+ *
+ *
  * 1
  *  https://blog.csdn.net/qq_33275597/article/details/93849695
  *  https://android.jlelse.eu/anatomy-of-recyclerview-part-1-a-search-for-a-viewholder-404ba3453714
@@ -101,7 +110,7 @@ public class RvTest2Activity extends Activity {
         findViewById(R.id.btn3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rv1.smoothScrollBy(0,1);
+                rv1.smoothScrollBy(0,2);
 //                rv1.invalidate();
             }
         });

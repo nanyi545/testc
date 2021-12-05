@@ -19,6 +19,8 @@ package com.ww.performancechore.rv.rv;
 import android.graphics.Rect;
 import android.view.View;
 
+import com.ww.performancechore.rv.util.Logger;
+
 /**
  * Helper class for LayoutManagers to abstract measurements depending on the View's orientation.
  * <p>
@@ -238,6 +240,7 @@ public abstract class OrientationHelper {
      */
     public static OrientationHelper createOrientationHelper(
             RecyclerView.LayoutManager layoutManager, @RecyclerView.Orientation int orientation) {
+        Logger.log(Logger.UTIL_TAG,Logger.SCROLL_TAG+Logger.UTIL_TAG+ " orientation:"+orientation);
         switch (orientation) {
             case HORIZONTAL:
                 return createHorizontalHelper(layoutManager);
