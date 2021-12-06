@@ -36,6 +36,7 @@ public class Logger {
     public static final String ChildHelper_TAG = "ChildHelper";
 
 
+    public static final String VIEW_RECYCLE_TAG = "VIEW_RECYCLE_TAG";
     public static final String SCROLL_TAG = "scrollBy";
     public static final String UTIL_TAG = "UTIL_TAG";
 

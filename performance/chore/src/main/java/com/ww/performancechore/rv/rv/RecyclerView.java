@@ -4463,7 +4463,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        Logger.log(Logger.RECYCLERVIEW_TAG, "changed:" + changed);
+        Logger.log(Logger.RECYCLERVIEW_TAG, "onLayout    changed:" + changed);
         TraceCompat.beginSection(TRACE_ON_LAYOUT_TAG);
         dispatchLayout();
         TraceCompat.endSection();
@@ -6221,7 +6221,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                         + "(" + position + "). Item count:" + mState.getItemCount()
                         + exceptionLabel());
             }
-            Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,":tryGetViewHolderForPositionByDeadline   position:" + (position) +"  mState.getItemCount():" +mState.getItemCount());
+            Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,Logger.VIEW_RECYCLE_TAG+"_:tryGetViewHolderForPositionByDeadline   position:" + (position) +"  mState.getItemCount():" +mState.getItemCount());
             boolean fromScrapOrHiddenOrCache = false;
             ViewHolder holder = null;
             // 0) If there is a changed scrap, try to find from there
@@ -6229,11 +6229,12 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                 holder = getChangedScrapViewForPosition(position);
                 fromScrapOrHiddenOrCache = holder != null;
             }
+            Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,Logger.VIEW_RECYCLE_TAG+"_:tryGetViewHolderForPositionByDeadline   step0:"+fromScrapOrHiddenOrCache);
+
             // 1) Find by position from scrap/hidden list/cache
             if (holder == null) {
                 holder = getScrapOrHiddenOrCachedHolderForPosition(position, dryRun);
                 if (holder != null) {
-                    Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,":tryGetViewHolderForPositionByDeadline   111:"  );
                     if (!validateViewHolderForOffsetPosition(holder)) {
                         // recycle holder (and unscrap if relevant) since it can't be used
                         if (!dryRun) {
@@ -6254,6 +6255,8 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                     }
                 }
             }
+            Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,Logger.VIEW_RECYCLE_TAG+"_:tryGetViewHolderForPositionByDeadline   step1:"+fromScrapOrHiddenOrCache);
+
             if (holder == null) {
                 final int offsetPosition = mAdapterHelper.findPositionOffset(position);
                 if (offsetPosition < 0 || offsetPosition >= mAdapter.getItemCount()) {
@@ -6273,6 +6276,9 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                         fromScrapOrHiddenOrCache = true;
                     }
                 }
+                Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,Logger.VIEW_RECYCLE_TAG+"_:tryGetViewHolderForPositionByDeadline   step2:"+fromScrapOrHiddenOrCache);
+
+
                 if (holder == null && mViewCacheExtension != null) {
                     // We are NOT sending the offsetPosition because LayoutManager does not
                     // know it.
@@ -6291,6 +6297,8 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                         }
                     }
                 }
+                Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,Logger.VIEW_RECYCLE_TAG+"_:tryGetViewHolderForPositionByDeadline   step3:"+(holder != null));
+
                 if (holder == null) { // fallback to pool
                     if (DEBUG) {
                         Log.d(TAG, "tryGetViewHolderForPositionByDeadline("
@@ -6304,6 +6312,8 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                         }
                     }
                 }
+                Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,Logger.VIEW_RECYCLE_TAG+"_:tryGetViewHolderForPositionByDeadline   step4:"+(holder != null));
+
                 if (holder == null) {
                     long start = getNanoTime();
                     if (deadlineNs != FOREVER_NS
@@ -6326,6 +6336,8 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                         Log.d(TAG, "tryGetViewHolderForPositionByDeadline created new ViewHolder");
                     }
                 }
+                Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,Logger.VIEW_RECYCLE_TAG+"_:tryGetViewHolderForPositionByDeadline   createViewHolder  step5:"+(holder != null));
+
             }
 
             // This is very ugly but the only place we can grab this information
@@ -6371,6 +6383,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             }
             rvLayoutParams.mViewHolder = holder;
             rvLayoutParams.mPendingInvalidate = fromScrapOrHiddenOrCache && bound;
+            Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,Logger.VIEW_RECYCLE_TAG+"_:tryGetViewHolderForPositionByDeadline   set rvLayoutParams  mPendingInvalidate:" + rvLayoutParams.mPendingInvalidate);
             return holder;
         }
 
