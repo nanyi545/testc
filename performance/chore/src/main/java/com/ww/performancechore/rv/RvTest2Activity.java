@@ -94,13 +94,14 @@ public class RvTest2Activity extends Activity {
         findViewById(R.id.shift).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adapter2.add();
+//                adapter2.add();
+                adapter.notifyItemChanged(0);
             }
         });
         findViewById(R.id.btn2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adapter2.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
             }
         });
         findViewById(R.id.btn3_1).setOnClickListener(new View.OnClickListener() {
@@ -112,10 +113,12 @@ public class RvTest2Activity extends Activity {
         findViewById(R.id.btn3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rv1.smoothScrollBy(0,2);  //   ww:   1 will not trigger  VIEW_RECYCLE_TAG log   2 will ??  why TODO
+//                rv1.smoothScrollBy(0,2);  //   ww:   1 will not trigger  VIEW_RECYCLE_TAG log   2 will ??  why TODO
 //                rv1.invalidate();
 //                rv1.requestLayout();
 
+                // test scrap
+//                rv1.testCall1();
             }
         });
 
@@ -162,4 +165,13 @@ public class RvTest2Activity extends Activity {
 
 
 
+ **/
+
+
+/**
+ *
+ *  LinearLayoutManager#onLayoutChildren(RecyclerView.Recycler, RecyclerView.State)
+ *  - RecyclerView.LayoutManager#detachAndScrapAttachedViews(RecyclerView.Recycler)
+ *
+ *
  **/

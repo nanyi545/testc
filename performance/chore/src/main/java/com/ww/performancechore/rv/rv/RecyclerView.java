@@ -211,6 +211,15 @@ import static androidx.core.view.ViewCompat.TYPE_TOUCH;
 public class RecyclerView extends ViewGroup implements ScrollingView,
         NestedScrollingChild2, NestedScrollingChild3 {
 
+
+    /**
+     * ww:  test methods
+     */
+    public void testCall1(){
+        mLayout.detachAndScrapAttachedViews(mRecycler);
+        invalidate();
+    }
+
     static final String TAG = "RecyclerView";
 
     static final boolean DEBUG = false;
@@ -1948,13 +1957,16 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
      * --> scrollStep()
      * --> LayoutManager#scrollVerticallyBy()
      * --> LayoutManager#scrollBy()
-     *  --> LayoutManager#updateLayoutState() --> fill()
+     *  --> LayoutManager#updateLayoutState() --> fill() --> LinearLayoutManager#layoutChunk() --> LayoutState#next(RecyclerView.Recycler) --> RecyclerView.Recycler#tryGetViewHolderForPositionByDeadline( )
      * --> OrientationHelper#offsetChildren(int)
      * --> RecyclerView.LayoutManager#offsetChildrenVertical(int)
      *     RecyclerView.LayoutManager#offsetChildrenHorizontal(int)
      * --> RecyclerView#offsetChildrenHorizontal(int)
      *     RecyclerView#offsetChildrenVertical(int)
      * --> use ChildHelper ---> to call View#offsetTopAndBottom(int) / View#offsetLeftAndRight(int)
+     *
+     *
+     *
      *
      */
     boolean scrollByInternal(int x, int y, MotionEvent ev) {
@@ -9269,6 +9281,9 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             }
         }
 
+        // wwnow:  why   notifyDataSetChanged ---> will cause all views to be removed
+        //               notifyItemChanged    ---> will cause views to be detached
+        // todo  ????
         private void scrapOrRecycleView(Recycler recycler, int index, View view) {
             final ViewHolder viewHolder = getChildViewHolderInt(view);
             Logger.log(Logger.LM_TAG,"----scrapOrRecycleView---- index:"+index+"  b1:" +viewHolder.shouldIgnore()+"  b2:"+viewHolder.isInvalid()+"  b3:"+viewHolder.isRemoved());
@@ -9280,9 +9295,11 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             }
             if (viewHolder.isInvalid() && !viewHolder.isRemoved()
                     && !mRecyclerView.mAdapter.hasStableIds()) {
+                Logger.log(Logger.LM_TAG,"----scrapOrRecycleView---- index:"+index+"  removeViewAt:");
                 removeViewAt(index);
                 recycler.recycleViewHolderInternal(viewHolder);
             } else {
+                Logger.log(Logger.LM_TAG,"----scrapOrRecycleView---- index:"+index+"  detachViewAt:");
                 detachViewAt(index);
                 recycler.scrapView(view);
                 mRecyclerView.mViewInfoStore.onViewDetached(viewHolder);
