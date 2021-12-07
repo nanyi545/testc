@@ -2432,6 +2432,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
         if (dx != 0 || dy != 0) {
             boolean durationSuggestsAnimation = duration == UNDEFINED_DURATION || duration > 0;
+            Logger.log(Logger.RECYCLERVIEW_TAG,Logger.SCROLL_TAG+ " smoothScrollBy   durationSuggestsAnimation:"+durationSuggestsAnimation+ "  withNestedScrolling:"+withNestedScrolling);
             if (durationSuggestsAnimation) {
                 if (withNestedScrolling) {
                     int nestedScrollAxis = ViewCompat.SCROLL_AXIS_NONE;

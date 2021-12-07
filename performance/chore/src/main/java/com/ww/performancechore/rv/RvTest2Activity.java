@@ -110,8 +110,10 @@ public class RvTest2Activity extends Activity {
         findViewById(R.id.btn3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rv1.smoothScrollBy(0,1);  //   wwnow   1 will not trigger  VIEW_RECYCLE_TAG log   2 will ??  why TODO
+//                rv1.smoothScrollBy(0,2);  //   wwnow   1 will not trigger  VIEW_RECYCLE_TAG log   2 will ??  why TODO
 //                rv1.invalidate();
+
+                rv1.requestLayout();
             }
         });
 
