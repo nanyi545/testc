@@ -59,8 +59,22 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
             parent.getDrawingRect(rect1);
             Rect rect2 = new Rect();
             child.getDrawingRect(rect2);
+            Logger.log(Logger.LLM_TAG,"rect1"+rect1);
+            Logger.log(Logger.LLM_TAG,"rect2"+rect2);
             RecyclerView.ViewHolder holder = parent.getChildViewHolder(child);
-            parent.offsetDescendantRectToMyCoords(child, rect2);
+            parent.offsetDescendantRectToMyCoords(child, rect2);   // ww: make rect2 coordinates relative to parent viewgroup
+            Logger.log(Logger.LLM_TAG,"rect2-"+rect2);
+
+            /**
+             *
+             * rect1Rect(0, 0 - 300, 1080)
+             * rect2Rect(0, 0 - 300, 150)
+             * rect2-Rect(0, 150 - 300, 300)
+             *
+             *
+             *
+             */
+
             int dy = rect2.centerY() - rect1.centerY() + 10 ;  // 10 ??
             int firstLinePosition = 2;
             if (parent.getChildAdapterPosition(child) <= firstLinePosition) {
