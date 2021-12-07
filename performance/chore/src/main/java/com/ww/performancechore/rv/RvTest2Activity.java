@@ -57,7 +57,7 @@ public class RvTest2Activity extends Activity {
 
     RecyclerView rv1;
     Adapter2 adapter2;
-
+    RecyclerView.Adapter adapter;
 
     /**
      *  why measure/layout t times ???
@@ -87,7 +87,9 @@ public class RvTest2Activity extends Activity {
         rv1 = findViewById(R.id.rv1);
         rv1.setLayoutManager(new LinearLayoutManager(this));
         adapter2 = new Adapter2();
-        rv1.setAdapter(adapter2);
+        adapter = new AdapterWithFocus();
+//        rv1.setAdapter(adapter2);
+        rv1.setAdapter(adapter);
         rv1.setItemAnimator(null);
         findViewById(R.id.shift).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,13 +112,54 @@ public class RvTest2Activity extends Activity {
         findViewById(R.id.btn3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                rv1.smoothScrollBy(0,2);  //   wwnow   1 will not trigger  VIEW_RECYCLE_TAG log   2 will ??  why TODO
+                rv1.smoothScrollBy(0,2);  //   ww:   1 will not trigger  VIEW_RECYCLE_TAG log   2 will ??  why TODO
 //                rv1.invalidate();
+//                rv1.requestLayout();
 
-                rv1.requestLayout();
             }
         });
 
     }
 
 }
+
+
+/**
+
+ original RV focus search logic ...
+
+
+
+ ------RV scroll down not near bottom---------
+  todo ??
+
+
+ -----------RV scroll down near bottom----------
+
+ ViewPostImeInputState.processKeyEvent : handle touch event ...
+
+
+ RV.focusSearch
+ -FocusFinder.findNextFocus
+ --android.view.View#addFocusables(java.util.ArrayList<android.view.View>, int, int)
+ LinearLayoutManager#onFocusSearchFailed
+ -LinearLayoutManager#updateLayoutState(canUseExistingSpace = false)
+ -LinearLayoutManager#fill
+ --LinearLayoutManager#layoutChunk
+ RecyclerView#isPreferredNextFocus.  --->  offsetDescendantRectToMyCoords(focused, mTempRect);  ??
+ offsetDescendantRectToMyCoords(next, mTempRect2);
+
+ -------->  ViewPostImeInputState.processKeyEvent -> requestFocus
+
+
+ RecyclerView#requestChildFocus
+ -RecyclerView#requestChildOnScreen
+ --LayoutManager#requestChildRectangleOnScreen(com.ww.performancechore.rv.rv.RecyclerView, android.view.View, android.graphics.Rect, boolean, boolean)
+ ---LayoutManager#getChildRectangleOnScreenScrollAmount
+ ----RecyclerView#smoothScrollBy(int, int)
+
+
+
+
+
+ **/

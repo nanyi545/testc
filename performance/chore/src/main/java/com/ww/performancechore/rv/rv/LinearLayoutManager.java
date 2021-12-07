@@ -19,6 +19,7 @@ package com.ww.performancechore.rv.rv;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -28,6 +29,7 @@ import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.core.os.TraceCompat;
 import androidx.core.view.ViewCompat;
@@ -45,6 +47,36 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY;
  */
 public class LinearLayoutManager extends RecyclerView.LayoutManager implements
         ItemTouchHelper.ViewDropHandler, RecyclerView.SmoothScroller.ScrollVectorProvider {
+
+
+    @Override
+    public boolean onRequestChildFocus(@NonNull RecyclerView parent, @NonNull RecyclerView.State state, @NonNull View child, @Nullable View focused) {
+        /**
+         * ww: this part will auto center focused view in center ...
+         */
+        try {
+            Rect rect1 = new Rect();
+            parent.getDrawingRect(rect1);
+            Rect rect2 = new Rect();
+            child.getDrawingRect(rect2);
+            RecyclerView.ViewHolder holder = parent.getChildViewHolder(child);
+            parent.offsetDescendantRectToMyCoords(child, rect2);
+            int dy = rect2.centerY() - rect1.centerY() + 10 ;  // 10 ??
+            int firstLinePosition = 2;
+            if (parent.getChildAdapterPosition(child) <= firstLinePosition) {
+                parent.smoothScrollToPosition(0);
+            } else {
+                if (dy != 0) {
+                    parent.smoothScrollBy(0, dy);
+                    // 重绘是为了选中item置顶，具体请参考getChildDrawingOrder方法
+                }
+            }
+            return true;
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return super.onRequestChildFocus(parent, state, child, focused);
+    }
 
     private static final String TAG = "LinearLayoutManager";
 

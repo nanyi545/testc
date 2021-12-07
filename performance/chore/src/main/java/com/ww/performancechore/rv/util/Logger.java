@@ -39,7 +39,7 @@ public class Logger {
     public static final String VIEW_RECYCLE_TAG = "VIEW_RECYCLE_TAG";
     public static final String SCROLL_TAG = "scrollBy";
     public static final String UTIL_TAG = "UTIL_TAG";
-
+    public static final String FOCUS_TAG = "FOCUS_TAG";
 
     public static String getModeStr(int mode){
         if(mode== View.MeasureSpec.EXACTLY){

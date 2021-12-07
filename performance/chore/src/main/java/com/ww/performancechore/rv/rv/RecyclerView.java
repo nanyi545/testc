@@ -2773,6 +2773,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
      */
     @Override
     public View focusSearch(View focused, int direction) {
+        Logger.log(Logger.RECYCLERVIEW_TAG, Logger.FOCUS_TAG+"--focusSearch   focused:"+focused+"  direction:"+direction);
         View result = mLayout.onInterceptFocusSearch(focused, direction);
         if (result != null) {
             return result;
