@@ -7,6 +7,15 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+
+    <com.ww.performancechore.ellip.EllipTv
+        android:background="#900"
+        android:text="我爱北京天安门我爱北京天安门我爱北京天安门我爱北京天安门我爱北京天安门"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"/>
+
     <Button
         android:id="@+id/tv1"
         android:layout_width="match_parent"
