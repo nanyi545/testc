@@ -32,6 +32,9 @@ public class AdapterWithFocus extends RecyclerView.Adapter<AdapterWithFocus.VH> 
     RecyclerView rv;
     LinearLayoutManager llm;
 
+    public void test1(){
+    }
+
     public AdapterWithFocus(RecyclerView rv, LinearLayoutManager llm) {
         this.rv = rv;
         this.llm = llm;
@@ -41,33 +44,26 @@ public class AdapterWithFocus extends RecyclerView.Adapter<AdapterWithFocus.VH> 
                 if(newState!=RecyclerView.SCROLL_STATE_IDLE){
                     return;
                 }
-
                 recyclerView.post(new Runnable() {
                     @Override
                     public void run() {
-
-                        Logger.log(Logger.IMG_LOAD_TAG,"onScrollStateChanged  newState:"+newState+"   s:"+llm.findFirstVisibleItemPosition()+"  e:"+llm.findLastVisibleItemPosition());
                         if(newState == RecyclerView.SCROLL_STATE_IDLE) {
-                            int s = llm.findFirstVisibleItemPosition();
-                            int e = llm.findLastVisibleItemPosition();
-                            for(int i=s;i<=e;i++){
+                            int e = llm.getChildCount();
+                            for(int i=0;i<e;i++){
                                 View v = llm.getChildAt(i);
-                                Logger.log(Logger.IMG_LOAD_TAG,"onScrollStateChanged  zzzz   i:"+i+"  v:"+(v==null));
+                                if(v==null){
+                                    continue;
+                                }
                                 RecyclerView.ViewHolder vh = rv.getChildViewHolder(v);
-                                if(vh instanceof VH){
-                                    Logger.log(Logger.IMG_LOAD_TAG,"onScrollStateChanged  111111111111   i:"+i);
+                                if(vh!=null && vh instanceof VH){
                                     VH cast = (VH) vh;
-                                    cast.resumeImageLoadingIfNotLoaded();
+                                    cast.loadImgIfNotLoaded();
                                 } else {
-                                    Logger.log(Logger.IMG_LOAD_TAG,"onScrollStateChanged  000000000000   i:"+i);
                                 }
                             }
                         }
-
                     }
                 });
-
-
             }
 
             @Override
@@ -162,16 +158,15 @@ public class AdapterWithFocus extends RecyclerView.Adapter<AdapterWithFocus.VH> 
         Button tv;
         TextView iv;
 
-        public void resumeImageLoadingIfNotLoaded(){
-            Logger.log(Logger.IMG_LOAD_TAG," resumeImageLoadingIfNotLoaded  pos:"+dataPos);
+        public void loadImgIfNotLoaded(){
+            Logger.log(Logger.IMG_LOAD_TAG," loadImgIfNotLoaded  pos:"+dataPos);
             String expectedUrl = getImgUlr(dataPos);
             String gotUrl = imgUrl;
             // img already loaded....  do nothing ...
             if(expectedUrl.equals(gotUrl) && (imgState == IMG_LOADED)){
-                Logger.log(Logger.IMG_LOAD_TAG," resumeImageLoadingIfNotLoaded --- already loaded  pos:"+dataPos);
+                Logger.log(Logger.IMG_LOAD_TAG," loadImgIfNotLoaded --- already loaded  pos:"+dataPos);
                 return;
             }
-            Logger.log(Logger.IMG_LOAD_TAG," resumeImageLoadingIfNotLoaded --- start async load  pos:"+dataPos);
             loadImgAsync(dataPos);
         }
 

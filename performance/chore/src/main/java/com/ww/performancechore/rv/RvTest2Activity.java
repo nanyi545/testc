@@ -57,7 +57,7 @@ public class RvTest2Activity extends Activity {
 
     RecyclerView rv1;
     Adapter2 adapter2;
-    RecyclerView.Adapter adapter;
+    AdapterWithFocus adapter;
     LinearLayoutManager llm;
 
     /**
@@ -129,6 +129,8 @@ public class RvTest2Activity extends Activity {
 
                 // test scrap
 //                rv1.testCall1();
+
+                adapter.test1();
             }
         });
 
