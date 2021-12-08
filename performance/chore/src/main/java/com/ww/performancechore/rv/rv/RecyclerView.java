@@ -9281,9 +9281,9 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             }
         }
 
-        // wwnow:  why   notifyDataSetChanged ---> will cause all views to be removed
+        // wwnow:        notifyDataSetChanged ---> will cause all views to be removed
         //               notifyItemChanged    ---> will cause views to be detached
-        // todo  ????
+
         private void scrapOrRecycleView(Recycler recycler, int index, View view) {
             final ViewHolder viewHolder = getChildViewHolderInt(view);
             Logger.log(Logger.LM_TAG,"----scrapOrRecycleView---- index:"+index+"  b1:" +viewHolder.shouldIgnore()+"  b2:"+viewHolder.isInvalid()+"  b3:"+viewHolder.isRemoved());

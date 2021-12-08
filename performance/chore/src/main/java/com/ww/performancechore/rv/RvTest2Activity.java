@@ -58,6 +58,7 @@ public class RvTest2Activity extends Activity {
     RecyclerView rv1;
     Adapter2 adapter2;
     RecyclerView.Adapter adapter;
+    LinearLayoutManager llm;
 
     /**
      *  why measure/layout t times ???
@@ -85,9 +86,10 @@ public class RvTest2Activity extends Activity {
 //        testMeasureTimes();
 
         rv1 = findViewById(R.id.rv1);
-        rv1.setLayoutManager(new LinearLayoutManager(this));
+        llm = new LinearLayoutManager(this);
+        rv1.setLayoutManager(llm);
         adapter2 = new Adapter2();
-        adapter = new AdapterWithFocus();
+        adapter = new AdapterWithFocus(rv1,llm);
 //        rv1.setAdapter(adapter2);
         rv1.setAdapter(adapter);
         rv1.setItemAnimator(null);
@@ -95,13 +97,21 @@ public class RvTest2Activity extends Activity {
             @Override
             public void onClick(View v) {
 //                adapter2.add();
-                adapter.notifyItemChanged(0);
+
+                int s = llm.findFirstVisibleItemPosition();
+                int e = llm.findLastVisibleItemPosition();
+                int count = e - s + 1;
+                Logger.log(Logger.A_TAG,"1------------------------");
+                adapter.notifyItemRangeChanged(s,count);
+                Logger.log(Logger.A_TAG,"2------------------------");
             }
         });
         findViewById(R.id.btn2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Logger.log(Logger.A_TAG,"1------------------------");
                 adapter.notifyDataSetChanged();
+                Logger.log(Logger.A_TAG,"2------------------------");
             }
         });
         findViewById(R.id.btn3_1).setOnClickListener(new View.OnClickListener() {

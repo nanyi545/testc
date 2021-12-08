@@ -41,6 +41,11 @@ public class Logger {
     public static final String UTIL_TAG = "UTIL_TAG";
     public static final String FOCUS_TAG = "FOCUS_TAG";
 
+    public static final String A_TAG = "A_TAG";
+
+    public static final String IMG_LOAD_TAG = "IMG_LOAD_TAG";
+
+
     public static String getModeStr(int mode){
         if(mode== View.MeasureSpec.EXACTLY){
             return "EXACTLY";

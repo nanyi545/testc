@@ -1,7 +1,6 @@
 package com.ww.performancechore.rv;
 
 import android.graphics.Color;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.ww.performancechore.R;
+import com.ww.performancechore.rv.rv.LinearLayoutManager;
 import com.ww.performancechore.rv.rv.RecyclerView;
 import com.ww.performancechore.rv.util.Logger;
 import com.ww.performancechore.rv.util.VG3;
@@ -28,6 +28,54 @@ public class AdapterWithFocus extends RecyclerView.Adapter<AdapterWithFocus.VH> 
     RelativeLayout.LayoutParams p5 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,400);
 
     int active=0;
+
+    RecyclerView rv;
+    LinearLayoutManager llm;
+
+    public AdapterWithFocus(RecyclerView rv, LinearLayoutManager llm) {
+        this.rv = rv;
+        this.llm = llm;
+        this.rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if(newState!=RecyclerView.SCROLL_STATE_IDLE){
+                    return;
+                }
+
+                recyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Logger.log(Logger.IMG_LOAD_TAG,"onScrollStateChanged  newState:"+newState+"   s:"+llm.findFirstVisibleItemPosition()+"  e:"+llm.findLastVisibleItemPosition());
+                        if(newState == RecyclerView.SCROLL_STATE_IDLE) {
+                            int s = llm.findFirstVisibleItemPosition();
+                            int e = llm.findLastVisibleItemPosition();
+                            for(int i=s;i<=e;i++){
+                                View v = llm.getChildAt(i);
+                                Logger.log(Logger.IMG_LOAD_TAG,"onScrollStateChanged  zzzz   i:"+i+"  v:"+(v==null));
+                                RecyclerView.ViewHolder vh = rv.getChildViewHolder(v);
+                                if(vh instanceof VH){
+                                    Logger.log(Logger.IMG_LOAD_TAG,"onScrollStateChanged  111111111111   i:"+i);
+                                    VH cast = (VH) vh;
+                                    cast.resumeImageLoadingIfNotLoaded();
+                                } else {
+                                    Logger.log(Logger.IMG_LOAD_TAG,"onScrollStateChanged  000000000000   i:"+i);
+                                }
+                            }
+                        }
+
+                    }
+                });
+
+
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+    }
 
     @NonNull
     @NotNull
@@ -47,6 +95,7 @@ public class AdapterWithFocus extends RecyclerView.Adapter<AdapterWithFocus.VH> 
     @Override
     public void onBindViewHolder(@NonNull @NotNull VH holder, int position) {
         Logger.log(Logger.ADAPTER2_TAG,"   position"+position);
+        holder.dataPos = position;
 
         if(active==position){
 //            holder.tv.setLayoutParams(p5);
@@ -55,7 +104,23 @@ public class AdapterWithFocus extends RecyclerView.Adapter<AdapterWithFocus.VH> 
 //            holder.tv.setLayoutParams(p4);
             holder.tv.setText("item index:"+position+"  holder key:"+holder.vg.getKey());
         }
+
+
+        holder.iv.setText("loading");
+
+        holder.setImgUrl(VH.getImgUlr(position));
+
+        if(rv.getScrollState()==RecyclerView.SCROLL_STATE_IDLE){
+            holder.setImgState(VH.IMG_STARTED);
+            holder.loadImgAsync(position);
+        } else {
+            holder.setImgState(VH.IMG_NOT_LOAD);
+        }
+
+
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -63,10 +128,25 @@ public class AdapterWithFocus extends RecyclerView.Adapter<AdapterWithFocus.VH> 
     }
 
     static class VH extends RecyclerView.ViewHolder {
+
+        private static String getImgUlr(int index){
+            return "url:"+index+".png";
+        }
+
+        private static int generateRandomDelay(){
+            int t = (int) (1000 + Math.random() * 2000);
+            return t;
+        }
+
+
+        // index of data in the list
+        int dataPos;
+
         public VH(@NonNull @NotNull View itemView) {
             super(itemView);
             vg = (VG3) itemView;
             tv = itemView.findViewById(R.id.my_tv1);
+            iv = itemView.findViewById(R.id.my_iv1);
             tv.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
@@ -80,6 +160,53 @@ public class AdapterWithFocus extends RecyclerView.Adapter<AdapterWithFocus.VH> 
         }
         VG3 vg;
         Button tv;
+        TextView iv;
+
+        public void resumeImageLoadingIfNotLoaded(){
+            Logger.log(Logger.IMG_LOAD_TAG," resumeImageLoadingIfNotLoaded  pos:"+dataPos);
+            String expectedUrl = getImgUlr(dataPos);
+            String gotUrl = imgUrl;
+            // img already loaded....  do nothing ...
+            if(expectedUrl.equals(gotUrl) && (imgState == IMG_LOADED)){
+                Logger.log(Logger.IMG_LOAD_TAG," resumeImageLoadingIfNotLoaded --- already loaded  pos:"+dataPos);
+                return;
+            }
+            Logger.log(Logger.IMG_LOAD_TAG," resumeImageLoadingIfNotLoaded --- start async load  pos:"+dataPos);
+            loadImgAsync(dataPos);
+        }
+
+        /**
+         *  0 no state
+         *  1 started
+         *  2 img loaded
+         */
+        int imgState = IMG_NOT_LOAD;
+        public static final int IMG_NOT_LOAD = 0;
+        public static final int IMG_STARTED = 1;
+        public static final int IMG_LOADED = 2;
+
+        public void setImgState(int imgState) {
+            this.imgState = imgState;
+        }
+
+        String imgUrl;
+
+        public void setImgUrl(String imgUrl) {
+            this.imgUrl = imgUrl;
+        }
+
+        public void loadImgAsync(int position){
+            Logger.log(Logger.IMG_LOAD_TAG,"start img loading  pos:"+position);
+            iv.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Logger.log(Logger.IMG_LOAD_TAG," img loading  completed  pos:"+position);
+                    iv.setText(VH.getImgUlr(position));
+                    setImgState(VH.IMG_LOADED);
+                }
+            },VH.generateRandomDelay());
+        }
+
     }
 
     private static final String TAG = "Adapter2Tag";
