@@ -15,7 +15,7 @@ public class Logger {
     private static boolean APPEND_CALLING_METHOD = false;
 
     public static void log(String TAG, String str){
-        if((TAG.equalsIgnoreCase(IMG_LOAD_TAG))){
+        if(!(TAG.equalsIgnoreCase(IMG_LOAD_TAG))){
             return;
         }
         String   currMethod = "";

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
@@ -12,15 +13,10 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/cpplib" />
             <option value="$PROJECT_DIR$/gPlugin1" />
             <option value="$PROJECT_DIR$/jlib" />
-            <option value="$PROJECT_DIR$/jlib2modify" />
             <option value="$PROJECT_DIR$/lib1" />
             <option value="$PROJECT_DIR$/lib1modifier" />
-            <option value="$PROJECT_DIR$/ndkcameratest1" />
-            <option value="$PROJECT_DIR$/performance" />
-            <option value="$PROJECT_DIR$/performance/chore" />
             <option value="$PROJECT_DIR$/pluginapk1" />
             <option value="$PROJECT_DIR$/smartcamera" />
           </set>
