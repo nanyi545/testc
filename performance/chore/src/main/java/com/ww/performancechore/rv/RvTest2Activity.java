@@ -104,6 +104,7 @@ public class RvTest2Activity extends Activity {
                 Logger.log(Logger.A_TAG,"1------------------------");
                 adapter.notifyItemRangeChanged(s,count);
                 Logger.log(Logger.A_TAG,"2------------------------");
+
             }
         });
         findViewById(R.id.btn2).setOnClickListener(new View.OnClickListener() {
@@ -112,6 +113,30 @@ public class RvTest2Activity extends Activity {
                 Logger.log(Logger.A_TAG,"1------------------------");
                 adapter.notifyDataSetChanged();
                 Logger.log(Logger.A_TAG,"2------------------------");
+
+/**
+ * ww:
+ *
+ * ------------------
+ * full change :
+ * RecyclerView.Adapter.notifyDataSetChanged
+ *
+ * RecyclerView.RecyclerViewDataObserver
+ * ---> RecyclerView#processDataSetCompletelyChanged(boolean)
+ * -----> RecyclerView#markKnownViewsInvalid()
+ * ---> RecyclerView#requestLayout()
+ *
+ *
+ *
+ * ------------------
+ * partial change:
+ *    RecyclerView.Adapter#notifyItemRangeChanged(int, int)
+ *    ---- RecyclerViewDataObserver#triggerUpdateProcessor()
+ *
+ *
+ */
+
+
             }
         });
         findViewById(R.id.btn3_1).setOnClickListener(new View.OnClickListener() {

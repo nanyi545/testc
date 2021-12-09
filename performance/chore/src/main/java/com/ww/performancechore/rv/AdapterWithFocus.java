@@ -191,15 +191,15 @@ public class AdapterWithFocus extends RecyclerView.Adapter<AdapterWithFocus.VH> 
         }
 
         public void loadImgAsync(int position){
-            Logger.log(Logger.IMG_LOAD_TAG,"start img loading  pos:"+position);
-            iv.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Logger.log(Logger.IMG_LOAD_TAG," img loading  completed  pos:"+position);
-                    iv.setText(VH.getImgUlr(position));
-                    setImgState(VH.IMG_LOADED);
-                }
-            },VH.generateRandomDelay());
+//            Logger.log(Logger.IMG_LOAD_TAG,"start img loading  pos:"+position);
+//            iv.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Logger.log(Logger.IMG_LOAD_TAG," img loading  completed  pos:"+position);
+//                    iv.setText(VH.getImgUlr(position));
+//                    setImgState(VH.IMG_LOADED);
+//                }
+//            },VH.generateRandomDelay());
         }
 
     }
