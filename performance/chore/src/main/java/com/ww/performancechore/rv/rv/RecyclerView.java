@@ -5648,6 +5648,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
         }
 
         void triggerUpdateProcessor() {
+            Logger.log(Logger.DataObserver_TAG,"----triggerUpdateProcessor-----");
             if (POST_UPDATES_ON_ANIMATION && mHasFixedSize && mIsAttached) {
                 ViewCompat.postOnAnimation(RecyclerView.this, mUpdateChildViewsRunnable);
             } else {
@@ -6101,7 +6102,9 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                 // abort - we have a deadline we can't meet
                 return false;
             }
+            Logger.log(Logger.RECYCLERVIEW_TAG,"----tryBindViewHolderByDeadline----1");
             mAdapter.bindViewHolder(holder, offsetPosition);
+            Logger.log(Logger.RECYCLERVIEW_TAG,"----tryBindViewHolderByDeadline----2");
             long endBindNs = getNanoTime();
             mRecyclerPool.factorInBindTime(holder.getItemViewType(), endBindNs - startBindNs);
             attachAccessibilityDelegateOnBind(holder);
@@ -6369,6 +6372,9 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                     recordAnimationInfoIfBouncedHiddenView(holder, info);
                 }
             }
+
+            Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,Logger.VIEW_RECYCLE_TAG+"_:tryGetViewHolderForPositionByDeadline   createViewHolder  needsUpdate:"+(holder.needsUpdate()));
+
 
             boolean bound = false;
             if (mState.isPreLayout() && holder.isBound()) {

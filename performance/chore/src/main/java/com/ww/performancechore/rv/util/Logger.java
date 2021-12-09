@@ -15,7 +15,7 @@ public class Logger {
     private static boolean APPEND_CALLING_METHOD = false;
 
     public static void log(String TAG, String str){
-        if(!(TAG.equalsIgnoreCase(IMG_LOAD_TAG))){
+        if((TAG.equalsIgnoreCase(IMG_LOAD_TAG))){
             return;
         }
         String   currMethod = "";
@@ -44,7 +44,7 @@ public class Logger {
     public static final String A_TAG = "A_TAG";
 
     public static final String IMG_LOAD_TAG = "IMG_LOAD_TAG";
-
+    public static final String DataObserver_TAG = "DataObserver_TAG";
 
     public static String getModeStr(int mode){
         if(mode== View.MeasureSpec.EXACTLY){

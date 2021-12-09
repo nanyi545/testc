@@ -93,10 +93,43 @@ public class RvTest2Activity extends Activity {
 //        rv1.setAdapter(adapter2);
         rv1.setAdapter(adapter);
         rv1.setItemAnimator(null);
+
+        /**
+         * ww:
+         *
+         * ------------------
+         * full change :
+         * RecyclerView.Adapter.notifyDataSetChanged
+         *
+         * RecyclerView.RecyclerViewDataObserver
+         * ---> RecyclerView#processDataSetCompletelyChanged(boolean)
+         * -----> RecyclerView#markKnownViewsInvalid()
+         * ---> RecyclerView#requestLayout()
+         *
+         *
+         * ------------------
+         * partial change:
+         *    RecyclerView.Adapter#notifyItemRangeChanged(int, int)
+         *    ---> RecyclerViewDataObserver#triggerUpdateProcessor()
+         *    ----> RecyclerView.Recycler#tryBindViewHolderByDeadline(RecyclerView.ViewHolder, int, int, long)    # Attempts to bind view
+         *    ---> RecyclerView#requestLayout()
+         *
+         * ------------------
+         * 通过这个设置使得 Holder.needsUpdate() = true
+         *    holder.addFlags(ViewHolder.FLAG_UPDATE);
+         *
+         *    如果Holder.needsUpdate() = true，调用 RecyclerView.Recycler#tryBindViewHolderByDeadline(RecyclerView.ViewHolder, int, int, long) 来bind view （触发Adapter的onBindViewHolder）
+         *
+         * ------------------
+         * RecyclerView#requestLayout()   : no update :     Holder.needsUpdate() = false /
+         *
+         *
+         *
+         *
+         */
         findViewById(R.id.shift).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                adapter2.add();
 
                 int s = llm.findFirstVisibleItemPosition();
                 int e = llm.findLastVisibleItemPosition();
@@ -104,14 +137,17 @@ public class RvTest2Activity extends Activity {
                 Logger.log(Logger.A_TAG,"1------------------------");
                 adapter.notifyItemRangeChanged(s,count);
                 Logger.log(Logger.A_TAG,"2------------------------");
+
             }
         });
         findViewById(R.id.btn2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Logger.log(Logger.A_TAG,"1------------------------");
-                adapter.notifyDataSetChanged();
-                Logger.log(Logger.A_TAG,"2------------------------");
+//                Logger.log(Logger.A_TAG,"1------------------------");
+//                adapter.notifyDataSetChanged();
+//                Logger.log(Logger.A_TAG,"2------------------------");
+
+                rv1.requestLayout();
             }
         });
         findViewById(R.id.btn3_1).setOnClickListener(new View.OnClickListener() {
