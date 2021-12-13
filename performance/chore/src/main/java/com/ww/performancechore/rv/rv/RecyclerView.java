@@ -6293,7 +6293,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                         fromScrapOrHiddenOrCache = true;
                     }
                 }
-                Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,Logger.VIEW_RECYCLE_TAG+"_:tryGetViewHolderForPositionByDeadline   step2:"+fromScrapOrHiddenOrCache);
+                Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,Logger.VIEW_RECYCLE_TAG+"_:tryGetViewHolderForPositionByDeadline   step2:"+fromScrapOrHiddenOrCache+"   hasStableid:"+mAdapter.hasStableIds());
 
 
                 if (holder == null && mViewCacheExtension != null) {
@@ -6314,7 +6314,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                         }
                     }
                 }
-                Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,Logger.VIEW_RECYCLE_TAG+"_:tryGetViewHolderForPositionByDeadline   step3:"+(holder != null));
+                Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,Logger.VIEW_RECYCLE_TAG+"_:tryGetViewHolderForPositionByDeadline   自定义：mViewCacheExtension  step3:"+(holder != null));
 
                 if (holder == null) { // fallback to pool
                     if (DEBUG) {
@@ -6329,7 +6329,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
                         }
                     }
                 }
-                Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,Logger.VIEW_RECYCLE_TAG+"_:tryGetViewHolderForPositionByDeadline   step4:"+(holder != null));
+                Logger.log(Logger.RECYCLERVIEW_RECYCLER_TAG,Logger.VIEW_RECYCLE_TAG+"_:tryGetViewHolderForPositionByDeadline   obtained from rvpool  step4:"+(holder != null));
 
                 if (holder == null) {
                     long start = getNanoTime();
@@ -9287,7 +9287,7 @@ public class RecyclerView extends ViewGroup implements ScrollingView,
             }
         }
 
-        // wwnow:        notifyDataSetChanged ---> will cause all views to be removed
+        //               notifyDataSetChanged ---> will cause all views to be removed  ---> then added ---> Adapter.oncreate
         //               notifyItemChanged    ---> will cause views to be detached
 
         private void scrapOrRecycleView(Recycler recycler, int index, View view) {

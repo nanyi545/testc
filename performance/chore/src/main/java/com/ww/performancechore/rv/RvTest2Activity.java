@@ -166,7 +166,14 @@ public class RvTest2Activity extends Activity {
                 // test scrap
 //                rv1.testCall1();
 
-                adapter.test1();
+//                adapter.test1();
+            }
+        });
+
+        findViewById(R.id.btn4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rv1.scrollBy(0,20);
             }
         });
 
@@ -176,9 +183,8 @@ public class RvTest2Activity extends Activity {
 
 
 /**
-
+ * ***********************************
  original RV focus search logic ...
-
 
 
  ------RV scroll down not near bottom---------
@@ -210,16 +216,38 @@ public class RvTest2Activity extends Activity {
  ----RecyclerView#smoothScrollBy(int, int)
 
 
-
-
-
  **/
 
 
 /**
+ * ***********************************
+ *
+ *  layout的时候，会先detach
  *
  *  LinearLayoutManager#onLayoutChildren(RecyclerView.Recycler, RecyclerView.State)
  *  - RecyclerView.LayoutManager#detachAndScrapAttachedViews(RecyclerView.Recycler)
+ *
+ *
+ **/
+
+
+/**
+ * ***********************************
+ *
+ * rv scroll --》
+ *
+ * LinearLayoutManager#fill()   The magic function...
+ *
+     measure each child and re-calculate remainingSpace --->
+     remainingSpace --> the space we need to fill ( if remainingSpace<0 , it means the last view is not fully shown)
+
+ ---->
+
+ mLayoutManager.offsetChildrenVertical(amount);
+ RecyclerView#offsetChildrenVertical(int)
+ -->mChildHelper.getChildAt(i).offsetTopAndBottom(dy);
+
+ *
  *
  *
  **/

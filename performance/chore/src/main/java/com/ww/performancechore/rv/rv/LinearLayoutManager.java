@@ -76,7 +76,7 @@ public class LinearLayoutManager extends RecyclerView.LayoutManager implements
              */
 
             int dy = rect2.centerY() - rect1.centerY() + 10 ;  // 10 ??
-            int firstLinePosition = 2;
+            int firstLinePosition = 1;
             if (parent.getChildAdapterPosition(child) <= firstLinePosition) {
                 parent.smoothScrollToPosition(0);
             } else {
