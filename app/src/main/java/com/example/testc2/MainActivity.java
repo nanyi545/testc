@@ -62,6 +62,53 @@ import com.example.testc2.yuv.YuvActivity;
  * git config --global --unset http.proxy
  * git config --global --unset https.proxy
  *
+ * -----------------------------------------------------------
+ *
+ * https://stackoverflow.com/questions/24543372/unable-to-connect-to-git-remote-repository
+ *
+ * 1 : take a look at your git configuration
+ *
+ * git config --global -l
+ *
+ * If you have nothing related to https proxy like https_proxy=... the problem is not here.
+ *
+ * If you have something related to https proxy then remove it from the file ~/.gitconfig and try again
+ * 2 : if it still doesn't work, unset environment variables
+ *
+ * Check your environment variables :
+ *
+ * env|grep -i proxy
+ *
+ * You should have one or several lines with https_proxy=...
+ *
+ * Unset one by one with : unset https_proxy (or HTTPS_PROXY depending of the name of the variable)
+ * unset https_proxy
+ * unset HTTPS_PROXY
+ * unset no_proxy
+ * unset NO_PROXY
+ *
+ *
+ * 3 : check environment variables again
+ *
+ * env|grep -i proxy
+ *
+ * If it shows nothing you should be good.
+ *
+ * Note : This solution can applies to http and https proxy problems. just the variables name changes from https to http
+ *
+ *
+ *-------------------------
+ *
+ * Update Origin
+ *
+ * For existing local repositories, update the origin with token instead of all above steps
+ *
+ * git remote set-url origin https://<token>@github.com/<username>/<repo>.git
+ *
+ *
+ * https://github.com/nanyi545/testc.git
+ *
+ *
  */
 import java.io.File;
 import java.lang.reflect.Method;
