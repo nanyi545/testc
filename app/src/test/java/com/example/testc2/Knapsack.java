@@ -1,6 +1,8 @@
 package com.example.testc2;
 
 
+import org.junit.Test;
+
 /**
  * 背包问题  : https://zhuanlan.zhihu.com/p/132702321
  *  我们可以这样来描述它：给你一些物品，这些物品都有它对应的重量 wi和价格 vi，并且每个物品只能选择一次。现在有一个最多能装 W 重量的背包，你要怎样来组合这些物品来使得背包里物品的价格最大。
@@ -28,6 +30,50 @@ package com.example.testc2;
  */
 public class Knapsack {
 
+    /**
+     *  https://zhuanlan.zhihu.com/p/138328448
+     *
+     */
+    @Test
+    public void test1(){
+
+        int[][] values =
+                {
+                        {7,42},  // w1 v1 ...
+                        {3,12},
+                        {4,40},
+                        {5,25}
+                };
+
+        int w = 10;  // max capacity
+
+        int dp_y_count = values.length+1;
+        int dp_x_count = w+1;
+
+        int dp[][] = new int[dp_y_count][dp_x_count];
+        // dp[i][0]=0    dp[0][j] = 0
+
+        for(int i=0;i<dp_y_count;i++){
+            for (int j=0;j<dp_x_count;j++) {
+                if(i==0||j==0){
+                    dp[i][j] = 0;
+                } else {
+                    int w_i = values[i-1][0];
+                    int v_i = values[i-1][1];
+                    if(j<w_i) {
+                        dp[i][j] = dp[i-1][j];
+                    } else {
+                        int p1 = dp[i-1][j];
+                        int p2 = dp[i-1][j-w_i]+v_i;
+                        dp[i][j] = p2>p1?p2:p1;
+                    }
+                }
+            }
+        }
+
+        System.out.println("max:"+dp[dp_y_count-1][dp_x_count-1]);
+
+    }
 
 
 }
