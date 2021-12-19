@@ -27,6 +27,7 @@ import com.example.testc2.codec2.SpsActivity;
 import com.example.testc2.encoder1.EncoderActivity1;
 import com.example.testc2.encoder1.MyService;
 import com.example.testc2.ffmpeg.TestFF1Activity;
+import com.example.testc2.fragmentsdemo.FragDemoActivity;
 import com.example.testc2.gif.GifHandler;
 import com.example.testc2.nestedScroll.NestedScrollActivity;
 import com.example.testc2.opengl.OpenGl1Activity;
@@ -124,10 +125,14 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        // fragment demo
+        Intent i =new Intent(MainActivity.this, FragDemoActivity.class);
+        startActivity(i);
+
 
         // nested scroll
-        Intent i =new Intent(MainActivity.this, NestedScrollActivity.class);
-        startActivity(i);
+//        Intent i =new Intent(MainActivity.this, NestedScrollActivity.class);
+//        startActivity(i);
 
 
         // selector
