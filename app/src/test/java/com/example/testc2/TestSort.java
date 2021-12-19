@@ -38,6 +38,7 @@ public class TestSort {
         System.out.println("arr:"+(sb.toString()));
     }
 
+    //  https://leetcode-cn.com/problems/partition-equal-subset-sum/solution/fen-ge-deng-he-zi-ji-by-leetcode-solution/  ???
 
     @Test
     public void test2(){

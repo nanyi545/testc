@@ -1,9 +1,8 @@
-package com.example.testc2.hook;
+package com.ww.performancechore.hook;
 
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -14,8 +13,17 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.List;
 
+/**
+ * view source
+ * http://androidxref.com/
+ *
+ *
+ *
+ */
 public class HookUtils9 {
     private Context context;
+
+    // this is an activity that is in the manifest .....
     private Class<?> proxyActivity;
     public HookUtils9(Context context, Class<?> proxyActivity) {
         this.context = context;
@@ -40,6 +48,7 @@ public class HookUtils9 {
                 new Class[]{IActivityManagerClz}, new AmsInvocationHandler(IActivityManagerObj));
         mInstanceField.setAccessible(true);
         mInstanceField.set(IActivityManagerSingletonObj,proxyIActivityManager);
+        Log.i("david", "hookAms : success" );
 // 源码
     }
     public void hookSystemHandler() throws Exception {
@@ -58,6 +67,7 @@ public class HookUtils9 {
         mCallbackField.setAccessible(true);
         ProxyHandlerCallback proxyMHCallback = new ProxyHandlerCallback();
         mCallbackField.set(mHObj, proxyMHCallback);
+        Log.i("david", "hookSystemHandler : success" );
 
     }
     private class ProxyHandlerCallback implements Handler.Callback {
@@ -71,6 +81,13 @@ public class HookUtils9 {
 
                 Log.i("david", "---->: "+msg.obj.getClass().toString());
                 try {
+
+                    /**
+                     *
+                     * http://androidxref.com/9.0.0_r3/xref/frameworks/base/core/java/android/app/servertransaction/ClientTransaction.java
+                     *  android.app.servertransaction.ClientTransaction
+                     *
+                     */
                     Class ClientTransactionClz = Class.forName("android.app.servertransaction.ClientTransaction");
                     if (!ClientTransactionClz.isInstance(msg.obj)) return false;
 
@@ -79,17 +96,27 @@ public class HookUtils9 {
                     Field mActivityCallbacksField = ClientTransactionClz.getDeclaredField("mActivityCallbacks");//ClientTransaction的成员
 //设值可访问
                     mActivityCallbacksField.setAccessible(true);
+
+
                     Object mActivityCallbacksObj = mActivityCallbacksField.get(msg.obj);
                     List list = (List) mActivityCallbacksObj;
                     if (list.size() == 0) return false;
                     Object LaunchActivityItemObj = list.get(0);
                     if (!LaunchActivityItemClz.isInstance(LaunchActivityItemObj)) return false;
 
+
 //                    startActivity  一定是
                     Field mIntentField = LaunchActivityItemClz.getDeclaredField("mIntent");
                     mIntentField.setAccessible(true);
                     Intent mIntent = (Intent) mIntentField.get(LaunchActivityItemObj);
                     Intent realIntent = mIntent.getParcelableExtra("oldIntent");
+                    mIntent.setComponent(realIntent.getComponent());  //  get the original intent
+                    Log.i("david", "realIntent---->: "+realIntent);
+
+
+                    //  you can put other logics here ....
+
+
 //                    if (realIntent != null) {
 ////                        SecondActivity
 ////                        登录判断
@@ -120,7 +147,6 @@ public class HookUtils9 {
         }
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-
 
             if ("startActivity".contains(method.getName())) {
                 Intent intent = null;
