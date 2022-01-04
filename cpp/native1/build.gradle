@@ -1,0 +1,61 @@
+apply plugin: 'com.android.library'
+// maven publish 插件
+apply plugin: 'maven-publish'
+
+def group = 'com.cpp.native1' //组
+def vers = '1.0.0' //版本
+def artId = 'native1lib' //唯一标示
+
+
+// maven publish 发布
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = group
+            artifactId = artId
+            version = vers
+            artifact("$buildDir/outputs/aar/native1-release.aar")
+        }
+    }
+}
+
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.1"
+
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
+            version "3.10.2"
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+}

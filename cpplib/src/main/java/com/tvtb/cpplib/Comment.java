@@ -3,7 +3,27 @@ package com.tvtb.cpplib;
 
 /**
  *
+ *
+ * demo of ndk-build
+ *
+ *
+ *
  *  run ndk-build in jni folder .....  to generate .so files  ....
+ *
+ *
+ *  cmake / ndk-build
+ *  https://stackoverflow.com/questions/39589427/difference-between-cmake-and-ndk-build-in-android-studio-project
+ *
+ *  ndk-build is a build system included in the NDK. It uses Android.mk files. The NDK itself is a collection of compilers and libraries that are needed to build C/C++ code for Android.
+ *  ndk-build and cmake both use the NDK.
+ *
+ *  They use a different language (custom makefiles vs cmake) to describe builds. Ideally there is no difference in output for identically described builds, but that doesn't mean there aren't any bugs.
+ *
+ *  In general, use whichever system you prefer.
+ *
+ *
+ *
+ *
  *
  */
 public class Comment {
