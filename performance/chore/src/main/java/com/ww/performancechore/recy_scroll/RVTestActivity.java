@@ -61,6 +61,11 @@ public class RVTestActivity extends AppCompatActivity {
      * 2.requestLayout()方法会依次measureHierarchy()、performLayout()和performDraw()方法，调用者View和它的父级View会重新进行measure、layout，一般情况下不会执行draw流程，子View不一定会重新measure和layout。
      * 综上，当只需要进行重新绘制时就调用invalidate()，如果需要重新测量和布局就调用requestLayout()，但是requestLayout()不保证进行重新绘制，如果要进行重新绘制可以再手动调用invalidate()。
      *
+     *
+     * ***********************************
+     * https://zhuanlan.zhihu.com/p/381485429
+     *
+     *
      */
 
     VG2 vg1;
