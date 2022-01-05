@@ -78,13 +78,13 @@ public class MainActivity extends AppCompatActivity {
 //                startActivity(new Intent(MainActivity.this, RvTest2Activity.class ));
 
                 //  test ui methods
-//                startActivity(new Intent(MainActivity.this, TestOffsetActivity.class ));
+                startActivity(new Intent(MainActivity.this, TestOffsetActivity.class ));
 
 //                testMediaCodec();
 
 
                 // test hook
-                startActivity(new Intent(MainActivity.this, TestHookActivity.class ));
+//                startActivity(new Intent(MainActivity.this, TestHookActivity.class ));
 
             }
         });
