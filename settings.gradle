@@ -3,3 +3,4 @@ include ':app', ':lib1', ':smartcamera', ':gPlugin1', ':pluginapk1', ':lib1modif
 println "----settings end----"
 include ':performance:size'
 include ':performance:uitest'
+include ':performance:mylibrary'

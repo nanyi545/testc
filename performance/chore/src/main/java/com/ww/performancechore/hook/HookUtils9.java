@@ -13,14 +13,20 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.List;
 
+import dalvik.system.DexClassLoader;
+
 /**
  * view source
  * http://androidxref.com/
  *
  *
+ * https://developer.aliyun.com/article/682888
+ *
  *
  */
 public class HookUtils9 {
+
+    DexClassLoader cl;
     private Context context;
 
     // this is an activity that is in the manifest .....
