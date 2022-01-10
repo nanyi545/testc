@@ -3,6 +3,7 @@ package com.ww.performancechore.classloader;
 
 import android.util.Log;
 
+import com.example.mylibrary.Api1;
 import com.example.mylibrary.TestLog2;
 
 import java.lang.reflect.InvocationTargetException;
@@ -48,7 +49,6 @@ import dalvik.system.DexClassLoader;
 /**
  * https://stackoverflow.com/questions/1735714/copy-java-object-class-from-one-classloader-to-another-classloader
  *
- *
  */
 
 /**
@@ -82,6 +82,30 @@ public class ClassLoaderTest {
         }
         list.add(cls);
     }
+    public static void pluginLoad3(){
+        try {
+            String pluginPath = "/sdcard/Download/aaa/pluginapk1-debug.apk" ;
+            String targetPath = "/sdcard/Download/bbb";
+            DexClassLoader dexClassLoader = new DexClassLoader(pluginPath,targetPath,null, ClassLoaderTest.class.getClassLoader());
+            Class<?> cls3 = dexClassLoader.loadClass("com.hehe.pluginapk1.Api1Iml");
+            Log.d("aaa","cls3:"+(cls3));
+            Object o = cls3.newInstance();
+            Log.d("aaa","o:"+(o));
+
+            // include Api dependency ...
+            Log.d("aaa","o api:"+(o instanceof Api1));
+            Api1 api1 = (Api1) o;
+            api1.say();
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
     public static void pluginLoad2(){
@@ -102,6 +126,7 @@ public class ClassLoaderTest {
                 Log.d("aaa","TestLog2 class:"+(cls2));
                 addClass(cls2);
                 o = cls2.newInstance();
+                Log.d("aaa","TestLog2 instance:"+(o instanceof TestLog2));
             }
 
         } catch (ClassNotFoundException e) {

@@ -45,6 +45,7 @@ dependencies {
 
 
     // test class loading
-    compileOnly project(':performance:mylibrary')
+//    compileOnly project(':performance:mylibrary')
+    implementation project(':performance:mylibrary')
 
 }

@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                 // test class loader
 //                ClassLoaderTest.pluginLoad();
                 ClassLoaderTest.pluginLoad2();
-
+//                ClassLoaderTest.pluginLoad3();
 
             }
         });

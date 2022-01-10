@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,12 +33,15 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btn1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    Class cls = Class.forName("com.hehe.pluginapk1.TestLog");
-                    addClass(cls);
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    Class cls = Class.forName("com.hehe.pluginapk1.TestLog");
+//                    addClass(cls);
+//                } catch (ClassNotFoundException e) {
+//                    e.printStackTrace();
+//                }
+
+                Api1Iml api1 = new Api1Iml();
+                api1.say();
             }
         });
     }
