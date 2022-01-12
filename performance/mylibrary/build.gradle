@@ -1,18 +1,19 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.library'
+}
 
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
-
     defaultConfig {
-        applicationId "com.ww.performancechore"
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -22,30 +23,16 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility 1.8
-        targetCompatibility 1.8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
-
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
-    implementation 'androidx.asynclayoutinflater:asynclayoutinflater:1.0.0'
-    implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation 'com.google.android.material:material:1.2.1'
-
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
-
-
-    // test class loading
-//    compileOnly project(':performance:mylibrary')
-    implementation project(':performance:mylibrary')
-
 }

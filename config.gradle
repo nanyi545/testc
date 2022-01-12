@@ -3,7 +3,7 @@ println "---config start---"
 
 ext {
 
-    apkMode = false
+    apkMode = true
     enableTasksGraphLog = false
 
     dependencies = [

@@ -10,15 +10,12 @@ import android.view.View;
 import android.widget.Button;
 
 import com.ww.performancechore.async_inflate.InflatorActivity;
-import com.ww.performancechore.hook.TestHookActivity;
+import com.ww.performancechore.classloader.ClassLoaderTest;
 import com.ww.performancechore.mem.TestLargeClassAPI;
-import com.ww.performancechore.recy_scroll.RVTestActivity;
-import com.ww.performancechore.rv.RvTest2Activity;
-import com.ww.performancechore.rv.TestOffsetActivity;
+import com.ww.performancechore.permission.Manager;
 import com.ww.performancechore.stacktest.ActivityA;
 import com.ww.performancechore.webview.WebTestActivity;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,7 +81,13 @@ public class MainActivity extends AppCompatActivity {
 
 
                 // test hook
-                startActivity(new Intent(MainActivity.this, TestHookActivity.class ));
+//                startActivity(new Intent(MainActivity.this, TestHookActivity.class ));
+
+
+                // test class loader
+//                ClassLoaderTest.pluginLoad();
+                ClassLoaderTest.pluginLoad2();
+//                ClassLoaderTest.pluginLoad3();
 
             }
         });
@@ -135,6 +138,8 @@ public class MainActivity extends AppCompatActivity {
 
         TestLargeClassAPI.test1();
 
+
+        Manager.loadApk(this);
     }
 
 
