@@ -26,12 +26,11 @@
 #include <assert.h>
 #include <unistd.h>
 #include <string.h>
-//#include "ijksdl_inc_internal.h"
 #include "ijksdl_thread.h"
 #include "ijksdl_log.h"
 
 #ifdef __ANDROID__
-//#include "ijksdl/android/ijksdl_android_jni.h"
+#include "android/ijksdl_android_jni.h"
 #endif
 
 #if !defined(__APPLE__)
@@ -43,7 +42,7 @@ static void *SDL_RunThread(void *data)
     pthread_setname_np(pthread_self(), thread->name);
     thread->retval = thread->func(thread->data);
 #ifdef __ANDROID__
-//    SDL_JNI_DetachThreadEnv();    // todo
+    SDL_JNI_DetachThreadEnv();
 #endif
     return NULL;
 }

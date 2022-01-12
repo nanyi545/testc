@@ -1,22 +1,15 @@
 apply plugin: 'com.android.library'
-// maven publish 插件
-apply plugin: 'maven-publish'
-
-def group = 'com.cpp.native1' //组
-def vers = '1.0.0' //版本
-def artId = 'native1lib' //唯一标示
 
 
-// maven publish 发布
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = group
-            artifactId = artId
-            version = vers
-            artifact("$buildDir/outputs/aar/native1-release.aar")
-        }
-    }
+/**
+ *  copy to app lib folder....
+ */
+task dummyPublish(type: Copy){
+    def f1 = new File("${project.buildDir}/outputs/aar/native1-release.aar")
+    def f2 = new File("${project.rootDir}/cpp/nativeapp/libs")
+    print f2
+    from f1
+    destinationDir f2
 }
 
 

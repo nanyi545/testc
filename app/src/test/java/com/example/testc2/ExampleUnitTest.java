@@ -4,7 +4,9 @@ import com.example.testc2.util.TestUtil;
 
 import org.junit.Test;
 
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -20,6 +22,7 @@ import static org.junit.Assert.*;
  *
  */
 public class ExampleUnitTest {
+
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
