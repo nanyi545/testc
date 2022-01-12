@@ -1,7 +1,11 @@
 package com.example.testc2.string;
 
 
+import org.junit.Test;
+
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  *
@@ -12,8 +16,18 @@ import java.util.List;
  */
 public class Substring1 {
 
+    @Test
+    public void case1() {
+        String s = "barfoothefoobarman";
+        String[] words = {"foo","bar"};
+        List<Integer> a = findSubstring(s, words);
+        // 0,9
+    }
+
+
+
     public List<Integer> findSubstring(String s, String[] words) {
         return null;
     }
-    
+
 }
