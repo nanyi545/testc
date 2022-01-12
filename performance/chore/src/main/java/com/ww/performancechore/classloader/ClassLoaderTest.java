@@ -12,6 +12,15 @@ import java.util.List;
 
 import dalvik.system.DexClassLoader;
 
+
+/**
+ *
+ * !!!!!!!!!!!!!!!!!!!!!!!
+ *  https://stackoverflow.com/questions/42297568/how-to-use-custom-classloader-to-new-object-in-java
+ *
+ *
+ *
+ */
 /**
  * DexClassLoader demo
  *
