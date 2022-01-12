@@ -10,7 +10,7 @@ set(common_sources
 #        src/main/cpp  //  todo  where is "base" defined ??
         native1-lib.cpp
         ijksdl/ijksdl_thread.c
-
+        ijksdl/android/ijksdl_android_jni.c
         )
 
 
@@ -59,7 +59,7 @@ find_library(  jnigraphics-lib
 
 include_directories(
         src/main/cpp
-        src/main/cpp/util
+        src/main/cpp/ijksdl
 )
 
 

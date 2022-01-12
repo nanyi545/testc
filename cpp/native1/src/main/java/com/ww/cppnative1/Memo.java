@@ -80,3 +80,54 @@ public class Memo {
  *
  *
  */
+
+
+/**
+ *
+ * compiled by NDK ???
+ *
+ *
+ *Is there a preprocessor macro that will let me know NDK is compiling my code? I could manually define my own, but I'd rather not if possible
+ *
+ *
+ *
+ https://stackoverflow.com/questions/6374523/how-to-detect-compilation-by-android-ndk-in-a-c-c-file
+
+ __ANDROID__
+
+ It is #ifdef __ANDROID__ as seen by running the preprocessor:
+
+ #define __ANDROID__ 1
+
+
+ **/
+
+
+
+/** threads
+ *
+ * https://developer.android.com/training/articles/perf-jni
+ *
+ *
+ * All threads are Linux threads, scheduled by the kernel. They're usually started from managed code (using Thread.start()),
+ * but they can also be created elsewhere and then attached to the JavaVM. For example, a thread started with pthread_create()
+ * or std::thread can be attached using the AttachCurrentThread() or AttachCurrentThreadAsDaemon() functions. Until a thread is attached,
+ * it has no JNIEnv, and cannot make JNI calls.
+ *
+ *Attaching a natively-created thread causes a java.lang.Thread object to be constructed and added to the "main" ThreadGroup, making it visible to the debugger.
+ * Calling AttachCurrentThread() on an already-attached thread is a no-op.
+ *
+ *
+ *
+ *
+ *
+ *
+ *  jni thread model /
+ *
+ * https://stackoverflow.com/questions/9642506/jni-attach-detach-thread-memory-management
+ *
+ *
+ *
+ *
+ *
+ */
