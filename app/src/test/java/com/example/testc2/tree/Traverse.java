@@ -2,6 +2,9 @@ package com.example.testc2.tree;
 
 import org.junit.Test;
 
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Set;
 import java.util.Stack;
 
 public class Traverse {
@@ -18,6 +21,7 @@ public class Traverse {
      * 前序  1,2,4,5,8,9,3,6,0,7,
      * 中序  4,2,8,5,9,1,0,6,3,7,
      * 后序  4,8,9,5,2,0,6,7,3,1,
+     * bfs  1,2,3,4,5,6,7,8,9,0,
      *
      */
     static {
@@ -31,6 +35,37 @@ public class Traverse {
         root.left.right.left = new Node(8);
         root.left.right.right = new Node(9);
         root.right.left.left = new Node(0);
+    }
+
+    /**
+     * bfs
+     */
+    @Test
+    public void test0(){
+        bfs(root, new Node.Visitor() {
+            @Override
+            public void visit(Node n) {
+                System.out.print(n.val+",");
+            }
+        });
+    }
+
+    private void bfs(Node root,Node.Visitor visitor){
+        Queue<Node> q = new LinkedList();
+        q.add(root);
+        while(q.size()>0){
+            int qSize = q.size();
+            for(int i=0;i<qSize;i++) {
+                Node t = q.poll();
+                visitor.visit(t);
+                if (t.left != null) {
+                    q.add(t.left);
+                }
+                if (t.right != null) {
+                    q.add(t.right);
+                }
+            }
+        }
     }
 
     /**
@@ -218,15 +253,22 @@ public class Traverse {
             t = t.left;
         }
 
-        if(t.right==null){
-            visitor.visit(t);
+        while(true){
+            if(t.right==null){
+                visitor.visit(t);
+                if(!s.isEmpty()){
+                    t = s.pop();
+                }
 
+            }else{
+                s.push(t);
+                t = t.right;
 
-
-        } else {
-            s.push(t.right);
-            t = t.right;
+            }
         }
+
+
+
 
     }
 
