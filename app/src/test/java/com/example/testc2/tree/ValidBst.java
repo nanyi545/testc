@@ -72,7 +72,7 @@ public class ValidBst {
 
 
     /**
-     * 
+     *
      * use long !!!
      * in case tree has Integer.MAX_VALUE / Integer.MIN_VALUE
      *
