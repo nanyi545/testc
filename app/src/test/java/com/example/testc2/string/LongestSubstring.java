@@ -13,6 +13,21 @@ import static org.junit.Assert.assertEquals;
  * https://leetcode-cn.com/problems/longest-substring-without-repeating-character
  */
 public class LongestSubstring {
+
+
+    @Test
+    public void testChar() {
+        char c1 = '0';
+        char c2 = '1';
+        int diff = (c2-c1);
+        System.out.println("diff:"+diff);
+
+        char c3 = (char) (c1+2);
+        System.out.println("c3:"+(c3));  //  use of char !!
+        System.out.println("c3:"+(c3+1));
+    }
+
+
     @Test
     public void case1() {
         int a = lengthOfLongestSubstring("abcabcbb");
