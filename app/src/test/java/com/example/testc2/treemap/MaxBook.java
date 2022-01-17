@@ -65,6 +65,7 @@ public class MaxBook {
         System.out.println(m.headMap(2));
         System.out.println(m.tailMap(2));
         System.out.println(m.subMap(2,7));
+        System.out.println(m.firstKey());
 
 //        HashMap<Integer, Integer> hashMap = new HashMap<>();
 //        hashMap.put(3,10);
