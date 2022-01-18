@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -51,7 +52,20 @@ public class ConsecutiveInt {
 
 
 
-    public int longestConsecutive(int[] a) {
+    public int longestConsecutive(int[] ints) {
+        Set<Integer> temp = new HashSet<>();
+        for (int i=0;i<ints.length;i++){
+            temp.add(ints[i]);
+        }
+        int[] a = new int[temp.size()];
+        Iterator<Integer> it = temp.iterator();
+        int tt = 0;
+        while(it.hasNext()){
+            a[tt] = it.next();
+            tt++;
+        }
+
+
         int size = a.length;
         int[] diset = new int[size];
         Map<Integer,Integer> map = new HashMap<>();
@@ -75,12 +89,8 @@ public class ConsecutiveInt {
         Map<Integer,Integer> counter = new HashMap<>();
         Set<Integer> set = new HashSet<>();
         for (int i=0;i<size;i++){
-            if(set.contains(a[i])){
-                continue;
-            }
             set.add(a[i]);
             int ind = get(i,diset);
-            System.out.println("i:"+i+"  ind:"+ind);
             int count = counter.getOrDefault(ind,0)+1;
             counter.put(ind,count);
             if(count>max){
@@ -94,6 +104,8 @@ public class ConsecutiveInt {
         if(diset[i]==i){
             return i;
         } else {
+
+            // !!! caching !!!
             int a = get(diset[i],diset);
             diset[i] = a;
             return a;
