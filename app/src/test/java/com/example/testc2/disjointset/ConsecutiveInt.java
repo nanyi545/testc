@@ -7,6 +7,27 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+
+/**
+ * Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence.
+ *
+ * You must write an algorithm that runs in O(n) time.
+ *
+ *  
+ *
+ * Example 1:
+ *
+ * Input: nums = [100,4,200,1,3,2]
+ * Output: 4
+ * Explanation: The longest consecutive elements sequence is [1, 2, 3, 4]. Therefore its length is 4.
+ * Example 2:
+ *
+ * Input: nums = [0,3,7,2,5,8,4,6,0,1]
+ * Output: 9
+ *
+ *
+ * https://leetcode-cn.com/problems/longest-consecutive-sequence
+ */
 public class ConsecutiveInt {
     @Test
     public void test1(){
@@ -54,9 +75,9 @@ public class ConsecutiveInt {
         Map<Integer,Integer> counter = new HashMap<>();
         Set<Integer> set = new HashSet<>();
         for (int i=0;i<size;i++){
-//            if(set.contains(a[i])){
-//                continue;
-//            }
+            if(set.contains(a[i])){
+                continue;
+            }
             set.add(a[i]);
             int ind = get(i,diset);
             System.out.println("i:"+i+"  ind:"+ind);
@@ -73,7 +94,9 @@ public class ConsecutiveInt {
         if(diset[i]==i){
             return i;
         } else {
-            return get(diset[i],diset);
+            int a = get(diset[i],diset);
+            diset[i] = a;
+            return a;
         }
     }
 
