@@ -167,4 +167,50 @@ public class Anagrams {
         List<List<String>> list = new ArrayList(map.values());
         return list;
     }
+
+
+    /**
+     * lexical order
+     */
+    @Test
+    public void testStrCompare(){
+        String str1 = "abc";
+        String str2 = "abd";
+        System.out.println(str1.compareTo(str2));
+
+        String str3 = "a";
+        String str4 = "abd";
+        System.out.println(str3.compareTo(str4));
+
+        String str5 = "f";
+        String str6 = "e";
+        System.out.println(str5.compareTo(str6));
+    }
+
+
+    @Test
+    public void testStrCompare2(){
+
+        // default order
+        String[] arr = {"e","f","faa","fbb","fab"};
+        Arrays.sort(arr);
+        for (int i=0;i<arr.length;i++){
+            System.out.println(i+":"+arr[i]);
+        }
+
+        // reverse default order
+        Arrays.sort(arr, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return o2.compareTo(o1);
+            }
+        });
+        for (int i=0;i<arr.length;i++){
+            System.out.println(i+":"+arr[i]);
+        }
+
+    }
+
+
+
 }
