@@ -4,8 +4,13 @@ import com.example.testc2.util.TestUtil;
 
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.Console;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Scanner;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -26,6 +31,12 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
+    }
+
+    @Test
+    public void testInPut() {
+        Scanner s = new Scanner(System.in);
+        System.out.println(s.nextLine());
     }
 
 
