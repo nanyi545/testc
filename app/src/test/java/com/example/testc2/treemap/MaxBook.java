@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -74,6 +75,21 @@ public class MaxBook {
 //        System.out.println(hashMap);
 //        System.out.println(hashMap.values()); // values based on implementation
 
+        Iterator<Integer> it = m.keySet().iterator();
+        StringBuilder sb = new StringBuilder();
+        while(it.hasNext()){
+            sb.append(it.next());
+            sb.append(" ");
+        }
+        System.out.println("ascend:"+sb.toString());
+
+        Iterator<Integer> it2 = m.descendingKeySet().iterator();
+        StringBuilder sb2 = new StringBuilder();
+        while(it2.hasNext()){
+            sb2.append(it2.next());
+            sb2.append(" ");
+        }
+        System.out.println("descend:"+sb2.toString());
     }
 
     static class MyCalendarThree {
