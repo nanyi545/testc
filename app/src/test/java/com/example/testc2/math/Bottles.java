@@ -15,7 +15,7 @@ public class Bottles {
         int b = 5;
         int count = 0;
 
-        while ( empty>b ) {
+        while ( empty>=b ) {
             int t = empty/b;
             empty = empty%b;
             count+= t;
