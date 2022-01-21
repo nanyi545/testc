@@ -6,6 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+
+/**
+ *    111 -> *111*
+ *    a1b -> a*1*b
+ *    a12b -> a*12*b
+ *    a12b3 -> a*12*b*3*
+ */
 public class ModifyString {
 
     @Test
