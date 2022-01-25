@@ -4,6 +4,7 @@
 
 extern "C" {
 #include "ijksdl/android/ijksdl_android_jni.h"
+#include "test1.h"
 }
 
 //  ..... cpp tests .....
@@ -23,6 +24,7 @@ void testStruct1 ();
 void testArr1 ();
 void testStr1 ();
 
+
 //  ..... end of cpp tests .....
 
 
@@ -31,11 +33,15 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
     __android_log_print(ANDROID_LOG_VERBOSE, "jni_onload","jni onload---native lib1");
     SDL_JNI_OnLoad(vm,reserved);
     __android_log_print(ANDROID_LOG_VERBOSE, "jni_onload","print a int :%d",mult(3,4));
+
+    call1(10,6);
     testPointer1();
     testPointer2();
     testStruct1();
     testArr1();
     testStr1();
+    testLinkedList1();
+
     return JNI_VERSION_1_4;
 }
 
@@ -45,6 +51,11 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
 //  ..... cpp tests .....
 int mult (int x, int y)
 {
+    int a = 9;
+    int b = 10;
+    int c = 9;
+    __android_log_print(ANDROID_LOG_VERBOSE, "testbool","test bool1 :%d",(a==b));
+    __android_log_print(ANDROID_LOG_VERBOSE, "testbool","test bool2 :%d",(a==c));
     return x * y;
 }
 
@@ -124,6 +135,7 @@ void testStruct1(){
     p1.salary = 12000.21;
     __android_log_print(ANDROID_LOG_VERBOSE, "struct1","p1 age:%d  salary:%f",(p1.age),(p1.salary));
     __android_log_print(ANDROID_LOG_VERBOSE, "struct1","p1 size:%d  float size:%d",sizeof(p1), sizeof(p1.salary));
+    __android_log_print(ANDROID_LOG_VERBOSE, "struct1","person size:%d  struct person size:%d",sizeof(person), sizeof(struct person));
 
     person* p2;
     p2 = static_cast<person *>(malloc(sizeof(person)));
@@ -141,8 +153,14 @@ void testArr1(){
     int arr[100]; /* This declares an array */
     __android_log_print(ANDROID_LOG_VERBOSE, "arr1","arr size:%d ", sizeof(arr) );
     // Let me note again that you should never attempt to write data past the last element of the array,
-    arr[100]= 10;
-    arr[101]= 11;
+//    arr[100]= 10;  // may or may not... cause crash ...
+/**
+01-25 12:46:13.383 3433-3433/? I/DEBUG: signal 6 (SIGABRT), code -6 (SI_TKILL), fault addr --------
+01-25 12:46:13.399 3433-3433/? I/DEBUG: Abort message: 'stack corruption detected'
+01-25 12:46:13.402 3433-3433/? I/DEBUG:     r0 00000000  r1 00000151  r2 00000006  r3 00000000
+ */
+
+//    arr[101]= 11;
 //    arr[100000]= 12;  // cause crash ...
 }
 
@@ -196,16 +214,6 @@ void testStr1(){
     __android_log_print(ANDROID_LOG_VERBOSE, "str1","direct use string:%s ", s5 );
 
 }
-
-
-/**
- *
- * linked list
- *
- * https://www.cprogramming.com/tutorial/c/lesson15.html
- *
- *
- */
 
 
 
