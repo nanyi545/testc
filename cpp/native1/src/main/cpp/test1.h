@@ -6,7 +6,7 @@
 #define TESTC2_TEST1_H
 
 #include <android/log.h>
-#include <functional>
+//#include <stddef.h>
 
 int call1(int a,int b);
 
@@ -21,6 +21,15 @@ struct mnode {
 };
 
 
+typedef struct tnode tnode;
+
+struct tnode {
+    int val;
+    tnode* left;
+    tnode* right;
+};
+
+
 /**
  * linked list
  * https://www.cprogramming.com/tutorial/c/lesson15.html
@@ -28,5 +37,22 @@ struct mnode {
 
 void testLinkedList1 ();
 
+/**
+ * https://www.cprogramming.com/tutorial/c/lesson16.html
+ */
+void testRecurse (int a);
+
+
+/**
+ * https://www.cprogramming.com/tutorial/c/lesson17.html
+ */
+double average ( int num, ... );
+
+void recurseTree(tnode* root);
+
+/**
+ * test binary tree
+ */
+void testTree();
 
 #endif //TESTC2_TEST1_H
