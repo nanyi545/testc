@@ -6,7 +6,6 @@
 #define TESTC2_TEST1_H
 
 #include <android/log.h>
-#include <functional>
 
 int call1(int a,int b);
 
@@ -28,5 +27,7 @@ struct mnode {
 
 void testLinkedList1 ();
 
+
+void testArrMergeSort();
 
 #endif //TESTC2_TEST1_H

@@ -41,7 +41,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
     testArr1();
     testStr1();
     testLinkedList1();
-
+    testArrMergeSort();
     return JNI_VERSION_1_4;
 }
 
