@@ -10,6 +10,7 @@ set(common_sources
 #        src/main/cpp  //  todo  where is "base" defined ??
         native1-lib.cpp
         test1.c
+        q1.c
         ijksdl/ijksdl_thread.c
         ijksdl/android/ijksdl_android_jni.c
         )

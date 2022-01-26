@@ -5,6 +5,8 @@
 extern "C" {
 #include "ijksdl/android/ijksdl_android_jni.h"
 #include "test1.h"
+#include "q1.h"
+
 }
 
 //  ..... cpp tests .....
@@ -45,6 +47,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
     __android_log_print(ANDROID_LOG_VERBOSE, "vargs","%f", average ( 3, 12.2, 22.3, 4.5 ) );
     testTree();
     testArrMergeSort();
+    q1();
     return JNI_VERSION_1_4;
 }
 
