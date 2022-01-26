@@ -15,6 +15,8 @@ int call1(int a,int b);
 typedef struct mnode mnode;
 
 // define a struct
+//   https://stackoverflow.com/questions/12642830/can-i-define-a-function-inside-a-c-structure   //  use function pointer
+
 struct mnode {
     int val;
     mnode* next;
@@ -54,5 +56,7 @@ void recurseTree(tnode* root);
  * test binary tree
  */
 void testTree();
+
+void testArrMergeSort();
 
 #endif //TESTC2_TEST1_H

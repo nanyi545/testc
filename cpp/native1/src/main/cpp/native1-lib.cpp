@@ -44,6 +44,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
     testRecurse(5);
     __android_log_print(ANDROID_LOG_VERBOSE, "vargs","%f", average ( 3, 12.2, 22.3, 4.5 ) );
     testTree();
+    testArrMergeSort();
     return JNI_VERSION_1_4;
 }
 
