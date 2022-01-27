@@ -15,18 +15,12 @@ int call1(int a,int b){
 void testLinkedList1(){
 
     /* This will be the unchanging first node */
-    mnode *root;
-    __android_log_print(ANDROID_LOG_VERBOSE, "ll1","----:%d   ", (root==0)); // ??? todo always not null ???
-    if(root==0){
-        __android_log_print(ANDROID_LOG_VERBOSE, "ll1","111  " );
-    } else {
-        __android_log_print(ANDROID_LOG_VERBOSE, "ll1","222 " );
-    }
+    mnode *root=NULL;  // you need to init the pointer as  NULL
+    __android_log_print(ANDROID_LOG_VERBOSE, "ll1","----:%d   pointer:%p", (root==NULL),root);
+
+
     /**
      * https://stackoverflow.com/questions/3825668/checking-for-null-pointer-in-c-c
-     *
-     *
-     *
      */
 
 
@@ -50,23 +44,35 @@ int *p = (int*)&c; // 4 bytes
      */
     __android_log_print(ANDROID_LOG_VERBOSE, "ll1","node size:%d  struct node size:%d",sizeof(mnode), sizeof(struct mnode));
 
-    root = (malloc(sizeof(struct mnode)));
+    root = (malloc(sizeof(mnode)));
     root->val = 4;
-    root->next = (malloc(sizeof(struct mnode)));
+    root->next = (malloc(sizeof(mnode)));
     root->next->val = 3;
-    root->next->next = (malloc(sizeof(struct mnode)));
+    root->next->next = (malloc(sizeof(mnode)));
     root->next->next->val = 2;
+    root->next->next->next = NULL;
 
-    struct mnode *p;
+    __android_log_print(ANDROID_LOG_VERBOSE, "ll1","root value:%d ", root->val);
+
+
+    mnode *p;
 
     p = root;
-//    while(p){
-//        __android_log_print(ANDROID_LOG_VERBOSE, "ll1","node value:%d ", p->val);
-//        p = root->next;
-//    }
+
+    while(p!=NULL){
+        __android_log_print(ANDROID_LOG_VERBOSE, "ll1","node value:%d ", p->val);
+        p = p->next;
+    }
+
+}
 
 
 
+void testRecurse(int a){
+    __android_log_print(ANDROID_LOG_VERBOSE, "recurse"," recurse:%d ", a);
+    if(a<10){
+        testRecurse(a+1);
+    }
 }
 
 
@@ -135,3 +141,44 @@ void testArrMergeSort(){
 }
 
 
+double average ( int num, ... )
+{
+    va_list arguments;
+    double sum = 0;
+
+    /* Initializing arguments to store all values after num */
+    va_start ( arguments, num );
+    /* Sum all the inputs; we still rely on the function caller to tell us how
+     * many there are */
+    for ( int x = 0; x < num; x++ )
+    {
+        sum += va_arg ( arguments, double );
+    }
+    va_end ( arguments );                  // Cleans up the list
+
+    return sum / num;
+}
+
+
+void recurseTree(tnode* root){
+    if(root==NULL){
+        return;
+    }
+    __android_log_print(ANDROID_LOG_VERBOSE, "recurseTree"," node :%d ", root->val);
+    recurseTree(root->left);
+    recurseTree(root->right);
+}
+
+void testTree( ){
+    tnode* root = malloc(sizeof(tnode));
+    root->val = 1;
+    root->left = malloc(sizeof(tnode));
+    root->left->val = 2;
+    root->left->left = NULL;
+    root->left->right = NULL;
+    root->right = malloc(sizeof(tnode));
+    root->right->val = 3;
+    root->right->left = NULL;
+    root->right->right = NULL;
+    recurseTree(root);
+}
