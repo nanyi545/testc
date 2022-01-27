@@ -9,7 +9,6 @@
  */
 #include "uthash.h"
 
-
 int* twoSum(int* nums, int numsSize, int target, int* returnSize){
     int* ptr = malloc(2*sizeof(int));
     *returnSize = 2;
@@ -24,7 +23,6 @@ int* twoSum(int* nums, int numsSize, int target, int* returnSize){
     }
     return ptr;
 }
-
 
 struct item {
     int key;
@@ -67,8 +65,6 @@ int* twoSum2(int* nums, int numsSize, int target, int* returnSize){
 }
 
 
-
-
 int q1(){
     int nums[4];
     nums[0] = 2;
@@ -79,4 +75,28 @@ int q1(){
 //    int* r = twoSum(nums,4,13,&a);
     int* r = twoSum2(nums,4,13,&a);
     __android_log_print(ANDROID_LOG_VERBOSE, "q1"," i1:%d  i2:%d size:%d",r[0],r[1],a);
+}
+
+
+int getFewestCoins(int* coins, int coinsSize, int amount){
+    int dp[amount];
+    dp[0] = 0;
+    for (int i=1;i<=amount;i++){
+        dp[i] = -1;
+        for (int j=0;j<coinsSize;j++){
+            int preIndex = i - coins[j];
+            if(preIndex>=0){
+                int t = dp[preIndex] + 1;
+                if(t<dp[i]){
+
+                }
+            }
+        }
+    }
+}
+
+
+int q2(){
+
+
 }

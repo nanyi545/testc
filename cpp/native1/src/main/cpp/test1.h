@@ -59,4 +59,10 @@ void testTree();
 
 void testArrMergeSort();
 
+/**
+ * https://stackoverflow.com/questions/4701900/c-vector-arraylist-linkedlist
+ */
+void testReloc();
+void testAlloc();
+
 #endif //TESTC2_TEST1_H
