@@ -8,7 +8,7 @@
 #include <android/log.h>
 #include <malloc.h>
 
-int q1();
+void q1();
 
 /**
  *
@@ -17,8 +17,28 @@ You are given an integer array coins representing coins of different denominatio
 Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
 
 You may assume that you have an infinite number of each kind of coin.
+
+ https://leetcode-cn.com/problems/coin-change/
+
  *
  */
-int q2();
+void q2();
+
+
+
+/**
+
+ You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money.
+
+Return the number of combinations that make up that amount. If that amount of money cannot be made up by any combination of the coins, return 0.
+
+You may assume that you have an infinite number of each kind of coin.
+
+The answer is guaranteed to fit into a signed 32-bit integer.
+
+链接：https://leetcode-cn.com/problems/coin-change-2
+
+ */
+void q3();
 
 #endif //TESTC_Q1_H

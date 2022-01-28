@@ -65,7 +65,7 @@ int* twoSum2(int* nums, int numsSize, int target, int* returnSize){
 }
 
 
-int q1(){
+void q1(){
     int nums[4];
     nums[0] = 2;
     nums[1] = 7;
@@ -79,24 +79,33 @@ int q1(){
 
 
 int getFewestCoins(int* coins, int coinsSize, int amount){
-    int dp[amount];
+    int dp[amount+1];
     dp[0] = 0;
     for (int i=1;i<=amount;i++){
-        dp[i] = -1;
+        dp[i] = 10000;
         for (int j=0;j<coinsSize;j++){
             int preIndex = i - coins[j];
             if(preIndex>=0){
                 int t = dp[preIndex] + 1;
                 if(t<dp[i]){
-
+                    dp[i] = t;
                 }
             }
         }
     }
+    return dp[amount];  // 如果10000 表示没有解
 }
 
 
-int q2(){
+void q2(){
+    int coins[2];
+    coins[0] = 1;
+    coins[1] = 5;
+    getFewestCoins(coins,2,5);
+}
 
+
+
+void q3(){
 
 }
