@@ -106,6 +106,39 @@ void q2(){
 
 
 
+
+int change(int amount, int* coins, int coinsSize) {
+    int dp[amount + 1];
+    memset(dp, 0, sizeof(dp));
+    dp[0] = 1;
+    for (int i = 0; i < coinsSize; i++) {
+        //因此需要遍历 coins，对于其中的每一种面额的硬币，更新数组
+        //dp 中的每个大于或等于该面额的元素的值。
+
+        //  由于顺序确定，因此不会重复计算不同的排列     免于重复计算 ...
+        for (int j = coins[i]; j <= amount; j++) {
+            dp[j] += dp[j - coins[i]];
+//            dp[j] = dp[j] + dp[j - coins[i]];
+        }
+//        for( int k = 0 ; k<=amount ; k++){
+//            __android_log_print(ANDROID_LOG_VERBOSE, "q3","i:%d k:%d  dp[k]:%d",i,k,dp[k]);
+//        }
+    }
+    return dp[amount];
+}
+
+
+
 void q3(){
+    int coins[3];
+    coins[0] = 5;
+    coins[1] = 2;
+    coins[2] = 1;
+    for (int i=1;i<=10;i++){
+        int r = change(i,coins,3);
+        __android_log_print(ANDROID_LOG_VERBOSE, "q3"," target:%d  r:%d",i,r);
+    }
+
+//    int r = change(5,coins,3);
 
 }

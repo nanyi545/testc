@@ -15,7 +15,7 @@ public class Change {
     @Test
     public void test1(){
         int[] coins = {1,2,5};
-        List<List<Integer>> ret = getCombinations1(10,coins);
+        List<List<Integer>> ret = getCombinations1(4,coins);
         System.out.println(ret);
     }
 
@@ -39,7 +39,7 @@ public class Change {
 
             for(int j:coins){
 
-                System.out.println("i:"+i+" coin:"+j);
+//                System.out.println("i:"+i+" coin:"+j);
 
                 int preSum = i-j;
                 if(preSum>=0){
