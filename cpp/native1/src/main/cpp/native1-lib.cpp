@@ -48,6 +48,10 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
     testTree();
     testArrMergeSort();
     q1();
+    testReloc();
+    testAlloc();
+    q2();
+    q3();
     return JNI_VERSION_1_4;
 }
 
@@ -86,7 +90,14 @@ void testPointer1(){
     __android_log_print(ANDROID_LOG_VERBOSE, "pointer1","pointer sizeof int size:%d",(sizeof(a)));
     // %p hex form
     // %d int
-    //
+
+    char c = 'c';
+    char* pp  = &c;
+    char** ppp  = &pp;
+
+    __android_log_print(ANDROID_LOG_VERBOSE, "pointer1","sizeof pointer to char pointer size:%d   sizeof char pointer size:%d   sizeof char size:%d ",(sizeof(ppp)),(sizeof(pp)),(sizeof(c)));
+
+
     //  https://stackoverflow.com/questions/5610298/why-does-int-pointer-increment-by-4-rather-than-1
     //  When you increment a T*, it moves sizeof(T) bytes.†
     __android_log_print(ANDROID_LOG_VERBOSE, "pointer1","pointer value :%d",(*p));

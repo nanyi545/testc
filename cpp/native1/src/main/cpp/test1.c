@@ -182,3 +182,42 @@ void testTree( ){
     root->right->right = NULL;
     recurseTree(root);
 }
+
+
+void testReloc(){
+    int* ptr = malloc(5 * sizeof(int));
+
+    if(ptr == NULL) {}     // malloc() was unable to allocate the memory, handle the
+    // error and DO NOT use this pointer anymore
+
+    __android_log_print(ANDROID_LOG_VERBOSE, "testReloc","malloc at :%p ", ptr);
+
+    for (int i=0;i<5;i++){
+        ptr[i] = i;
+    }
+    for (int i=0;i<5;i++){
+        __android_log_print(ANDROID_LOG_VERBOSE, "testReloc","just after malloc i:%d :%p ",ptr[i], ptr);
+    }
+
+// suppose 10 ints aren't no more enough:
+    ptr = realloc(ptr, 20 * sizeof(int));
+    __android_log_print(ANDROID_LOG_VERBOSE, "testReloc","realloc at :%p ", ptr);
+
+    // after realloc  : original values are kept ...
+    for (int i=0;i<10;i++){
+        __android_log_print(ANDROID_LOG_VERBOSE, "testReloc","just after realloc i:%d :%p ",ptr[i], ptr);
+    }
+}
+
+
+void testAlloc(){
+    mnode** ptr;
+    ptr = malloc(3 * sizeof(mnode*));
+    for (int i=0;i<3;i++){
+        ptr[i] = malloc(sizeof(mnode));
+        ptr[i]->val = i+9 ;
+    }
+    __android_log_print(ANDROID_LOG_VERBOSE, "testReloc2","v0 :%d ", ptr[0]->val);
+    __android_log_print(ANDROID_LOG_VERBOSE, "testReloc2","v1 :%d ", ptr[1]->val);
+    __android_log_print(ANDROID_LOG_VERBOSE, "testReloc2","v2 :%d ", ptr[2]->val);
+}

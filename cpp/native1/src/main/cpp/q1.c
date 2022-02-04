@@ -9,7 +9,6 @@
  */
 #include "uthash.h"
 
-
 int* twoSum(int* nums, int numsSize, int target, int* returnSize){
     int* ptr = malloc(2*sizeof(int));
     *returnSize = 2;
@@ -24,7 +23,6 @@ int* twoSum(int* nums, int numsSize, int target, int* returnSize){
     }
     return ptr;
 }
-
 
 struct item {
     int key;
@@ -67,9 +65,7 @@ int* twoSum2(int* nums, int numsSize, int target, int* returnSize){
 }
 
 
-
-
-int q1(){
+void q1(){
     int nums[4];
     nums[0] = 2;
     nums[1] = 7;
@@ -79,4 +75,70 @@ int q1(){
 //    int* r = twoSum(nums,4,13,&a);
     int* r = twoSum2(nums,4,13,&a);
     __android_log_print(ANDROID_LOG_VERBOSE, "q1"," i1:%d  i2:%d size:%d",r[0],r[1],a);
+}
+
+
+int getFewestCoins(int* coins, int coinsSize, int amount){
+    int dp[amount+1];
+    dp[0] = 0;
+    for (int i=1;i<=amount;i++){
+        dp[i] = 10000;
+        for (int j=0;j<coinsSize;j++){
+            int preIndex = i - coins[j];
+            if(preIndex>=0){
+                int t = dp[preIndex] + 1;
+                if(t<dp[i]){
+                    dp[i] = t;
+                }
+            }
+        }
+    }
+    return dp[amount];  // 如果10000 表示没有解
+}
+
+
+void q2(){
+    int coins[2];
+    coins[0] = 1;
+    coins[1] = 5;
+    getFewestCoins(coins,2,5);
+}
+
+
+
+
+int change(int amount, int* coins, int coinsSize) {
+    int dp[amount + 1];
+    memset(dp, 0, sizeof(dp));
+    dp[0] = 1;
+    for (int i = 0; i < coinsSize; i++) {
+        //因此需要遍历 coins，对于其中的每一种面额的硬币，更新数组
+        //dp 中的每个大于或等于该面额的元素的值。
+
+        //  由于顺序确定，因此不会重复计算不同的排列     免于重复计算 ...
+        for (int j = coins[i]; j <= amount; j++) {
+            dp[j] += dp[j - coins[i]];
+//            dp[j] = dp[j] + dp[j - coins[i]];
+        }
+//        for( int k = 0 ; k<=amount ; k++){
+//            __android_log_print(ANDROID_LOG_VERBOSE, "q3","i:%d k:%d  dp[k]:%d",i,k,dp[k]);
+//        }
+    }
+    return dp[amount];
+}
+
+
+
+void q3(){
+    int coins[3];
+    coins[0] = 5;
+    coins[1] = 2;
+    coins[2] = 1;
+    for (int i=1;i<=10;i++){
+        int r = change(i,coins,3);
+        __android_log_print(ANDROID_LOG_VERBOSE, "q3"," target:%d  r:%d",i,r);
+    }
+
+//    int r = change(5,coins,3);
+
 }
