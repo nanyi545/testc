@@ -6,7 +6,7 @@ extern "C" {
 #include "ijksdl/android/ijksdl_android_jni.h"
 #include "test1.h"
 #include "q1.h"
-
+#include "p1/p1.h"
 }
 
 //  ..... cpp tests .....
@@ -52,7 +52,9 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
     testAlloc();
     q2();
     q3();
-    q4();
+    int test_call_add = add_p1(3,4);
+    __android_log_print(ANDROID_LOG_VERBOSE, "jni_onload","test_call_add:%d",test_call_add);
+
     return JNI_VERSION_1_4;
 }
 
