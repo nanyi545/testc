@@ -17,15 +17,29 @@ set(common_sources
 
 
 message("-----------ss----------")
+message (${CMAKE_SOURCE_DIR})
+message (${PROJECT_SOURCE_DIR})
+message (${CMAKE_BINARY_DIR})
+message (${PROJECT_BINARY_DIR})
+message (${CMAKE_CURRENT_SOURCE_DIR})
+message (${CMAKE_CURRENT_LIST_FILE})
+message (${CMAKE_C_COMPILER})
+message (${CMAKE_CXX_COMPILER})
+message (${PROJECT_NAME})
 message(${CMAKE_BUILD_TYPE})
 message(${ANDROID_PLATFORM})
 message(${CMAKE_SOURCE_DIR})
 message(${ANDROID_ABI})
 message(${CMAKE_CXX_FLAGS})
-message(${common_sources})
+#message(${common_sources})
 message("-----------ee----------")
 
 
+# 添加一个子文件夹 p1，这里写的相对路径
+add_subdirectory (p1)
+
+# -----
+add_subdirectory (c_tutorial1)
 
 
 add_library( # Sets the name of the library.
@@ -78,4 +92,5 @@ target_link_libraries( # Specifies the target library.
         # included in the NDK.
         ${log-lib}
         ${jnigraphics-lib}
+        p1
         )
