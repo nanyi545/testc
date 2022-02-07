@@ -52,6 +52,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
     testAlloc();
     q2();
     q3();
+    q4();
     return JNI_VERSION_1_4;
 }
 

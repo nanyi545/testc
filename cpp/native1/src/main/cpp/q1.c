@@ -64,6 +64,30 @@ int* twoSum2(int* nums, int numsSize, int target, int* returnSize){
     return NULL;
 }
 
+struct item* table1=NULL;
+
+void testUtHash(){
+
+    struct item* item1 = malloc(sizeof(struct item));
+    item1->key = 1;
+    item1->val = 10;
+    HASH_ADD_INT(table1, key, item1);
+
+    struct item* item2 = malloc(sizeof(struct item));
+    item2->key = 1;
+    item2->val = 120;
+    HASH_ADD_INT(table1, key, item2);
+
+    int targetKey = 1;
+    struct item* ret = malloc(sizeof(struct item));;
+    HASH_FIND_INT(table1, &targetKey, ret);
+    if(ret==NULL){
+        __android_log_print(ANDROID_LOG_VERBOSE, "q1"," testUtHash   key not found ");
+    } else {
+        __android_log_print(ANDROID_LOG_VERBOSE, "q1"," testUtHash   k:%d  v:%d  ", ret->key, ret->val);
+    }
+
+}
 
 void q1(){
     int nums[4];
@@ -75,6 +99,8 @@ void q1(){
 //    int* r = twoSum(nums,4,13,&a);
     int* r = twoSum2(nums,4,13,&a);
     __android_log_print(ANDROID_LOG_VERBOSE, "q1"," i1:%d  i2:%d size:%d",r[0],r[1],a);
+
+    testUtHash();
 }
 
 
@@ -141,4 +167,53 @@ void q3(){
 
 //    int r = change(5,coins,3);
 
+}
+
+
+int getLongest(int* p,int arrSize,int target){
+    int maxCount = -1;
+    int l = 0;
+    int r = -1;
+    int sum = 0;
+    while(1){
+        while(sum<=target){
+            r++;
+            if(r>=arrSize){
+                break;
+            }
+            sum+=p[r];
+        }
+        if(sum==target){
+            int count = (r-l+1);
+            if(count>maxCount){
+                maxCount = count;
+            }
+        }
+        while(sum>=target){
+            sum-=p[l];
+            l++;
+            if(sum==target){
+                int count = (r-l+1);
+                if(count>maxCount){
+                    maxCount = count;
+                }
+            }
+        }
+        if(r>=arrSize){
+            break;
+        }
+    }
+    return maxCount;
+}
+
+void q4(){
+    int arr[3]={1,1,20};
+    int a = 10;
+    int* p = &a;
+    __android_log_print(ANDROID_LOG_VERBOSE, "q4","size of arr:%d   size of int:%d  size of p:%d",(sizeof(arr)),(sizeof(int)),sizeof(p));
+    int arr1[3]={1,1,20};
+    int arr2[10]={1,1,2,3,4,1,1,2,3,4};
+    __android_log_print(ANDROID_LOG_VERBOSE, "q4","ret1:%d   ",(getLongest(arr2,10,12)));
+    __android_log_print(ANDROID_LOG_VERBOSE, "q4","ret2:%d   ",(getLongest(arr2,10,17)));
+    __android_log_print(ANDROID_LOG_VERBOSE, "q4","ret3:%d   ",(getLongest(arr2,10,30)));
 }

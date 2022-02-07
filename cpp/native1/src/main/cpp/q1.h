@@ -8,6 +8,16 @@
 #include <android/log.h>
 #include <malloc.h>
 
+
+/**
+ *
+ * c语言 工程化
+ * https://blog.csdn.net/as480133937/article/details/93400979
+ *
+ *
+ */
+
+
 void q1();
 
 /**
@@ -40,5 +50,12 @@ The answer is guaranteed to fit into a signed 32-bit integer.
 
  */
 void q3();
+
+
+
+/**
+ * find the longest sub array with target sum ...
+ */
+void q4();
 
 #endif //TESTC_Q1_H
