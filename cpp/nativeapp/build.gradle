@@ -26,6 +26,17 @@ android {
         targetCompatibility 1.8
     }
 
+    // exclude source set:
+    //    https://stackoverflow.com/questions/16701256/android-studio-exclude-class-from-build
+
+    sourceSets {
+        main {
+            java {
+                exclude 'test/p1/Test1.java'
+            }
+        }
+    }
+
 }
 
 dependencies {

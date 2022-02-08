@@ -10,5 +10,4 @@ int sub_p1(int a, int b);
 int mul_p1(int a, int b);
 int div_p1(int a, int b);
 
-
 #endif //TESTC2_P1_H
