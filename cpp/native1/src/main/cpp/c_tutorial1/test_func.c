@@ -9,6 +9,9 @@
      * 基础篇（五）
      * https://cloud.tencent.com/developer/article/1450927?from=article.detail.1450932
      *
+     * 进阶篇（六）
+     * https://cloud.tencent.com/developer/article/1450928?from=article.detail.1450927
+
  * 在C语言中，出现了两个概念，声明和定义。
  *
  *
@@ -70,13 +73,43 @@ void convstr(char ch[], int flags) {
     }
 }
 
+
+/**
+ * 实现简单正则表达式匹配器
+下面的实例来自经典图书《代码之美》，这段程序使用简单的30来行代码，实现了一个简单正则表达式匹配器，其代码之简洁优雅，可为楷模，也充分展示出了C程序的简洁高效特点。
+
+ https://tool.oschina.net/uploads/apidocs/jquery/regexp.html
+https://www.liaoxuefeng.com/wiki/1016959663602400/1017639890281664
+
+ */
+int match(char *regexp, char *text);
+int matchhere(char *regexp, char *text);
+int matchstar(int c, char *regexp, char *text);
+
+
 void testCall1() {
     char str[] = "Hello,ALICE";
     convstr(str, 0);
     printf("%s\n", str);
     convstr(str, 1);
     printf("%s\n", str);
+
+
+    char *str1 = "+8613277880066";
+    // 检测字符串str1是否以"+86"开头
+    printf("%d\n", match("^+86", str1));  // 1
+    // 检测字符串str1尾部是否包含"66"子串
+    printf("%d\n", match("66$", str1));  // 1
+    // 字符串str1中是否包含子串"132"
+    printf("%d\n", match("132", str1));   // 1
+    // 是否包含3xxx2样式的字符串，xxx可以是任意多个或者0个字符
+    printf("%d\n", match("3*2", str1));   // 1
+    // 是否包含3x2样式的子串，x是单个任意字符，这里不包含
+    printf("%d\n", match("3.2", str1));   // 0
+
 }
+
+
 
 void testPointer() {
     int num = 10;
@@ -95,7 +128,7 @@ void testPointer() {
      * 那这个整体就是指针类型，这样就复合我们最初学习的声明变量的格式了：【数据类型】【变量名】。
      *
      *
-     * 实际上这样写是可以的，但是千万不要这样写，请将星号和变量紧挨一起，不要和类型挨在一起，虽然这很反直觉，但这确实是C语言的潜规则，
+     * 实际上这样写是可以的，但是千万不要这样写，请将星号和变量紧挨一起，不要和类型挨在一起，虽然这很反直觉，但这确实是C语言的潜规则，  ??? Why ????
      * 当大家都这样写的时候，最好还是遵守规范。这样写并不是心血来潮，确实能避免犯一些错误。
      *
      * 这里还要学习两个运算符
@@ -116,6 +149,21 @@ void testPointer() {
     printf("num=%d\n", num);
 
 
+    int n = 7;
+    int l = 10;
+    // 指针常量仅指向唯一的内存地址，一旦被初始化后，就不能再指向其他地址。简单说就是指针本身是常量。
+    //声明并初始化指针常量
+    int *const pp1 = &n;
+//    pp1 = &l; // 错误，无法编译！指针常量不能再指向其他地址
+
+
+    // 常量指针的意思是说指针所指向的内容是个常量。
+    // 既然内容是个常量，那就不能使用解引用符去修改指向的内容。但指针自己本身却是个变量，因此它仍然可以再次指向其他的内容。
+    //声明常量指针
+    const int *pp2 = &n;
+//    *pp2 = 0; // 错误，无法编译！不能修改所指向的内容
+    pp2 = &l; //它可以再指向其他地址
+
 }
 
 
@@ -130,3 +178,41 @@ int main() {
 void printError() {
     printf("this is error!\n");
 }
+
+
+// 在text中查找正则表达式regexp
+int match(char *regexp, char *text) {
+    if (regexp[0] == '^') {
+        return matchhere(regexp + 1, text);
+    }
+    do {  //即使字符串为空也必须检查
+        if (matchhere(regexp, text)) return 1;
+    } while (*text++ != '\0'); // *text++的用法，这里自增运算符++的优先级高于解引用运算符*，因此实际上的运算顺序是*(text++)
+    return 0;
+}
+
+// 在text开头查找regexp
+int matchhere(char *regexp, char *text) {
+    if (regexp[0] == '\0') return 1;
+    if (regexp[0] == '*') {
+        return matchstar(regexp[0], regexp + 2, text);
+    }
+
+    if (regexp[0] == '$' && regexp[1] == '\0') {
+        return *text == '\0';
+    }
+
+    if (*text != '\0' && (regexp[0] == '.' || regexp[0] == *text)) {
+        return matchhere(regexp + 1, text + 1);
+    }
+    return 0;
+}
+
+int matchstar(int c, char *regexp, char *text) {
+    do {   // 通配符* 匹配零个或多个实例
+        if (matchhere(regexp, text)) return 1;
+    } while (*text != '\0' && (*text++ == c || c == '.'));
+    return 0;
+}
+
+
