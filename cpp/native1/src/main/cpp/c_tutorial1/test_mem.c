@@ -82,6 +82,44 @@ void *realloc(void *_Memory,size_t _NewSize);
 我们知道指针变量是用来保存一个普通变量的地址的，那么如果对一个指针变量取地址，并用另一个变量保存指针变量的地址，这种情况是否存在呢？
 
 
+ -------------------------------------------
+
+ 函数指针
+
+在上面的内存四区中提到了代码区，而函数就是一系列指令的集合，因此它也是存放在代码区。既然存放在内存中，那么就会有地址。我们知道数组变量实际上也是一个指针，指向数组的起始地址，结构体指针也是指向第一个成员变量的起始地址，而函数指针亦是指向函数的起始地址。
+
+所谓函数指针，就是一个保存了函数的起始地址的指针变量。
+
+函数指针的声明
+声明格式：
+
+【返回值类型】 (*变量名) (【参数类型】)
+
+ // 分别声明四个函数指针变量 f1、f2、f3、f4
+int (*f1)(double);
+void (*f2)(char*);
+double* (*f3)(int,int);
+int (*f4)();
+
+
+ ----
+ 函数指针的赋值与使用
+当一个函数的原型与所声明的函数指针类型匹配，那么就可以将一个函数名赋值给函数指针变量。
+
+-------------------------
+
+ void*指针
+
+前面几次提到通用类型指针void*，它可以指向任意类型，但对于void*指针到底是什么没有做深入的探讨。事实上，只有理解了void*指针，才能真正理解C语言指针的本质，
+ 才能使用void*指针实现一些奇技淫巧。
+
+
+ 由此我们基本可以推断一个事实，指针用来保存变量的内存地址与变量的类型无关，任何类型指针都可以保存任何一个地址；指针之所以需要类型，只与该指针的解引用有关。
+
+ 当我们不确定指针所指向的具体数据类型时，就可以使用void*类型来声明，当我们后续确定了具体类型之后，就可以使用强制类型转换来将void*类型转换为我们需要的具体类型。
+
+接触过Java等具有泛型的面向对象编程语言的人，可能马上就会联想到泛型，是的，C语言没有泛型，但是利用void*指针的特点，我们可以使用一些技巧来模拟泛型编程。
+
 
 
  *
@@ -96,6 +134,136 @@ char *String(int len){
     char *s = (char*)malloc(len);
     return s;
 }
+
+void printStrings(char **s,int len){
+    char **start = s;
+    // 使用二级指针来遍历字符串数组
+    char *pre = NULL;
+    for (;s < start + len;s++){
+        printf("%s\n",*s);
+        printf("level2 p address:%x\n",s);
+        printf("level1 p address:%x\n",*s);
+        if(pre==NULL){
+            pre = *s;
+        } else {
+            int diff = (*s - pre);
+            printf("level1 p diff:%d\n",diff);
+        }
+    }
+}
+
+
+// 2d arr demo
+void test_d2arr(){
+    // total size 3*50
+    char songs[3][50]={
+            "My love",
+            "Just one last dance",
+            "As long as you love me",
+    };
+    printf("s0 %s  s0 size:%lu string length:%lu\n",songs[0], sizeof(songs[0]) / sizeof(char), strlen(songs[0]));
+    printf("s1 %s  s1 size:%lu string length:%lu\n",songs[1], sizeof(songs[1]) / sizeof(char), strlen(songs[1]));
+    printf("s2 %s  s2 size:%lu string length:%lu\n",songs[2], sizeof(songs[2]) / sizeof(char), strlen(songs[2]));
+    printf("2d array length1:%lu\n", sizeof(songs) / sizeof(char) );
+
+
+    char* songs2[3]={
+            "1",
+            "22",
+            "333",
+    };
+
+
+
+//    // 一个指针数组的数组名，实际上就是一个二级指针
+    char **p = songs2;
+    printf("2d array length2:%lu\n", sizeof(p) / sizeof(char*) );
+    printf("2d array length2:%lu\n", sizeof(p+1) / sizeof(char*) );
+    printf("2d array length2:%lu\n", sizeof(p+2) / sizeof(char*) );
+    printf("2d array length2-1:%lu\n", sizeof(songs2) / sizeof(char*) );
+    printf("2d array length3:%lu\n", sizeof(*p) / sizeof(char) );
+    printf("2d array length3:%lu\n", sizeof(*(p+1)) / sizeof(char) );
+    printf("2d array length3:%lu\n", sizeof(*(p+2)) / sizeof(char) );
+    printf("2d array length4:%lu\n", sizeof(*p) / sizeof(char*) );
+    printf("2d array length4:%lu\n", sizeof(*(p+1)) / sizeof(char*) );
+    printf("2d array length4:%lu\n", sizeof(*(p+2)) / sizeof(char*) );
+    printf("char pointer size:%lu   char size:%lu \n", sizeof(char*), sizeof(char) );
+
+    printStrings(p,3);
+
+
+    char* s1 = "123";
+    //  pointer like this sizeof can not return Array size .....
+    printf("****  size1:%lu  size2:%lu\n", sizeof(s1) , sizeof(*s1) );
+
+
+}
+
+
+
+
+int count(double val){
+    printf("count run\n");
+    return 0;
+}
+
+void printStr(char *str){
+    printf("printStr run\n");
+}
+
+double *add(int a,int b){
+    printf("add run\n");
+    return NULL;
+}
+
+int get(){
+    printf("get run\n");
+    return 0;
+}
+
+
+
+// 加法函数
+int func1(int a,int b){
+    return a +b;
+}
+// 减法函数
+int func2(int a, int b){
+    return a-b;
+}
+
+// 计算器函数。将函数指针做形式参数
+void calculate(int a,int b, int(*proc)(int,int)){
+    printf("result=%d\n",proc(a,b));
+}
+
+// 以上在函数的形参中直接定义函数指针看起来不够简洁优雅，每次都得写一大串，实际上还有更简洁的方式，这就需要借助typedef
+
+// 定义一个函数指针类型，无需起新的别名
+typedef int(*proc)(int,int);
+
+// 使用函数指针类型 proc 声明新的函数指针变量 p
+void calc(int a,int b, proc p){
+    printf("result=%d\n",p(a,b));
+}
+
+
+// ----------- demo of void ---- like generics in JAVA
+
+// 交换两个变量的值
+void swap(void* a, void *b, int size){
+    // 申请一块指定大小的内存空间做临时中转
+    void *p = (void*)malloc(size);
+
+    // 内存拷贝函数，拷贝指定的字节数
+    memcpy(p, a, size);
+    memcpy(a, b, size);
+    memcpy(b, p, size);
+
+    // 释放申请的内存空间
+    free(p);
+}
+
 
 
 int main() {
@@ -121,5 +289,47 @@ int main() {
     free(str);
     str=NULL;
 
+
+
+    test_d2arr();
+
+
+
+    // 声明函数指针并初始化为NULL
+    int (*f1)(double) = NULL;
+    void (*f2)(char*) = NULL;
+    double* (*f3)(int,int) = NULL;
+    int (*f4)() = NULL;
+
+    // 为函数指针赋值
+    f1 = &count;
+    f2 = &printStr;
+    f3 = &add;
+    f4 = &get;
+
+    // 使用函数指针调用函数
+    f1(0.5);
+    f2("f2");
+    f3(1, 3);
+    f4();
+
+
+    // 算加法，传入加法函数
+    calculate(10,5,func1);
+    // 算减法，传入减法函数
+    calculate(10,5,func2);
+    calc(10,5,func2);
+
+
+
+    // 传入short型指针
+    short x=10,y=80;
+    swap(&x, &y,sizeof(short));
+    printf("x=%d  y=%d\n",x,y);
+
+
     return 0;
 }
+
+
+
