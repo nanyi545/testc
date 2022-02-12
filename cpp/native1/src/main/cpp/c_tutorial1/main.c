@@ -86,7 +86,6 @@ gcc -E t1.c -o t1.i
 
  *
  */
-
 #include <stdio.h>
 #include "main1.h"
 

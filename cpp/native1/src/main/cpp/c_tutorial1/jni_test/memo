@@ -1,0 +1,57 @@
+
+/**
+
+https://www3.ntu.edu.sg/home/ehchua/programming/java/JavaNativeInterface.html
+
+
+******** JNI in C
+
+Step 1: Write a Java Class HelloJNI.java that uses C Codes
+Step 2: Compile the Java Program HelloJNI.java & Generate the C/C++ Header File HelloJNI.h
+
+javac -h . HelloJNI.java
+----->  The "-h dir" option generates C/C++ header and places it in the directory specified (in the above example, '.' for the current directory).
+
+
+Step 3: Implementing the C Program HelloJNI.c
+
+The JNI header "jni.h" provided by JDK is available under the "<JAVA_HOME>\include" and "<JAVA_HOME>\include\win32" (for Windows)
+or "<JAVA_HOME>\include\linux" (for Ubuntu) [Check Mac OS X] directories, where <JAVA_HOME> is your JDK installed directory
+
+
+
+
+
+Step 4: Compile the C program HelloJNI.c
+
+Finding the right compiler for your operating platform (Windows, Mac OS X, Ubuntu), for your JDK (32-bit, 64-bit),
+and figuring out the correct compiler options is the hardest part to get the JNI working!!!
+
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64  // setup java home
+echo $JAVA_HOME   // make sure JAVA_HOME is correct
+
+Compile the C program HelloJNI.c into share module libhello.so using gcc, which is included in all Unixes:
+
+gcc -fPIC -I"$JAVA_HOME/include" -I"$JAVA_HOME/include/linux" -shared -o libhello.so HelloJNI.c
+
+
+Run the Java Program:
+
+java HelloJNI    // -----> java.lang.UnsatisfiedLinkError:
+java -Djava.library.path=. HelloJNI   // In this example, the native library is kept in the current directory '.'
+
+----------------------------
+
+********  JNI with C++
+
+Instead of a C program, we can use a C++ program (called HelloJNI.cpp) for the above example.
+
+g++ -fPIC -I"$JAVA_HOME/include" -I"$JAVA_HOME/include/linux" -shared -o libhello.so HelloJNI.cpp
+
+Run the Java Program
+> java HelloJNI
+or
+> java -Djava.library.path=. HelloJNI
+
+**/
+
