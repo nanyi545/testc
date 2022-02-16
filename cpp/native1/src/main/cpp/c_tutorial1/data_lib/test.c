@@ -3,7 +3,10 @@
 //
 
 /**
+ *
  * gcc test.c arraylist.c -o test
+ *
+ * gcc test.c arraylist.c sb.c -o test
  *
  * gcc test.c sb.c -o test
  *
@@ -13,13 +16,8 @@
 #include "arraylist.h"
 #include "sb.h"
 
-int main() {
-//    ArrayList list = {0};
-//    // 初始化列表
-//    int r = AL_init(&list);
-//    AL_add(&list, 100);
-//    AL_print(&list);
 
+void test_sb(){
 
 // no need to free ---> char arr[3] = "bo";
 // https://stackoverflow.com/questions/21513666/how-to-free-memory-from-char-array-in-c
@@ -31,14 +29,31 @@ int main() {
     Sb sb = {0};
     SB_init(&sb);
     SB_append(&sb,"12");
-    SB_print(&sb);
+    SB_print(&sb,1);
     SB_append(&sb,"345");
-    SB_print(&sb);
+    SB_print(&sb,1);
     SB_append(&sb,"6789");
-    SB_print(&sb);
+    SB_print(&sb,1);
     SB_append(&sb,"abcde");
-    SB_print(&sb);
+    SB_print(&sb,1);
     SB_append(&sb,"fghijklmnopqrstuvwxyzlmnopqrstuvwxyzlmnopqrstuvwxyzlmnopqrstuvwxyz");
-    SB_print(&sb);
+    SB_print(&sb,1);
     SB_free(&sb,0);
+}
+
+void test_arrlist(){
+    ArrayList list = {0};
+    // 初始化列表
+    int r = AL_init(&list);
+    AL_add(&list, 100);
+    AL_add(&list, 99);
+    AL_add(&list, 98);
+    AL_add(&list, 97);
+
+    AL_print(&list);
+}
+
+int main() {
+    test_arrlist();
+//    test_sb();
 }

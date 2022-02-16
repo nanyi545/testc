@@ -37,8 +37,11 @@ int SB_append(Sb* sb, char* str){
     return 1;
 }
 
-void SB_print(Sb* p){
-    printf("str:%s  len:%d size:%d\n",p->str,p->len,p->size);
+char* SB_print(Sb* p,int print){
+    if(print){
+        printf("str:%s  len:%d size:%d\n",p->str,p->len,p->size);
+    }
+    return p->str;
 }
 
 void SB_free(Sb* p,int onHeap){

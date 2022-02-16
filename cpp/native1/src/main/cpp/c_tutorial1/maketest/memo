@@ -1,0 +1,60 @@
+
+
+If you want to use a nonstandard name for your makefile, you can specify the makefile name with the ' -f ' or ' --file ' option.
+ The arguments ' -f name ' or ' --file= name ' tell make to read the file name as the makefile.
+
+  make -f Mk1
+
+------------------------------------------------------------------------
+
+https://makefiletutorial.com/#getting-started
+
+------------------------------------------------------------------------
+
+Makefile Syntax
+
+A Makefile consists of a set of rules. A rule generally looks like this:
+
+targets: prerequisites
+	command
+	command
+	command
+
+The targets are file names, separated by spaces. Typically, there is only one per rule.
+The commands are a series of steps typically used to make the target(s). These need to start with a tab character, not spaces.
+The prerequisites are also file names, separated by spaces. These files need to exist before the commands for the target are run. These are also called dependencies
+
+------------------------------------------------------------------------
+
+Beginner Examples
+
+mk1: mk1.o
+	cc mk1.o -o mk1 # step2
+
+mk1.o: mk1.c
+	cc -c mk1.c -o mk1.o # step1
+
+------------------------------------------------------------------------
+
+CC is an environment variable referring to the system's C compiler. What it points to (libraries accessible, etc) depend on platform.
+Often it will point to /usr/bin/cc, the actual c complier (driver). On linux platforms, CC almost always points to /usr/bin/gcc.
+
+gcc is the driver binary for the GNU compiler collection. It can compile C, C++, and possibly other languages; it determines the language by the file extension.
+
+g++ is a driver binary like gcc, but with a few special options set for compiling C++. Notably (in my experience), g++ will link libstdc++ by default, while gcc won't.
+
+https://stackoverflow.com/questions/1516609/difference-between-cc-gcc-and-g
+
+------------------------------------------------------------------------
+
+touch command: It is used to create a file without any content.
+The file created using touch command is empty. This command can be used when the user doesn’t have data to store at the time of file creation.
+
+------------------------------------------------------------------------
+
+
+
+
+
+
+

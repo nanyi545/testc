@@ -4,6 +4,7 @@
 
 #include <string.h>
 #include "arraylist.h"
+#include "sb.h"
 
 
 char* get_element_string(Element e){
@@ -13,19 +14,24 @@ char* get_element_string(Element e){
     return str;
 }
 
+char c1 = ',';
+char* pc1 = &c1;
 
 void AL_print(ArrayList *lst){
     if (lst == NULL){
         printf("empty");
         return;
     }
-    int string_length = 0;
+    Sb sb = {0};
+    SB_init(&sb);
     for (int i=0;i<lst->length;i++){
         Element e = lst->container[i];
         char* s = get_element_string(e);
-        printf("i:%d  s:%s size:%lu",i, s, strlen(s));
+        SB_append(&sb,s);
+        SB_append(&sb,pc1);
+//        printf("i:%d  s:%s size:%lu",i, s, strlen(s));
     }
-
+    printf("arr:%s \n",SB_print(&sb,0));
 }
 
 

@@ -20,7 +20,7 @@ typedef struct Sb
 
 int SB_init(Sb* p);
 int SB_append(Sb* sb, char* str);
-void SB_print(Sb* p);
+char* SB_print(Sb* p, int print);
 void SB_free(Sb* p,int onHeap);
 
 #endif //TESTC2_SB_H

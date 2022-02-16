@@ -1,0 +1,18 @@
+# make -f beginer2
+# make -f beginer2 clean    ---> call clean
+
+files := file1 file2
+file3: $(files)
+	echo "Look at this variable: " $(files)
+	touch file3
+
+file1:
+	touch file1
+	echo "f1"
+
+file2:
+	touch file2
+	echo "f2"
+
+clean:
+	rm -f file1 file2 file3

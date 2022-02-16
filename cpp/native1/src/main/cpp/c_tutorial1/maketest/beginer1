@@ -1,0 +1,7 @@
+# make -f beginer1
+
+mk1: mk1.o
+	cc mk1.o -o mk1 # step2
+
+mk1.o: mk1.c
+	cc -c mk1.c -o mk1.o # step1
