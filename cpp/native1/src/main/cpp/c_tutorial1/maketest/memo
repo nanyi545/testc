@@ -57,4 +57,74 @@ The file created using touch command is empty. This command can be used when the
 
 
 
+------------------------------------------------------------------------
+https://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/
+
+gcc -o hellomake hellomake.c hellofunc.c -I.
+
+This compiles the two .c files and names the executable hellomake.
+The -I. is included so that gcc will look in the current directory (.) for the include file hellomake.h.
+
+---
+The simplest makefile you could create would look something like:
+
+# Makefile 1
+hellomake: hellomake.c hellofunc.c
+     gcc -o hellomake hellomake.c hellofunc.c -I.
+
+
+
+---
+In order to be a bit more efficient, let's try the following:
+
+# Makefile 2
+CC=gcc
+CFLAGS=-I.
+
+hellomake: hellomake.o hellofunc.o
+     $(CC) -o hellomake hellomake.o hellofunc.o $(CFLAGS)
+
+---
+If you were to make a change to hellomake.h, for example, make would not recompile the .c files,
+even though they needed to be. In order to fix this, we need to tell make that all .c files depend on certain .h files.
+
+
+# Makefile 3
+CC=gcc
+CFLAGS=-I.
+DEPS = hellomake.h
+
+%.o: %.c $(DEPS)
+	$(CC) -c -o $@ $< $(CFLAGS)
+
+hellomake: hellomake.o hellofunc.o
+	$(CC) -o hellomake hellomake.o hellofunc.o
+
+
+------
+https://stackoverflow.com/questions/3220277/what-do-the-makefile-symbols-and-mean
+
+all: library.cpp main.cpp
+In this case:
+$@ evaluates to all
+$< evaluates to library.cpp
+$^ evaluates to library.cpp main.cpp
+------
+https://unix.stackexchange.com/questions/346322/what-does-symbol-in-makefile-mean
+
+%.o: %.c
+        $(CC) -c $^ -o $@
+is a pattern rule, which is a type of implicit rule. It specifies one target and one dependency,
+and causes one invocation of $(CC) for each target.
+
+https://www.gnu.org/software/make/manual/html_node/Pattern-Rules.html#Pattern-Rules
+------
+
+
+
+
+
+
+
+------------------------------------------------------------------------
 
