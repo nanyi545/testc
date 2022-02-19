@@ -53,5 +53,49 @@ Run the Java Program
 or
 > java -Djava.library.path=. HelloJNI
 
+
+
+
+********   JNI with C/C++ Mixture
+jni --> call
+c --> c call
+cpp method definition need ----->  extern "C"
+
+Step 1: Write a Java Class that uses Native Codes - HelloJNICpp.java
+
+Step 2: Compile the Java Program & Generate the C/C++ Header file HelloJNICpp.h
+javac -h . HelloJNICpp.java
+
+Step 3: C/C++ Implementation - HelloJNICppImpl.h, HelloJNICppImpl.cpp, and HelloJNICpp.c
+
+$ g++ -fPIC -I"$JAVA_HOME/include" -I"$JAVA_HOME/include/linux" -shared -o libhello.so HelloJNICpp.c HelloJNICppImpl.cpp
+
+
+Step 4: Run the Java Program
+
+> java HelloJNICpp
+or
+> java -Djava.library.path=. HelloJNICpp
+
+
+
+********  JNI in Package
+
+For production, all Java classes shall be kept in proper packages, instead of the default no-name package.
+
+Step 1: JNI Program - myjni\HelloJNI.java
+
+javac -h include myjni/HelloJNI.java     // save header to incude directory
+header file at ----> include/myjni_HelloJNI.h
+
+gcc -fPIC -I"$JAVA_HOME/include" -I"$JAVA_HOME/include/linux" -shared -o libhello.so HelloJNI_p.c
+
+You can now run the JNI program:
+> java -Djava.library.path=. myjni.HelloJNI
+
+
+
+
+
 **/
 
