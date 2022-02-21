@@ -1,0 +1,107 @@
+
+
+----------------------------------------------------------------------
+https://www.cplusplus.com/info/description/
+
+
+** Compiled, interpreted, or JIT-compiled
+
+* Compiled
+Compiled languages are translated to the target machine's native language by a program called a compiler.
+This can result in very fast code, especially if the compiler is effective at optimizing,
+however the resulting code may not port well across operating systems and the compilation process may take a while.
+
+* Interpreted
+Interpreted languages are read by a program called an interpreter and are executed by that program.
+While they are as portable as their interpreter and have no long compile times, interpreted languages are usually
+much slower than an equivalent compiled program.
+
+* JIT
+Finally, just-in-time compiled (or JIT-compiled) languages are languages that are quickly compiled when programs
+written in them need to be run (usually with very little optimization), offering a balance between performance and portability.
+
+
+** High or Low Level
+
+* low-level language
+A low-level language is generally quite similar to machine code, and thus is more suitable for programs like device drivers
+ or very high performance programs that really need access to the hardware. Generally, the term is reserved for machine code
+ itself and assembly languages, though many languages offer low-level elements. Since a low-level language is subject to all
+ the nuances of the hardware it's accessing, however, a program written in a low-level language is generally difficult to port
+ to other platforms. Low level languages are practically never interpreted, as this generally defeats the purpose.
+
+* high-level language
+A high-level language focuses more on concepts that are easy to understand by the human mind, such as objects or mathematical
+functions. A high-level language usually is easier to understand than a low-level language, and it usually takes less time
+to develop a program in a high-level language than it does in a low-level language. As a trade-off one generally needs to
+sacrifice some degree of control over what the resulting program actually does. It is not, however, impossible to mix high-level
+and low-level functionality in a language.
+
+
+** Type System
+A type system refers to the rules that the different types of variables of a language have to follow.
+
+* Type Strength: Strong or Weak
+A strong typing system puts restrictions on how different types of variables can be converted to each other without any converting statements.
+
+* Type Expression: Manifest or Inferred
+This deals with how the compiler/interpreter for a language infers the types of variables. Many languages require variables' types to be explicitly defined,
+and thus rely on manifest typing. Some however, will infer the type of the variable based on the contexts in which it is used, and thus use inferred typing.
+
+* Type Checking: Static or Dynamic
+If a language is statically typed, then the compiler/interpreter does the type checking once before the program runs/is compiled.
+If the language is dynamically type checked, then the types are checked at run-time.
+
+* Type Safety: Safe or Unsafe
+These refer to the degree to which a language will prohibit operations on typed variables that might lead to undefined behavior or
+errors. A safe language will do more to ensure that such operations or conversions do not occur, while an unsafe language
+will give more responsibility to the user in this regard.
+
+
+
+programming language. C++...
+...is an open ISO-standardized language.
+For a time, C++ had no official standard and was maintained by a de-facto standard, however since 1998, C++ is standardized by a committee of the ISO. Their page may be accessed here.
+
+...is a compiled language.
+C++ compiles directly to a machine's native code, allowing it to be one of the fastest languages in the world, if optimized.
+
+...is a strongly-typed unsafe language.
+C++ is a language that expects the programmer to know what he or she is doing, but allows for incredible amounts of control as a result.
+
+...supports both manifest and inferred typing.
+As of the latest C++ standard, C++ supports both manifest and inferred typing, allowing flexibility and a means of avoiding verbosity where desired.
+
+...supports both static and dynamic type checking.
+C++ allows type conversions to be checked either at compile-time or at run-time, again offering another degree of flexibility. Most C++ type checking is, however, static.
+
+...offers many paradigm choices.
+C++ offers remarkable support for procedural, generic, and object-oriented programming paradigms, with many other paradigms being possible as well.
+
+...is portable.
+As one of the most frequently used languages in the world and as an open language, C++ has a wide range of compilers that run on many different platforms that support it. Code that exclusively uses C++'s standard library will run on many platforms with few to no changes.
+
+...is upwards compatible with C
+C++, being a language that directly builds off C, is compatible with almost all C code. C++ can use C libraries with few to no modifications of the libraries' code.
+
+...has incredible library support.
+A search for "library" on the popular project-management website SourceForge will yield over 3000 results for C++ libraries. A link to the results of the search may be found here.
+
+
+----------------------------------------------------------------------
+
+----------------------------------------------------------------------
+
+----------------------------------------------------------------------
+
+----------------------------------------------------------------------
+
+----------------------------------------------------------------------
+
+----------------------------------------------------------------------
+
+----------------------------------------------------------------------
+
+----------------------------------------------------------------------
+
+----------------------------------------------------------------------
