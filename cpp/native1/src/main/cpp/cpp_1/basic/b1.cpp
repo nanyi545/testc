@@ -38,4 +38,10 @@ int main()
     mystring = "This is a different string content";
     cout << mystring << NEWLINE;
 
+
+    int i;
+    float f = 3.14;
+    i = (int) f;
+    cout <<  "f:" << f <<  "  cast:" << i << NEWLINE;
+
 }

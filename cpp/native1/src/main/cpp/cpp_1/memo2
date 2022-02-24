@@ -120,9 +120,45 @@ int* p = nullptr;
 
 ----------------------------------------------------------------------
 
+https://www.cplusplus.com/doc/tutorial/operators/
+
+---------
+Comma operator ( , )
+
+The comma operator (,) is used to separate two or more expressions that are included where only one expression is expected. When the set of expressions has to be evaluated for a value,
+only the right-most expression is considered.
+
+For example, the following code:
+
+a = (b=3, b+2);
 
 
+would first assign the value 3 to b, and then assign b+2 to variable a.
+So, at the end, variable a would contain the value 5 while variable b would contain value 3.
+
+
+---------
+
+Explicit type casting operator
+Type casting operators allow to convert a value of a given type to another type. There are several ways to do this in C++.
+
+The simplest one, which has been inherited from the C language, is to precede the expression to be converted by the new type enclosed between parentheses (()):
+
+int i;
+float f = 3.14;
+i = (int) f;
+
+ Another way to do the same thing in C++ is to use the functional notation preceding the expression to be converted by the type and enclosing the expression between parentheses:
+i = int (f);
 
 ----------------------------------------------------------------------
+
+https://www.cplusplus.com/doc/tutorial/functions2/
+
+
+Function templates
+
+
+
 
 ----------------------------------------------------------------------

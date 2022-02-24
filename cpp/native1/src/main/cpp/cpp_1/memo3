@@ -1,0 +1,78 @@
+----------------------------------------------------------------------
+https://www.cplusplus.com/doc/tutorial/control/
+
+    string str {"Hello!"};
+    for (char c : str)
+    {
+        cout << "[" << c << "]";
+    }
+
+
+----------------------------------------------------------------------
+https://www.cplusplus.com/doc/tutorial/functions/
+
+passing parameters by reference
+In C++, references are indicated with an ampersand (&) following the parameter type
+
+void duplicate (int& a, int& b, int& c)
+{
+  a*=2;
+  b*=2;
+  c*=2;
+}
+
+
+// Default values in parameters
+int divide (int a, int b=2)
+{
+    int r;
+    r=a/b;
+    return (r);
+}
+
+...
+
+    cout << divide (12) << '\n';
+    cout << divide (20,4) << '\n';
+
+
+----------------------------------------------------------------------
+
+https://www.cplusplus.com/doc/tutorial/namespaces/
+
+
+int foo;        // global variable
+
+int some_function ()
+{
+  int bar;      // local variable
+  bar = 0;
+}
+
+
+Namespaces ---> like packages in JAVA
+
+Namespaces allow us to group named entities that otherwise would have global scope into narrower scopes, giving them namespace scope.
+This allows organizing the elements of programs into different logical scopes referred to by names.
+
+
+namespace foo
+{
+  int value() { return 5; }
+}
+
+foo::value();
+
+....
+
+
+
+----------------------------------------------------------------------
+
+
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+----------------------------------------------------------------------

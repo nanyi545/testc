@@ -50,13 +50,13 @@ int main() {
     int s = 2;
 
     // 1d array
-//    int arr1[3]={1,2,3};
-//    int *p1 = arr1;
-//    printf("p:%x\n",arr1);
-//    printf("p:%x\n",p1);
-//    printf("p0:%x\n",&arr1[0]);
-//    printf("p1:%x\n",&arr1[1]);
-//    printf("p2:%x\n",&arr1[2]);
+    int arr1[3]={1,2,3};
+    int *p1 = arr1;
+    printf("1d p:%x\n",arr1);
+    printf("1d p:%x\n",p1);
+    printf("1d p0:%x\n",&arr1[0]);
+    printf("1d p1:%x\n",&arr1[1]);
+    printf("1d p2:%x\n",&arr1[2]);
 
     // 2d array
 //    int **p2 = NULL;
@@ -69,15 +69,13 @@ int main() {
 //        }
 //    }
 
-    int** pp = &arr[0];
+    printf("p-0-0:%x\n",*(arr[0]+0));  // arr[0] --> is an array [2], you can use it as a pointer ...
+    printf("p-0-1:%x\n",*(arr[0]+1));
+    printf("p-1-0:%x\n",*(arr[1]+0));
+    printf("p-1-1:%x\n",*(arr[1]+1));
+    printf("p-2-0:%x\n",*(arr[2]+0));
+    printf("p-2-1:%x\n",*(arr[2]+1));
 
-
-
-    printf("p0-0:%x\n",*(*(&arr[0])+0));
-    printf("p0-1:%x\n",*(*(&arr[0])+1));
-
-    printf("p1:%x\n",&arr[1]);
-    printf("p2:%x\n",&arr[2]);
 
 
 //    findCenter( &arr[0] ,3, &s);
