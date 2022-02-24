@@ -41,7 +41,7 @@ public class MainActivity extends Activity {
             startActivityForResult(intent, 1234);
         }
 
-        // 
+        //
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(this)) {
             testDialog();
         }
