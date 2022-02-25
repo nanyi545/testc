@@ -12,10 +12,21 @@ private:
     double radius;
 public:
     // you can choose to put the implementation in header file or in implementation ....
-    C1(double r){
-        radius = r;
-    };
+
+    // method1
+//    C1(double r){radius = r;};
+
+    // method2
+    C1(double r):radius(r) { };    //  member initialization
+    // This is done by inserting, before the constructor's body, a colon (:) and a list of initializations for class members.
+
     double circum();
+
+//    C1 C1::operator + (const C1 o1,const C1& o2) {
+//        o1.radius =  o1.radius + o2.radius;
+//        return o1;
+//    }
+
 };
 
 

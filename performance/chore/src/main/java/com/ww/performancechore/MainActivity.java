@@ -11,6 +11,7 @@ import android.widget.Button;
 
 import com.ww.performancechore.async_inflate.InflatorActivity;
 import com.ww.performancechore.classloader.ClassLoaderTest;
+import com.ww.performancechore.fragments.TestFragActivity;
 import com.ww.performancechore.mem.TestLargeClassAPI;
 import com.ww.performancechore.permission.Manager;
 import com.ww.performancechore.stacktest.ActivityA;
@@ -86,8 +87,12 @@ public class MainActivity extends AppCompatActivity {
 
                 // test class loader
 //                ClassLoaderTest.pluginLoad();
-                ClassLoaderTest.pluginLoad2();
+//                ClassLoaderTest.pluginLoad2();
 //                ClassLoaderTest.pluginLoad3();
+
+
+                // test nesting fragments....
+                startActivity(new Intent(MainActivity.this, TestFragActivity.class ));
 
             }
         });

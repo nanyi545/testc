@@ -123,8 +123,35 @@ Naming conventions
 
 https://www.ks.uiuc.edu/Research/vmd/vmd-1.2/pg/node24.html
 
+-----
+
+The only difference between defining a member function completely within the class definition or to just include its declaration
+in the function and define it later outside the class, is that in the first case the function is automatically considered an inline
+member function by the compiler, while in the second it is a normal (not-inline) class member function.
+This causes no differences in behavior, but only on possible compiler optimizations.
+
+-----
+
+Member initialization in constructors
+
+The constructor for this class could be defined, as usual, as:
+Rectangle::Rectangle (int x, int y) { width=x; height=y; }
+
+member initialization:
+Rectangle::Rectangle (int x, int y) : width(x), height(y) { }
+
+-----
+
+
 
 ----------------------------------------------------------------------
+
+https://www.cplusplus.com/doc/tutorial/templates/
+
+Overloading operators ...
+
+
+
 ----------------------------------------------------------------------
 ----------------------------------------------------------------------
 ----------------------------------------------------------------------

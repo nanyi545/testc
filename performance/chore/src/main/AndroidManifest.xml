@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".hook.TestHookActivity"></activity>
+        <activity android:name=".fragments.TestFragActivity"></activity>
+        <activity android:name=".hook.TestHookActivity" />
         <activity android:name=".rv.TestOffsetActivity" />
         <activity android:name=".rv.RvTest2Activity" />
         <activity android:name=".recy_scroll.RVTestActivity" />
