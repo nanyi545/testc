@@ -69,9 +69,61 @@ foo::value();
 
 ----------------------------------------------------------------------
 
+https://www.cplusplus.com/doc/tutorial/dynamic/
+
+
+In this case, if the allocation of this block of memory fails, the failure can be detected by checking if foo is a null pointer:
+
+int * foo;
+foo = new (nothrow) int [5];
+if (foo == nullptr) {
+  // error assigning memory. Take measures.
+}
+delete[] foo;
+
+
+
+----
+Operators delete and delete[]
+In most cases, memory allocated dynamically is only needed during specific periods of time within a program; once it is no longer needed, it can be freed so that the memory becomes available again for other requests of dynamic memory. This is the purpose of operator delete, whose syntax is:
+
+delete pointer;
+delete[] pointer;
+
 
 
 ----------------------------------------------------------------------
+
+
+https://stackoverflow.com/questions/184537/in-what-cases-do-i-use-malloc-and-or-new
+
+Unless you are forced to use C, you should never use malloc. Always use new.
+
+-----
+
+The only way I could think that would be beneficial to use malloc would be if you needed to change the size of your buffer of data.
+The new keyword does not have an analogous way like realloc.
+The realloc function might be able to extend the size of a chunk of memory for you more efficiently.
+
+-----
+
+It is worth mentioning that you cannot mix new/free and malloc/delete.
+
+
+
+
+----------------------------------------------------------------------
+
+classes
+
+https://www.cplusplus.com/doc/tutorial/classes/
+
+
+Naming conventions
+
+https://www.ks.uiuc.edu/Research/vmd/vmd-1.2/pg/node24.html
+
+
 ----------------------------------------------------------------------
 ----------------------------------------------------------------------
 ----------------------------------------------------------------------

@@ -13,8 +13,9 @@ android {
         minSdkVersion 16
 
 //        targetSdkVersion 30
-        targetSdkVersion 26
-//        targetSdkVersion 22
+//        targetSdkVersion 26
+        targetSdkVersion 22
+//        targetSdkVersion 17
 
 
         versionCode 1

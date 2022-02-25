@@ -13,4 +13,10 @@
         android:layout_height="wrap_content"
         android:text="Hello World!"/>
 
+    <ImageView
+        android:background="#0ff"
+        android:id="@+id/img1"
+        android:layout_width="100px"
+        android:layout_height="100px"/>
+
 </LinearLayout>

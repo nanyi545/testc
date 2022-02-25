@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.PermissionRequest;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 public class MainActivity extends Activity {
 
@@ -34,20 +38,66 @@ public class MainActivity extends Activity {
 //            testDialog();
 //        }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
 
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" + getPackageName()));
-            startActivityForResult(intent, 1234);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+//            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+//                    Uri.parse("package:" + getPackageName()));
+//            startActivityForResult(intent, 1234);
+//        }
 
-        //
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(this)) {
+
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Settings.canDrawOverlays(this)) {
             testDialog();
-        }
+//        }
+
+
+
+//        testDialog();
+//        testBitMap2();
 
 
     }
+
+
+    // test bitmap operation ...
+    private void testBitMap(){
+        ImageView iv1 = findViewById(R.id.img1);
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+        Bitmap bmp = Bitmap.createBitmap(50, 50, conf); // this creates a MUTABLE bitmap
+
+        for (int i=0;i<50;i++){
+            bmp.setPixel(0,i,Color.RED);
+            bmp.setPixel(1,i,Color.RED);
+            bmp.setPixel(2,i,Color.RED);
+            bmp.setPixel(3,i,Color.RED);
+            bmp.setPixel(4,i,Color.RED);
+        }
+        int c1 = Color.argb(0,1,2,3);
+
+        iv1.setImageBitmap(bmp);
+    }
+
+    private void testBitMap2(){
+
+        ImageView iv1 = findViewById(R.id.img1);
+        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
+        Bitmap bmp = Bitmap.createBitmap(50, 50, conf); // this creates a MUTABLE bitmap
+
+        for (int i=0;i<50;i++){
+            for (int j=0;j<50;j++){
+                int d = (i-25)*(i-25)+(j-25)*(j-25);
+                if(d>=410){
+                    bmp.setPixel(i,j,Color.RED);
+                } else {
+                    bmp.setPixel(i,j,Color.GREEN);
+                }
+            }
+        }
+
+        iv1.setImageBitmap(bmp);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode,  Intent data) {
@@ -86,7 +136,9 @@ public class MainActivity extends Activity {
         v.setMinimumHeight(100);
         v.setLayoutParams(new ViewGroup.LayoutParams(200,200));
         v.setBackgroundColor(Color.RED);
-        InnerDialog innerDialog = new InnerDialog(this);
+        // 如果有高级别权限，可以使用application context来弹窗
+        InnerDialog innerDialog = new InnerDialog(getApplication());
+//        InnerDialog innerDialog = new InnerDialog(this);
         innerDialog.setContentView(v);
         innerDialog.show();
     }
@@ -131,9 +183,10 @@ public class MainActivity extends Activity {
         private void init(){
             Window mWindow = getWindow();
             if (mWindow != null) {
-                int windowType = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+//                int windowType = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
 //                int windowType = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
-                mWindow.setType(windowType);
+//                int windowType = WindowManager.LayoutParams.LAST_SUB_WINDOW;
+//                mWindow.setType(windowType);
                 WindowManager.LayoutParams attributes = mWindow.getAttributes();
                 attributes.width = 100;
                 attributes.height =100;
