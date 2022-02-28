@@ -28,6 +28,9 @@ import java.util.Set;
  *
  *
  * https://leetcode-cn.com/problems/longest-consecutive-sequence
+ *
+ *
+ *  !!!!!    key : in this DisJointSet n+1 is parent of n
  */
 public class ConsecutiveInt {
     @Test
@@ -68,6 +71,8 @@ public class ConsecutiveInt {
 
         int size = a.length;
         int[] diset = new int[size];
+
+        //  orginal value ---> ind
         Map<Integer,Integer> map = new HashMap<>();
 
         // init
@@ -87,12 +92,13 @@ public class ConsecutiveInt {
 
         int max = 0;
         Map<Integer,Integer> counter = new HashMap<>();
-        Set<Integer> set = new HashSet<>();
         for (int i=0;i<size;i++){
-            set.add(a[i]);
+            // root
             int ind = get(i,diset);
             int count = counter.getOrDefault(ind,0)+1;
             counter.put(ind,count);
+
+            // find the most frequent root  .... 
             if(count>max){
                 max = count;
             }
