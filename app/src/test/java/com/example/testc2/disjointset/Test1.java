@@ -17,8 +17,11 @@ public class Test1 {
         Map<Integer,Integer> map = new HashMap<>();
 
         // init
+
         for (int i=0;i<size;i++){
             map.put(a[i],i);
+
+            // 初始化, 每一个id[i]指向自己, 没有合并的元素
             diset[i] = i;
         }
 
@@ -63,6 +66,8 @@ public class Test1 {
         // init
         for (int i=0;i<size;i++){
             set.add(a[i]);
+
+            // 初始化, 每一个id[i]指向自己, 没有合并的元素
             diset[i] = i;
         }
 

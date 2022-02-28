@@ -20,12 +20,16 @@ public:
     C1(double r):radius(r) { };    //  member initialization
     // This is done by inserting, before the constructor's body, a colon (:) and a list of initializations for class members.
 
+    // no param constructor
+    C1():radius(0){};
+
     double circum();
 
-//    C1 C1::operator + (const C1 o1,const C1& o2) {
-//        o1.radius =  o1.radius + o2.radius;
-//        return o1;
-//    }
+    C1 operator + (const C1& o2) {
+        C1 temp;
+        temp.radius =  temp.radius + o2.radius;
+        return temp;
+    }
 
 };
 

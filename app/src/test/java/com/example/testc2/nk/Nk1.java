@@ -21,6 +21,39 @@ import java.util.Set;
  * nk io
  * https://blog.csdn.net/qq_42403042/article/details/107533785
  *
+ * saima io
+ *
+ *
+ * import java.util.*;
+ *
+ * class Main {
+ *   public static void main(String[] args){
+ *     Scanner s = new Scanner(System.in);
+ *     int c = s.nextInt();
+ *     HashSet<Integer> m = new HashSet();
+ *     for (int i=0;i<c;i++){
+ *       int n = s.nextInt();
+ *       while(true){
+ *         if( n>0 &&(!m.contains(n))) {
+ *           m.add(n);
+ *           break;
+ *         }
+ *         if(n==0){
+ *           break;
+ *         }
+ *         n=n-1;
+ *       }
+ *     }
+ *     int t = 0;
+ *     Iterator<Integer> i = m.iterator();
+ *     while(i.hasNext()){
+ *       t+=i.next();
+ *     }
+ *     System.out.println(t);
+ *   }s
+ * }
+ *
+ *
  */
 public class Nk1 {  // use class Main ....
 
