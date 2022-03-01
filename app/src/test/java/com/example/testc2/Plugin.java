@@ -6,6 +6,7 @@ import com.example.testc2.basics.A;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -59,57 +60,76 @@ import java.util.Set;
  */
 public class Plugin {
 
+    static int get(int ind,int[] arr){
+        if(ind==arr[ind]){
+            return ind;
+        }
+        return get(arr[ind],arr);
+    }
+
     public static void main(String[] args){
         Scanner s = new Scanner(System.in);
         int t = s.nextInt();
         for(int i=0;i<t;i++){
             int plugins = s.nextInt();
-            List<Set<Integer>> list = new ArrayList<>();
+            List<int[]> list = new ArrayList<>();
+            int max = 0;
+            Set<Integer> set = new HashSet<>();
+
             for (int j=0;j<plugins;j++){
                 int a = s.nextInt();
                 int b = s.nextInt();
-                Set<Integer> set = new HashSet<>();
-                set.add(a);
-                set.add(b);
-                List<Set<Integer>> removeList = null;
+                int x = a>b?b:a;
+                int y = a>b?a:b;
 
-                boolean contains = false;
-                for(Set<Integer> ss:list){
-                    if(contains1(ss,a,b)){
-                        ss.add(a);
-                        ss.add(b);
-                        contains = true;
-                        if(removeList==null){
-                            removeList =new ArrayList<>();
-                        } else {
-                            removeList.add(ss);
-                        }
-                    }
-                }
-                if(!contains){
-                    list.add(set);
-                }
+                set.add(x);
+                set.add(y);
 
-                if(removeList!=null){
-                    list.removeAll(removeList);
+                int[] arr = new int[2];
+                arr[0] = x;
+                arr[1] = y;
+                list.add(arr);
+                if(y>max) {
+                    max = y;
                 }
             }
-            if(list.size()>1){
-                System.out.println("NO");
-            } else {
+
+
+            int[] dj = new int[max+1];
+            // init
+            for (int k=0;k<=max;k++){
+                dj[k] = k;
+            }
+
+            for (int k=0;k<list.size();k++){
+                int[] arr = list.get(k);
+
+                // merge !!
+                int root0 = get(arr[0],dj);
+                int root1 = get(arr[1],dj);
+                if(root0!=root1) {
+                    dj[root0] = root1;
+                }
+            }
+
+            Set<Integer> groups = new HashSet<>();
+            Iterator<Integer> it = set.iterator();
+
+            while(it.hasNext()){
+                int v = it.next();
+                int root = get(v,dj);
+                groups.add(root);
+            }
+
+            if(groups.size()==1){
                 System.out.println("YES");
+            } else {
+                System.out.println("NO");
             }
+
+
         }
     }
 
-    public static boolean contains1(Set<Integer> s,int a,int b){
-        if(s.contains(a)){
-            return true;
-        }
-        if(s.contains(b)){
-            return true;
-        }
-        return false;
-    }
 
 }
