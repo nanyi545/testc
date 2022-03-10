@@ -1,5 +1,6 @@
 package com.example.testc2.fragmentsdemo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +26,31 @@ import org.w3c.dom.Text;
  * to handle interaction events.
  * Use the {@link BlankFragment1#newInstance} factory method to
  * create an instance of this fragment.
+ */
+
+/**
+ *
+ * onDestroy
+ *
+ *
+ * onDetach
+ * Called when the fragment is no longer attached to its activity.  This
+ * is called after {@link #onDestroy()}.
+ *
+ * onAttach
+ * Called when a fragment is first attached to its context.
+ * {@link #onCreate(Bundle)} will be called after this.
+ *
+ *
+ * onCreate
+ * Called to do initial creation of a fragment.  This is called after
+ * {@link #onAttach(Activity)} and before
+ * {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+ *
+ onCreateView
+ * <p>It is recommended to <strong>only</strong> inflate the layout in this method and move
+ * logic that operates on the returned View to {@link #onViewCreated(View, Bundle)}.
+
  */
 public class BlankFragment1 extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
@@ -69,25 +95,32 @@ public class BlankFragment1 extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     private String TAG = "BlankFragment1";
 
     @Override
+    public void onAttach(Context context) {
+        Log.d(TAG,"onAttach:"+this);
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    // getArguments will be passed to restored fragment
+    // other data need to pass through onSaveInstanceState/onViewStateRestored
+    @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG,"onCreate:"+this+"   savedInstanceState null:"+(savedInstanceState==savedInstanceState)+"  arg null:"+(getArguments()==null));
+        Log.d(TAG,"onCreate:"+this+"   savedInstanceState null:"+(savedInstanceState==null)+"  arg null:"+(getArguments()==null));
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-
-    TextView tv;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -104,9 +137,55 @@ public class BlankFragment1 extends Fragment {
         if(tv==null){
             ViewGroup vg = (ViewGroup) getView();
             tv = (TextView) vg.getChildAt(0);
+            tv.setText("key:"+mParam1+"  p:"+mParam2);
+            tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String str = tv.getText().toString()+"A";
+                    tv.setText(str);
+                }
+            });
         }
-        tv.setText("key:"+mParam1+"  p:"+mParam2);
     }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        Log.d(TAG,"onViewStateRestored:"+(savedInstanceState==null));
+        if(tv!=null && savedInstanceState!=null){
+            tv.setText(savedInstanceState.getString(KEY1));
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG,"onStart:"+this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG,"onResume:"+this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG,"onPause:"+this);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(tv!=null){
+            outState.putString(KEY1, tv.getText().toString());
+        }
+    }
+
+    private String KEY1="key1";
+    TextView tv;
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -115,17 +194,6 @@ public class BlankFragment1 extends Fragment {
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        Log.d(TAG,"onAttach:"+this);
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
 
     @Override
     public void onDetach() {

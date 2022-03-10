@@ -83,6 +83,7 @@ public class FragDemoActivity extends AppCompatActivity
 
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.add(R.id.frag_root, f1,"f1");
+            ft.show(f1);
             ft.commit();
         }
 
