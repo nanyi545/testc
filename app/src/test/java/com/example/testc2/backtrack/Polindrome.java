@@ -77,7 +77,7 @@ public class Polindrome {
         }
     }
 
-    
+
 
     HashMap<String,Boolean> map = new HashMap<>();
     boolean isP(String str){
