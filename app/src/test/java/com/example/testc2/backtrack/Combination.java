@@ -13,45 +13,42 @@ public class Combination {
 
     @Test
     public void test(){
-        List<List<Integer>> combinations = getCombinations(3);
+        int[] arr = {1,2,3};
+        List<List<Integer>> combinations = permute(arr);
         System.out.println(combinations);
     }
 
 
 
-    public List<List<Integer>> getCombinations(int count){
-        List<List<Integer>> combinations = new ArrayList<>();
-
-        int[] used = new int[count];
-        for(int i=0;i<count;i++){
-            used[i] = 0;
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> permutations = new ArrayList();
+        int[] used = new int[nums.length];
+        for(int i=0;i<nums.length;i++){
+            used[i]=0;
         }
-
-        for (int i=0;i<count;i++){
-            List<Integer> combination = new ArrayList<>();
-            backtrack(used,i,combination,combinations,count);
+        for(int i=0;i<nums.length;i++){
+            backTrack(i,used,nums,new ArrayList(),permutations);
         }
-        return combinations;
+        return permutations;
     }
 
-
-
-    public void backtrack(int[] used, int ind, List<Integer> combination,List<List<Integer>> combinations,int size){
-        if(used[ind]==0){
-            used[ind]=1;
-            combination.add(ind);
-            if(combination.size()==size){
-                combinations.add(combination);
+    void backTrack(int i,int[] used,int[] nums, List<Integer> l1,List<List<Integer>> permutations){
+        if(used[i]==0){
+            used[i]=1;
+            l1.add(nums[i]);
+            if(l1.size()==nums.length){
+                permutations.add(new ArrayList(l1));
             }
         }
-        for(int i=0;i<size;i++){
-            if(used[i]==1){
-                continue;
+        for(int j=0;j<nums.length;j++){
+            if(used[j]==0){
+                backTrack(j,used,nums,l1,permutations);
             }
-            List<Integer> tt = new ArrayList<>(combination);
-            backtrack(used,i,tt,combinations,size);
         }
-        used[ind] = 0;
+        used[i]=0;
+        if(l1.size()>0){
+            l1.remove(l1.size()-1);
+        }
     }
 
 
