@@ -38,6 +38,13 @@ public class Util {
         System.out.println((c-0));
         System.out.println(c0);
         System.out.println(c33);
+        char c32 = 32;
+        char space = ' ';
+        System.out.println(c32 == space);
+        System.out.println(Character.isWhitespace(c32));
+        System.out.println(Character.isWhitespace(space));
+        System.out.println(c32);
+        System.out.println((c32-0));
     }
 
 
